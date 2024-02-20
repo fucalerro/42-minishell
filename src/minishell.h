@@ -13,12 +13,19 @@
 
 #include "node.h"
 #include "../libft/libft.h"
+#include "parser.h"
 
 /* FUNCTIONS */
+int	parser(char *input);
+int     is_quote(char c);
 char    *input_normalizer(char *input);
 void	print_string_tab(char **tab);
 int		is_char_special(char c);
 
+
+
+
+// print_line define for quick debug
 #define PL printf("line: %d file: %s\n", __LINE__,  __FILE__);
 
 #endif
