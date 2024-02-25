@@ -6,9 +6,11 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:36:09 by lferro            #+#    #+#             */
-/*   Updated: 2024/02/20 13:48:47 by lferro           ###   ########.fr       */
+/*   Updated: 2024/02/22 09:08:14 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_isspace(const char c)
 {

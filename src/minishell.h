@@ -10,6 +10,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 #include "node.h"
 #include "../libft/libft.h"
@@ -17,11 +20,11 @@
 
 /* FUNCTIONS */
 int	parser(char *input);
-int     is_quote(char c);
+int is_quote(char c);
 char    *input_normalizer(char *input);
 void	print_string_tab(char **tab);
-int		is_char_special(char c);
-
+int	is_char_special(char c);
+int is_in_single_quotes(char *input, int index);
 
 
 
