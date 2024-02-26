@@ -19,12 +19,13 @@
 #include "parser.h"
 
 /* FUNCTIONS */
+int quotes_counter(char *input);
+int is_in_quotes(char *input, int index);
 int	parser(char *input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
 void	print_string_tab(char **tab);
 int	is_char_special(char c);
-int is_in_single_quotes(char *input, int index);
 
 
 
