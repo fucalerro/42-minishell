@@ -92,7 +92,7 @@ char *input_normalizer(char *input)
 //     while (in_quote = prev_in_quote)
 // }
 
-int quotes_counter(char *input)
+int word_counter_quotes(char *input)
 {
     int i;
     int quote_count;
@@ -107,7 +107,7 @@ int quotes_counter(char *input)
         quote_count--;
     while (input[i])
     {
-    in_quote = is_in_quotes(input, i);
+        in_quote = is_in_quotes(input, i);
         if (in_quote != prev_in_quote)
             quote_count++;
         prev_in_quote = in_quote;
@@ -120,18 +120,28 @@ int quotes_counter(char *input)
 
 char **quotes_splitter(char *input)
 {
-    char   **res;
+    char **res = sp_tokeniser(input, ' ');
 
-    // res = malloc()
 
+    for (int i = 0; res[i]; i++)
+        printf("res: %s\n", res[i]);
+
+
+
+    // char   **res;
+    // int     word_count;
+
+    // word_count = word_counter_quotes(input);
+    // res = malloc((sizeof(char *) * word_count) + 1);
 
     // int     i;
     // int     in_quote;
     // int     prev_in_quote;
-    // char    **res;
     // int     j;
     // int     len;
+    // int     start;
 
+    // start = 0;
     // in_quote = false;
     // prev_in_quote = false;
 
@@ -140,23 +150,22 @@ char **quotes_splitter(char *input)
     // while (input[i])
     // {
     //     in_quote = is_in_quotes(input, i);
-    //     if (in_quote != prev_in_quote)
+    //     if (in_quote != prev_in_quote || !input[i + 1])
     //     {
-    //         len = 0;
-    //         while (is_in_quotes(input, i) == is_in_quotes(input, i))
-    //         {
-
-    //         }
-    //         res[j] = ft_substr(input, i, )
+    //         int len;
+    //         if (input[i + 1])
+    //             len = i - start + 1;
+    //         else
+    //             len = i - start;
+    //         res[j] = ft_substr(input, start, len);
+    //         printf("res: %s\n", res[j]);
+    //         start = i + 1;
+    //         j++;
     //     }
-
-
     //     prev_in_quote = in_quote;
     //     i++;
     // }
-
-
-
+    // res[j] = 0;
 
 }
 

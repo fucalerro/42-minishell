@@ -19,7 +19,11 @@
 #include "parser.h"
 
 /* FUNCTIONS */
-int quotes_counter(char *input);
+char    **op_tokeniser(char *string);
+char    **sp_tokeniser(char *string, char c);
+char	**tokeniser(char *s, char c);
+char **quotes_splitter(char *input);
+int word_counter_quotes(char *input);
 int is_in_quotes(char *input, int index);
 int	parser(char *input);
 int is_quote(char c);
