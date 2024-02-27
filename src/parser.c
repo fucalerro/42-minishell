@@ -120,7 +120,7 @@ int word_counter_quotes(char *input)
 
 char **quotes_splitter(char *input)
 {
-    char **res = sp_tokeniser(input, ' ');
+    char **res = sp_tokenizer(input, ' ');
 
 
     for (int i = 0; res[i]; i++)

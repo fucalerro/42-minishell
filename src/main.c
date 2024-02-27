@@ -3,7 +3,9 @@
 #ifndef UNIT_TESTS
 int main(int ac, char **av, char **env)
 {
-    char *user_input = "aa|bb||cc||dd";
+    // char *user_input = "a b |c d| e f";
+
+    char *user_input = " ( ( a ( (  *.*  ) b ) ) )";
 
     printf("%s\n\n", user_input);
     // user_input = readline("minishell: ");
@@ -12,11 +14,7 @@ int main(int ac, char **av, char **env)
     // printf("%s\n", input_normalizer(user_input));
     // printf("%d\n", word_counter_quotes(user_input));
 
-    char *input = input_normalizer(user_input);
-
-    // quotes_splitter(input);
-    op_tokeniser(input);
-
+    tokenizer(user_input);
 
 
     // parser(user_input);
