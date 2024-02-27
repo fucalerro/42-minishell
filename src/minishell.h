@@ -12,13 +12,15 @@
 #include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <dirent.h>
 
 #include "node.h"
 #include "../libft/libft.h"
 #include "parser.h"
 
 /* FUNCTIONS */
+char    *var_expander(char *string);
+char    **get_files_list();
 char    **tokenizer(char *string);
 char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);

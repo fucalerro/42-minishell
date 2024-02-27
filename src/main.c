@@ -1,11 +1,13 @@
 #include "minishell.h"
 
+extern char **environ;
+
 #ifndef UNIT_TESTS
 int main(int ac, char **av, char **env)
 {
     // char *user_input = "a b |c d| e f";
 
-    char *user_input = " ( ( a ( (  *.*  ) b ) ) )";
+    char *user_input = av[1];
 
     printf("%s\n\n", user_input);
     // user_input = readline("minishell: ");
@@ -15,6 +17,10 @@ int main(int ac, char **av, char **env)
     // printf("%d\n", word_counter_quotes(user_input));
 
     tokenizer(user_input);
+
+    // get_files_list("src");
+
+    printf("%s\n", var_expander("$PATH"));
 
 
     // parser(user_input);

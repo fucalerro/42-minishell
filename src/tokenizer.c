@@ -128,28 +128,74 @@ char	**sp_tokenizer(char *string, char c)
 	return (res);
 }
 
+char    **flatten_3d_array(char ***array3)
+{
+    char    **array2;
+
+    int i;
+    int j;
+    int k;
+
+    i = 0;
+    j = 0;
+    k = 0;
+    while (array3[i])
+    {
+        while (array3[i][j])
+        {
+            array2[k] = ft_strdup(array3[i][j]);
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+    for (int i = 0; array2[i]; i++)
+        printf("%s\n", array2[i]);
+}
+
+
+
 char    **tokenizer(char *string)
 {
     char    *normalized_input;
     char    **sp_tokenized;
     char    ***op_tokenized;
+    char    *temp;
+    int i;
+    int j;
 
     normalized_input = input_normalizer(string);
-
     sp_tokenized = sp_tokenizer(normalized_input, ' ');
-
-
-    int i = 0;
-
+    free(normalized_input);
+    i = 0;
+    while (sp_tokenized[i])
+        i++;
+    op_tokenized = malloc((i + 1) * sizeof(char **));
+    i = 0;
     while (sp_tokenized[i])
     {
+        // while ()
+
         op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
+        free(sp_tokenized[i]);
         i++;
     }
+    free(sp_tokenized);
     op_tokenized[i] = 0;
+
+    char **tokenized;
+
+
+
+
+
+
+
     for (int i = 0; op_tokenized[i]; i++)
         for (int j = 0; op_tokenized[i][j]; j++)
             printf("%s\n", op_tokenized[i][j]);
+
+
 
 }
 
