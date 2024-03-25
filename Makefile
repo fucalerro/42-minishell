@@ -4,7 +4,7 @@ NAME			=	minishell
 
 CC				=	cc
 AR				=	ar -rc
-SRCD	IR			=	src
+SRCDIR			=	src
 SRC				=	$(wildcard $(SRCDIR)/*.c)
 OBJDIR			=	obj
 OBJ				=	$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
@@ -23,7 +23,7 @@ $(LIBFT):
 					make -C $(LIBFTPATH) all
 
 $(NAME): 			$(LIBFT) $(OBJ)
-					$(CC) $(OBJ) $(LIBFT) -o $(NAME)
+					$(CC) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
 
 clean:
 					rm -f $(OBJ)
