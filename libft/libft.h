@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:25 by lferro            #+#    #+#             */
-/*   Updated: 2024/02/22 09:08:30 by lferro           ###   ########.fr       */
+/*   Updated: 2024/03/25 13:24:32 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "printf/ft_printf.h"
 # include "gnl/get_next_line.h"
 
+char	*wordmaker(char const *s, int start, int end);
+size_t	wordcounter(char const *s, char c);
 char	*ft_strjoin_safe(const char *s1, const char *s2);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isalpha(int c);
