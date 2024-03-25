@@ -1,11 +1,11 @@
 #ifndef NODE_H
 #define NODE_H
 
-#define T_CMD 0
 #define T_PIPE 1
 #define T_INFILE 2
 #define T_OUTFILE 3
 #define T_HEREDOC 4
+#define T_CMD 5
 
 typedef struct s_node
 {
