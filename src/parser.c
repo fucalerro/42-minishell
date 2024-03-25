@@ -183,19 +183,12 @@ int is_quote(char c)
         return (0);
 }
 
-int parser(char *input)
+t_node *parser(char **input)
 {
-    int token_start;
-    int token_end;
-    int i;
-    int quoted_sg;
-    int quoted_db;
-    char *token;
-    char *input_normalized;
+    t_node *head;
 
-    input_normalized = input_normalizer(input);
 
-    return (0);
+
 }
 
 int is_char_special(char c)

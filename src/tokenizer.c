@@ -175,12 +175,19 @@ char    **tokenizer(char *string)
 
     tokenized = flatten_3d_array(op_tokenized);
 
+    // var expansion
+    i = 0;
+    while (tokenized[i])
+    {
+        if (tokenized[i][0] == '$')
+            tokenized[i] = ft_strdup(var_expander(tokenized[i]));
+        i++;
+    }
+
     for (int i = 0; tokenized[i]; i++)
         printf("%s\n", tokenized[i]);
 
-
     return (tokenized);
-
 }
 
 

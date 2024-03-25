@@ -9,6 +9,5 @@
 #define NONE            0
 
 int is_in_quotes(char *input, int index);
-int	parser(char *input);
 
 #endif
