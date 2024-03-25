@@ -19,6 +19,7 @@
 #include "parser.h"
 
 /* FUNCTIONS */
+char **flatten_3d_array(char ***array3d);
 size_t	wordcounter(char const *s, char c);
 char    *var_expander(char *string);
 char    **get_files_list();

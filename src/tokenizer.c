@@ -108,8 +108,6 @@ char	**sp_tokenizer(char *string, char c)
 	int		index;
 	char	**res;
 
-    printf("string: %s\n", string);
-
 	i = -1;
 	j = 0;
 	index = -1;
@@ -127,37 +125,8 @@ char	**sp_tokenizer(char *string, char c)
 		}
 	}
 	res[j] = 0;
-    printf("%s\n", res[0]);
 	return (res);
 }
-
-char    **flatten_3d_array(char ***array3d)
-{
-    char    **arr_flatten;
-
-    int i;
-    int j;
-    int k;
-
-    i = 0;
-    j = 0;
-    k = 0;
-    while (array3d[i])
-    {
-        while (array3d[i][j])
-        {
-            arr_flatten[k] = ft_strdup(array3d[i][j]);
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-    for (int i = 0; arr_flatten[i]; i++)
-        printf("%s\n", arr_flatten[i]);
-
-    return (arr_flatten);
-}
-
 
 int quotes_error_check(char *string)
 {
@@ -204,13 +173,13 @@ char    **tokenizer(char *string)
 
     char **tokenized;
 
-    for (int i = 0; op_tokenized[i]; i++)
-        for (int j = 0; op_tokenized[i][j]; j++)
-        {
-            printf("%s\n", op_tokenized[i][j]);
-        }
+    tokenized = flatten_3d_array(op_tokenized);
 
-    return (0);
+    for (int i = 0; tokenized[i]; i++)
+        printf("%s\n", tokenized[i]);
+
+
+    return (tokenized);
 
 }
 

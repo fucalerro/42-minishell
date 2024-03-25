@@ -195,10 +195,6 @@ int parser(char *input)
 
     input_normalized = input_normalizer(input);
 
-    printf("%s\n", input_normalized);
-
-    // splitter(input_normalized);
-
     return (0);
 }
 
