@@ -28,10 +28,12 @@ t_node	*lst_last(t_node *lst)
 	return (lst);
 }
 
-void	lst_append(t_node **lst, t_node *new)
+void	lst_append(t_node **lst, int type, char *file, char **cmd)
 {
 	t_node	*list;
+	t_node	*new;
 
+	new = lst_new(type, file, cmd);
 	if (*lst)
 	{
 		list = lst_last(*lst);
@@ -45,18 +47,12 @@ void	lst_append(t_node **lst, t_node *new)
 void main(void)
 {
 	t_node *lst;
-	t_node *node;
-	t_node *node1;
-	t_node *node2;
-	t_node *node3;
 
 	lst = NULL;
-	node = lst_new(0, NULL, NULL);
-	node1 = lst_new(0, NULL, NULL);
-	node2 = lst_new(0, NULL, NULL);
-	node3 = lst_new(0, NULL, NULL);
-	lst_append(&lst, node);
-	lst_append(&lst, node2);
-	lst_append(&lst, node3);
-	lst_append(&lst, node1);
-}*/
+
+	lst_append(&lst, 0, NULL, NULL);
+	lst_append(&lst, 0, NULL, NULL);
+	lst_append(&lst, 0, NULL, NULL);
+	lst_append(&lst, 0, NULL, NULL);
+}
+*/
