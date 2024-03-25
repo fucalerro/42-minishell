@@ -3,27 +3,45 @@
 extern char **environ;
 
 #ifndef UNIT_TESTS
+
+
+int create_history(void)
+{
+    int fd;
+
+    fd = open("/$HOME.minishell_history", O)
+}
+
+
+
+
 int main(int ac, char **av, char **env)
 {
-    // char *user_input = "a b |c d| e f";
-
-    char *user_input = av[1];
-
-    // printf("%s\n\n", user_input);
-    // user_input = readline("minishell: ");
-    // printf("%d\n", is_in_quotes(user_input, 400));
-
-    // printf("%s\n", input_normalizer(user_input));
-    // printf("%d\n", word_counter_quotes(user_input));
-
-    tokenizer(user_input);
-
-    // get_files_list("src");
-
-    // printf("%s\n", var_expander("$PATH"));
+    char *line = "-> ";
+    char *prompt;
+    char **tokens;
 
 
-    // parser(user_input);
+    create_history();
+
+
+
+    while((prompt = readline(line)))
+    {
+        add_history(prompt);
+        execve("/bin/history", NULL, env);
+
+
+
+
+        // tokens = tokenizer(prompt);
+        // parser(tokens);
+
+
+    }
+
+
+
 
 
     return (0);
