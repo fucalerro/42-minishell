@@ -13,6 +13,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <dirent.h>
+#include <unistd.h>
 
 #include "node.h"
 #include "../libft/libft.h"
