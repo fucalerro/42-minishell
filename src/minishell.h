@@ -15,7 +15,6 @@
 #include <dirent.h>
 
 #include "node.h"
-#include "history.h"
 #include "../libft/libft.h"
 #include "parser.h"
 
