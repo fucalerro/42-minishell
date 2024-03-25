@@ -108,6 +108,8 @@ char	**sp_tokenizer(char *string, char c)
 	int		index;
 	char	**res;
 
+    printf("string: %s\n", string);
+
 	i = -1;
 	j = 0;
 	index = -1;
@@ -125,12 +127,13 @@ char	**sp_tokenizer(char *string, char c)
 		}
 	}
 	res[j] = 0;
+    printf("%s\n", res[0]);
 	return (res);
 }
 
-char    **flatten_3d_array(char ***array3)
+char    **flatten_3d_array(char ***array3d)
 {
-    char    **array2;
+    char    **arr_flatten;
 
     int i;
     int j;
@@ -139,20 +142,36 @@ char    **flatten_3d_array(char ***array3)
     i = 0;
     j = 0;
     k = 0;
-    while (array3[i])
+    while (array3d[i])
     {
-        while (array3[i][j])
+        while (array3d[i][j])
         {
-            array2[k] = ft_strdup(array3[i][j]);
+            arr_flatten[k] = ft_strdup(array3d[i][j]);
             j++;
         }
         j = 0;
         i++;
     }
-    for (int i = 0; array2[i]; i++)
-        printf("%s\n", array2[i]);
+    for (int i = 0; arr_flatten[i]; i++)
+        printf("%s\n", arr_flatten[i]);
+
+    return (arr_flatten);
 }
 
+
+int quotes_error_check(char *string)
+{
+    int len;
+    int err;
+
+    // check if quotes are closed
+    len = ft_strlen(string);
+    if (is_in_quotes(string, len - 1) == 1)
+    {
+        printf("Quotes are not closed\n");
+        exit(1);
+    }
+}
 
 
 char    **tokenizer(char *string)
@@ -164,6 +183,8 @@ char    **tokenizer(char *string)
     int i;
     int j;
 
+    quotes_error_check(string);
+
     normalized_input = input_normalizer(string);
     sp_tokenized = sp_tokenizer(normalized_input, ' ');
     free(normalized_input);
@@ -174,8 +195,6 @@ char    **tokenizer(char *string)
     i = 0;
     while (sp_tokenized[i])
     {
-        // while ()
-
         op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
         free(sp_tokenized[i]);
         i++;
@@ -185,17 +204,13 @@ char    **tokenizer(char *string)
 
     char **tokenized;
 
-
-
-
-
-
-
     for (int i = 0; op_tokenized[i]; i++)
         for (int j = 0; op_tokenized[i][j]; j++)
+        {
             printf("%s\n", op_tokenized[i][j]);
+        }
 
-
+    return (0);
 
 }
 

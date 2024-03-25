@@ -19,6 +19,7 @@
 #include "parser.h"
 
 /* FUNCTIONS */
+size_t	wordcounter(char const *s, char c);
 char    *var_expander(char *string);
 char    **get_files_list();
 char    **tokenizer(char *string);

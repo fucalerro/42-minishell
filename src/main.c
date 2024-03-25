@@ -9,7 +9,7 @@ int main(int ac, char **av, char **env)
 
     char *user_input = av[1];
 
-    printf("%s\n\n", user_input);
+    // printf("%s\n\n", user_input);
     // user_input = readline("minishell: ");
     // printf("%d\n", is_in_quotes(user_input, 400));
 
@@ -20,7 +20,7 @@ int main(int ac, char **av, char **env)
 
     // get_files_list("src");
 
-    printf("%s\n", var_expander("$PATH"));
+    // printf("%s\n", var_expander("$PATH"));
 
 
     // parser(user_input);

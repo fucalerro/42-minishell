@@ -17,7 +17,7 @@ int is_in_quotes(char *input, int index)
     i = -1;
     in_double_quote = false;
     in_single_quote = false;
-    while (input[++i])
+    while (input[++i] && i <= index)
     {
         if (input[i] == '\'' && !in_double_quote)
             in_single_quote = !in_single_quote;
@@ -56,8 +56,10 @@ char *input_normalizer(char *input)
     }
     while (input[i])
     {
-        while (is_in_quotes(input, i) > 0)
+        while (is_in_quotes(input, i) > 0 && input[i])
+        {
             output[j++] = input[i++];
+        }
         if (ft_isspace(input[i]) && ft_isspace(input[i]) != ' ')
         {
             output[j++] = ' ';
