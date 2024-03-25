@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
+#define T_CMD 0
 #define T_PIPE 1
 #define T_INFILE 2
 #define T_OUTFILE 3
@@ -15,4 +16,6 @@ typedef struct s_node
 	struct s_node *previous;
 } t_node;
 
+t_node	*lst_new(int type, char *file, char **cmd);
+void	lst_append(t_node **lst, int type, char *file, char **cmd);
 #endif
