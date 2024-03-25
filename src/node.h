@@ -1,14 +1,18 @@
 #ifndef NODE_H
 #define NODE_H
 
+#define T_PIPE 1
+#define T_INFILE 2
+#define T_OUTFILE 3
+#define T_HEREDOC 4
+
 typedef struct s_node
 {
-	struct s_node *sublist;
-	int            special;
-	char spe[0]; // temporary solution until we find how we want to manage the special caracters
+	int            type;
+	char *file;
 	char **cmd; // I think we should have commands an array ["cmd name", "cmd args"]
 	struct s_node *next;
-	struct s_node *previous; // let see if we need it
+	struct s_node *previous;
 } t_node;
 
 #endif
