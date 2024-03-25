@@ -1,8 +1,14 @@
 #include "minishell.h"
 
+int is_metachar(char c)
+{
+    if (c == '|' || c == '<' || c == '>')
+        return (1);
+    return (0);
+}
+
 /**
  * @brief check if a character in a string is within single or double quotes.
- * If the index > strlen, it checks the last character.
  *
  * @param input string
  * @param index character index to check
@@ -183,13 +189,80 @@ int is_quote(char c)
         return (0);
 }
 
+char **consolidate_cmd(char **input, int i, int *token_count)
+{
+    char **cmd;
+    int j;
+    int cmd_len;
+
+    j = i;
+    cmd_len = 0;
+    while (input[j] && is_metachar(input[j][0]) == 0)
+    {
+        cmd_len++;
+        j++;
+    }
+    cmd = malloc(sizeof(char *) * (cmd_len + 1));
+    j = 0;
+    while (input[i] && is_metachar(input[i][0]) == 0)
+    {
+        cmd[j] = ft_strdup(input[i]);
+        (*token_count)++;
+        i++;
+        j++;
+    }
+    PL;
+    cmd[j] = 0;
+    return (cmd);
+}
+
+
+
+
 t_node *parser(char **input)
 {
-    t_node *head;
+    t_node *lst;
+    int i;
+    int token_count;
 
+    lst = NULL;
+    token_count = get_elem_count(input);
 
+    i = 0;
+
+    while (input[i])
+    {
+        if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_INFILE, input[i + 1], NULL);
+            i++;
+        }
+        if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_OUTFILE, input[i + 1], NULL);
+            i++;
+        }
+        if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_HEREDOC, NULL, NULL);
+        }
+        if (ft_strcmp(input[i], "|") == 0)
+        {
+            lst_append(&lst, T_PIPE, NULL, NULL);
+        }
+        else
+        {
+            int cmdarg_count;
+            lst_append(&lst, T_CMD, NULL, consolidate_cmd(input, &i, &cmdarg_count));
+            i += cmdarg_count;
+        }
+        i++;
+    }
+    print_list(lst);
 
 }
+
+
 
 int is_char_special(char c)
 {

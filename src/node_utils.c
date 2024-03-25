@@ -43,6 +43,23 @@ void	lst_append(t_node **lst, int type, char *file, char **cmd)
 	else
 		*lst = new;
 }
+
+void	print_list(t_node *lst)
+{
+	t_node	*list;
+
+	list = lst;
+	while (list)
+	{
+		printf("\ntype: %d\n", list->type);
+		printf("file: %s\n", list->file);
+		for (int i = 0; list->cmd[i]; i++)
+			printf("cmd[%d]: %s\n", i, list->cmd[i]);
+		list = list->next;
+	}
+}
+
+
 /*
 void main(void)
 {

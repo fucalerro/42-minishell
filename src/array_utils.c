@@ -56,3 +56,30 @@ char **flatten_3d_array(char ***array3d)
     return arr_flatten;
 }
 
+
+
+/**
+ * @brief get the number of elems in an array
+ *
+ */
+int get_elem_count(char **array)
+{
+    int i;
+
+    i = 0;
+    while (array[i])
+        i++;
+    return (i);
+}
+
+void    print_string_tab(char **tab)
+{
+    int i;
+
+    i = 0;
+    while (tab[i])
+    {
+        printf("%s\n", tab[i]);
+        i++;
+    }
+}

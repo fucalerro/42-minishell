@@ -19,6 +19,9 @@
 #include "parser.h"
 
 /* FUNCTIONS */
+void	print_list(t_node *lst);
+char **consolidate_cmd(char **input, int i, int *token_count);
+int get_elem_count(char **array);
 char    *var_expander(char *string);
 char    *var_expander(char *string);
 char **flatten_3d_array(char ***array3d);

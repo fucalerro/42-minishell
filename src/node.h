@@ -19,3 +19,7 @@ typedef struct s_node
 t_node	*lst_new(int type, char *file, char **cmd);
 void	lst_append(t_node **lst, int type, char *file, char **cmd);
 #endif
+
+
+
+
