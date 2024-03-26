@@ -56,7 +56,13 @@ char	**get_path(char *env[])
 	}
 	return (tmps);
 }
-
+int is_builtin(char **cmd)
+{
+	if (!ft_strcmp(cmd[0],"cd"))
+		builtin_cd(cmd[1]);
+	else if (!ft_strcmp(cmd[0],"exit"))
+		builtin_exit();
+}
 int exe_prompt(t_node *node, char **env)
 {
 	char **path;
@@ -64,10 +70,8 @@ int exe_prompt(t_node *node, char **env)
 	path = get_path(env);
 	if(node && node->cmd)
 	{
-		if (!ft_strcmp(node->cmd[0],"cd"))
-		{
-			builtin_cd(node->cmd[1]);
-		}
+		if (is_builtin(node->cmd))
+			;
 		else
 		{
 			node->cmd[0] = get_cmd_path(node->cmd[0], path);

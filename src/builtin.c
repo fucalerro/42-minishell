@@ -21,8 +21,12 @@ void builtin_cd(const char *path) {
             return;
         }
     }
-
     if (chdir(path) != 0) {
         perror("cd");
     }
+}
+
+void builtin_exit(void)
+{
+	exit(EXIT_SUCCESS);
 }
