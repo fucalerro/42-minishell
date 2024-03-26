@@ -3,12 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-void builtin_pwd() {
+char *builtin_pwd(void) {
     char *cwd;
-    cwd = getcwd(NULL, 0);
+    cwd = getcwd(NULL, 0); //its a malloc, wee need to free that at some point
     if (cwd != NULL) {
-        printf("%s\n", cwd); //use libft printf
-        free(cwd);
+		return cwd;
     } else {
         perror("getcwd() error");
     }
@@ -22,8 +21,12 @@ void builtin_cd(const char *path) {
             return;
         }
     }
-
     if (chdir(path) != 0) {
         perror("cd");
     }
+}
+
+void builtin_exit(void)
+{
+	exit(EXIT_SUCCESS);
 }
