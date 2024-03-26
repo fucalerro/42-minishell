@@ -4,8 +4,9 @@
 #define T_PIPE 1
 #define T_INFILE 2
 #define T_OUTFILE 3
-#define T_HEREDOC 4
-#define T_CMD 5
+#define T_OUTFILE_APPEND 4
+#define T_HEREDOC 5
+#define T_CMD 6
 
 typedef struct s_node
 {

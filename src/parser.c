@@ -195,7 +195,7 @@ t_node *parser(char **input)
         }
         else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count)
         {
-            lst_append(&lst, T_OUTFILE_APP, NULL, NULL); // no file name yet
+            lst_append(&lst, T_OUTFILE_APPEND, NULL, NULL); // no file name yet
             i += 2;
         }
         else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count)
