@@ -11,28 +11,24 @@ int main(int ac, char **av, char **env)
     char **tokens;
 
     t_node *lst;
+    t_hist *history;
 
-    t_hist *hist;
-    
-    hist = NULL;
+    history = NULL;
 
-    t_hist *hist;
-    
-    hist = NULL;
+    HIST_ENTRY *hist_entry;
 
 	line = ft_strjoin(line, "🌻 ");
     while((prompt = readline(line)))
     {
-        hist_append(&hist, prompt);
-
-        add_history(prompt);
-
+        if (strcmp(prompt, ""))
+        {
+            hist_append(&history, prompt);
+            add_history(prompt);
+        }
         tokens = tokenizer(prompt);
         lst = parser(tokens);
 		
-     //   print_list(lst);
-
-		exe_prompt(lst, env);
+		exe_prompt(lst, env, history);
 		line = builtin_pwd();
 		line = ft_strjoin(line, "🌻 ");
     }
