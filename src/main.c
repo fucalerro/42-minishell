@@ -10,15 +10,16 @@ int main(int ac, char **av, char **env)
     char *prompt;
     char **tokens;
 
+    t_node *lst;
+
     while((prompt = readline(line)))
     {
         tokens = tokenizer(prompt);
-        parser(tokens);
+        lst = parser(tokens);
+
+        print_list(lst);
     }
 
     return (0);
 }
 #endif
-
-
-// (cd /tmp && touch "file" && "echo'hello'" > file && grep 'hello' file | tee result.txt) || echo 'Error' > error.log

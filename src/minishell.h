@@ -19,25 +19,23 @@
 #include "parser.h"
 
 /* FUNCTIONS */
+void	print_list(t_node *lst);
+char **consolidate_cmd(char **input, int i, int *token_count);
+int get_elem_count(char **array);
 char    *var_expander(char *string);
 char    *var_expander(char *string);
 char **flatten_3d_array(char ***array3d);
 size_t	wordcounter(char const *s, char c);
 char    *var_expander(char *string);
-char    **get_files_list();
 char    **tokenizer(char *string);
 char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);
-char    **tokeniser(char *s, char c);
-char    **quotes_splitter(char *input);
 int word_counter_quotes(char *input);
 int is_in_quotes(char *input, int index);
 t_node  *parser(char **input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
 void    print_string_tab(char **tab);
-int	is_char_special(char c);
-
 
 
 // print_line define for quick debug

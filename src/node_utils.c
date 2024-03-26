@@ -43,6 +43,33 @@ void	lst_append(t_node **lst, int type, char *file, char **cmd)
 	else
 		*lst = new;
 }
+
+void	print_list(t_node *lst)
+{
+	t_node	*list;
+
+	char *type_table[] = {"T_PIPE", "T_INFILE", "T_OUTFILE", "T_OUTFILE_APPEND", "T_HEREDOC", "T_CMD"};
+	int i_node = 0;
+	list = lst;
+	while (list)
+	{
+		printf("\nNODE %i\n",i_node++);
+		printf("\tnode.type: %s\n", type_table[list->type - 1]);
+		printf("\tnode.file: %s\n", list->file);
+		if (list->cmd)
+		{
+			printf("\tnode.cmd: [");
+			for (int i = 0; list->cmd[i]; i++)
+				printf("\"%s\",", list->cmd[i]);
+			printf("]\n");
+		}
+		else
+			printf("\tnode.cmd: (null)\n");
+		list = list->next;
+	}
+}
+
+
 /*
 void main(void)
 {

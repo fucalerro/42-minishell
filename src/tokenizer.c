@@ -183,10 +183,7 @@ char    **tokenizer(char *string)
             tokenized[i] = ft_strdup(var_expander(tokenized[i]));
         i++;
     }
-
-    for (int i = 0; tokenized[i]; i++)
-        printf("%s\n", tokenized[i]);
-
+    tokenized[i] = 0;
     return (tokenized);
 }
 

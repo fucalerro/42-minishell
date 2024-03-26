@@ -4,8 +4,9 @@
 #define T_PIPE 1
 #define T_INFILE 2
 #define T_OUTFILE 3
-#define T_HEREDOC 4
-#define T_CMD 5
+#define T_OUTFILE_APPEND 4
+#define T_HEREDOC 5
+#define T_CMD 6
 
 typedef struct s_node
 {
@@ -19,3 +20,7 @@ typedef struct s_node
 t_node	*lst_new(int type, char *file, char **cmd);
 void	lst_append(t_node **lst, int type, char *file, char **cmd);
 #endif
+
+
+
+
