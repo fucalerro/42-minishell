@@ -10,5 +10,7 @@ typedef struct s_hist
 
 void    hist_append(t_hist **hist, char *line);
 void    print_hist(t_hist *hist);
+void    clear_hist(t_hist **hist);
+
 
 #endif
