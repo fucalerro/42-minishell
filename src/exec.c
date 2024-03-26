@@ -62,6 +62,9 @@ int is_builtin(char **cmd)
 		builtin_cd(cmd[1]);
 	else if (!ft_strcmp(cmd[0],"exit"))
 		builtin_exit();
+	else
+		return 0;
+	return 1;
 }
 int exe_prompt(t_node *node, char **env)
 {
