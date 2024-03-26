@@ -36,6 +36,8 @@ t_node  *parser(char **input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
 void    print_string_tab(char **tab);
+// exec.c
+int exe_prompt(t_node *node, char **env);
 
 
 // print_line define for quick debug

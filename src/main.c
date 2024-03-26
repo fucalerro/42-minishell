@@ -16,8 +16,10 @@ int main(int ac, char **av, char **env)
     {
         tokens = tokenizer(prompt);
         lst = parser(tokens);
-
+		
         print_list(lst);
+
+		exe_prompt(lst, env);
     }
 
     return (0);
