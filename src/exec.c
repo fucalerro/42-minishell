@@ -1,11 +1,10 @@
 #include "minishell.h"
-void exec()
+void exec(char **cmd)
 {
-	char *args[] = {"/usr/bin/touch", "okokokokok", NULL};  // Arguments array
 	pid_t	pid;
 	pid = fork();
 	if (pid == 0)
-		execve(args[0], args, NULL);//, env);
+		execve(cmd[0], cmd, NULL);//, env);
 	else
 		wait(NULL);
 }
@@ -64,7 +63,11 @@ int exe_prompt(t_node *node, char **env)
 
 	path = get_path(env);
 	if(node && node->cmd)
+	{
 		node->cmd[0] = get_cmd_path(node->cmd[0], path);
+		if(node->cmd)
+			exec(node->cmd);
+	}
 	return 0;
 }
 // there we can see how to fetch the path and after that we see how create the cmd
