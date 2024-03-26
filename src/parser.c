@@ -126,58 +126,6 @@ int word_counter_quotes(char *input)
     return (quote_count + 1);
 }
 
-char **quotes_splitter(char *input)
-{
-    char **res = sp_tokenizer(input, ' ');
-
-
-    for (int i = 0; res[i]; i++)
-        printf("res: %s\n", res[i]);
-
-
-
-    // char   **res;
-    // int     word_count;
-
-    // word_count = word_counter_quotes(input);
-    // res = malloc((sizeof(char *) * word_count) + 1);
-
-    // int     i;
-    // int     in_quote;
-    // int     prev_in_quote;
-    // int     j;
-    // int     len;
-    // int     start;
-
-    // start = 0;
-    // in_quote = false;
-    // prev_in_quote = false;
-
-    // j = 0;
-    // i = 0;
-    // while (input[i])
-    // {
-    //     in_quote = is_in_quotes(input, i);
-    //     if (in_quote != prev_in_quote || !input[i + 1])
-    //     {
-    //         int len;
-    //         if (input[i + 1])
-    //             len = i - start + 1;
-    //         else
-    //             len = i - start;
-    //         res[j] = ft_substr(input, start, len);
-    //         printf("res: %s\n", res[j]);
-    //         start = i + 1;
-    //         j++;
-    //     }
-    //     prev_in_quote = in_quote;
-    //     i++;
-    // }
-    // res[j] = 0;
-
-}
-
-
 
 int is_quote(char c)
 {
@@ -189,7 +137,8 @@ int is_quote(char c)
         return (0);
 }
 
-char **consolidate_cmd(char **input, int i, int *token_count)
+
+char **consolidate_cmd(char **input, int i, int *arg_count)
 {
     char **cmd;
     int j;
@@ -207,16 +156,13 @@ char **consolidate_cmd(char **input, int i, int *token_count)
     while (input[i] && is_metachar(input[i][0]) == 0)
     {
         cmd[j] = ft_strdup(input[i]);
-        (*token_count)++;
         i++;
         j++;
     }
-    PL;
+    *arg_count = cmd_len - 1;
     cmd[j] = 0;
     return (cmd);
 }
-
-
 
 
 t_node *parser(char **input)
@@ -224,53 +170,46 @@ t_node *parser(char **input)
     t_node *lst;
     int i;
     int token_count;
+    char **consolidated_cmd;
+    int arg_count;
 
     lst = NULL;
     token_count = get_elem_count(input);
-
     i = 0;
-
     while (input[i])
     {
-        if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
-        {
-            lst_append(&lst, T_INFILE, input[i + 1], NULL);
-            i++;
-        }
-        if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
-        {
-            lst_append(&lst, T_OUTFILE, input[i + 1], NULL);
-            i++;
-        }
-        if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count)
-        {
-            lst_append(&lst, T_HEREDOC, NULL, NULL);
-        }
         if (ft_strcmp(input[i], "|") == 0)
         {
             lst_append(&lst, T_PIPE, NULL, NULL);
+            i++;
+        }
+        else if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_OUTFILE, input[i + 1], NULL);
+            i += 2;
+        }
+        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_INFILE, input[i + 1], NULL);
+            i += 2;
+        }
+        else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_OUTFILE_APP, NULL, NULL); // no file name yet
+            i += 2;
+        }
+        else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count)
+        {
+            lst_append(&lst, T_HEREDOC, NULL, NULL); // not handled
+            i += 2;
         }
         else
         {
-            int cmdarg_count;
-            lst_append(&lst, T_CMD, NULL, consolidate_cmd(input, &i, &cmdarg_count));
-            i += cmdarg_count;
+            consolidated_cmd = consolidate_cmd(input, i, &arg_count);
+            lst_append(&lst, T_CMD, NULL, consolidated_cmd);
+            i += arg_count + 1;
         }
-        i++;
     }
-    print_list(lst);
-
+    return (lst);
 }
 
-
-
-int is_char_special(char c)
-{
-    if (c == '|' || c == '&' || c == '<' || c == '>')
-        return (c);
-
-    if (c == '(' || c == ')' || c == '$' || c == '\'' || c == '\"')
-        return (c);
-
-    return (0);
-}
