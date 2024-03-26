@@ -13,8 +13,16 @@ int main(int ac, char **av, char **env)
     t_node *lst;
 
 	line = ft_strjoin(line, "🌻 ");
+    t_hist *hist;
+    
+    hist = NULL;
+
     while((prompt = readline(line)))
     {
+        hist_append(&hist, prompt);
+
+        add_history(prompt);
+
         tokens = tokenizer(prompt);
         lst = parser(tokens);
 		

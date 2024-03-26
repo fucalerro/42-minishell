@@ -17,6 +17,7 @@
 #include "node.h"
 #include "../libft/libft.h"
 #include "parser.h"
+#include "history.h"
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
