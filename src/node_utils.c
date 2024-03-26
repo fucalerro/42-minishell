@@ -53,8 +53,9 @@ void	print_list(t_node *lst)
 	{
 		printf("\ntype: %d\n", list->type);
 		printf("file: %s\n", list->file);
-		for (int i = 0; list->cmd[i]; i++)
-			printf("cmd[%d]: %s\n", i, list->cmd[i]);
+		if (list->cmd)
+			for (int i = 0; list->cmd[i]; i++)
+				printf("cmd[%d]: %s\n", i, list->cmd[i]);
 		list = list->next;
 	}
 }
