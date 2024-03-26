@@ -24,7 +24,7 @@ char	*get_cmd_path(char *raw, char **path)
 		{
 			free(cmd);
 			cmd = tmp;
-			return (cmd);
+			return (cmd); 
 		}
 		free(tmp);
 		path++;
