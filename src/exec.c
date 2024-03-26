@@ -64,9 +64,16 @@ int exe_prompt(t_node *node, char **env)
 	path = get_path(env);
 	if(node && node->cmd)
 	{
-		node->cmd[0] = get_cmd_path(node->cmd[0], path);
-		if(node->cmd)
-			exec(node->cmd);
+		if (!ft_strcmp(node->cmd[0],"cd"))
+		{
+			builtin_cd(node->cmd[1]);
+		}
+		else
+		{
+			node->cmd[0] = get_cmd_path(node->cmd[0], path);
+			if(node->cmd)
+				exec(node->cmd);
+		}
 	}
 	return 0;
 }

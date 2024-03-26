@@ -38,6 +38,9 @@ char    *input_normalizer(char *input);
 void    print_string_tab(char **tab);
 // exec.c
 int exe_prompt(t_node *node, char **env);
+// builtin.c
+char *builtin_pwd(void);
+void builtin_cd(const char *path);
 
 
 // print_line define for quick debug
