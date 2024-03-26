@@ -1,7 +1,4 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "minishell.h"
 
 char *builtin_pwd(void) {
     char *cwd;
@@ -23,6 +20,25 @@ void builtin_cd(const char *path) {
     }
     if (chdir(path) != 0) {
         perror("cd");
+    }
+}
+
+
+
+void    builtin_history(char **cmd, t_hist **hist)
+{
+    if (!hist)
+    {
+        return ;
+    }
+    if (!cmd[1])
+    {
+        print_hist(*hist);
+    }
+    else if (!ft_strcmp(cmd[1], "-c"))
+    {
+        rl_clear_history();
+        clear_hist(hist);
     }
 }
 

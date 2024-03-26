@@ -56,24 +56,26 @@ char	**get_path(char *env[])
 	}
 	return (tmps);
 }
-int is_builtin(char **cmd)
+int is_builtin(char **cmd, t_hist **hist)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
 		builtin_cd(cmd[1]);
+	if (!ft_strcmp(cmd[0], "history"))
+		builtin_history(cmd, hist);
 	else if (!ft_strcmp(cmd[0],"exit"))
 		builtin_exit();
 	else
 		return 0;
 	return 1;
 }
-int exe_prompt(t_node *node, char **env)
+int exe_prompt(t_node *node, char **env, t_hist **hist)
 {
 	char **path;
 
 	path = get_path(env);
 	if(node && node->cmd)
 	{
-		if (is_builtin(node->cmd))
+		if (is_builtin(node->cmd, hist))
 			;
 		else
 		{

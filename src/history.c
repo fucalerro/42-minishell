@@ -50,3 +50,17 @@ void	print_hist(t_hist *hist)
 		list = list->next;
 	}
 }
+
+void    clear_hist(t_hist **hist)
+{
+    t_hist  *tmp;
+
+    while (*hist)
+    {
+        tmp = *hist;
+        *hist = tmp->next;
+        free(tmp->line);
+        free(tmp);
+    }
+    *hist = NULL;
+}
