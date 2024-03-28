@@ -19,6 +19,9 @@
 #include "parser.h"
 #include "history.h"
 #include "stack.h"
+#include "colors.h"
+
+#define MINI_DEBUG_MSG 1
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
@@ -48,6 +51,8 @@ void builtin_history(char **cmd, t_hist **hist);
 //stack.c
 void	stack_add(t_stack **lst, int value);
 void	stack_drop(t_stack **lst);
+//erreur.c
+void debug_print(char * msg);
 
 // print_line define for quick debug
 #define PL printf("line: %d file: %s\n", __LINE__,  __FILE__);

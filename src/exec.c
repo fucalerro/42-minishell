@@ -97,7 +97,6 @@ int exe_prompt(t_node *list, char **env, t_hist **hist)
 				if(node->cmd)
 					exec(node->cmd, &pid_stack);
 			}
-			printf("%i\n",pid_stack->value);
 		}
 		node = node->next;
 	}
