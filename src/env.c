@@ -27,7 +27,7 @@ int does_var_exist(char **env, char *var)
 	int len;
 
 	len = 0;
-	while (var[len] != '=')
+	while (var[len] != '=' && var[len])
 		len++;
 	printf("len: %d\n", len);
 
@@ -64,6 +64,27 @@ void	builtin_export(char ***env, char *var)
 	new_env[env_size++] = ft_strdup(var);
 	new_env[env_size] = 0;
 	*env = new_env;
+}
+
+void builtin_unset(char **env, char *var)
+{
+	if (ft_strchr(var, '='))
+	{
+		printf("unset: not a valid identifier\n");
+		return ;
+	}
+	int var_index = does_var_exist(env, var);
+	int i;
+
+	if (var_index >= 0)
+	{
+		free(env[var_index]);
+		i = var_index;
+		while (env[var_index])
+		{
+			env[var_index] = env[var_index + 1];
+		}
+	}
 }
 
 
