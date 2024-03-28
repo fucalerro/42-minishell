@@ -47,7 +47,8 @@ void builtin_exit(void);
 void builtin_history(char **cmd, t_hist **hist);
 // env
 void builtin_env(char **env);
-char **copy_env(char **env);
+void builtin_export(char ***env, char *var);
+char **copy_env(char **env, int size);
 
 
 

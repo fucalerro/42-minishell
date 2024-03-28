@@ -18,7 +18,7 @@ int main(int ac, char **av, char **env)
 
     line = ft_strjoin(line, "🌻 ");
 
-    env_copy = copy_env(env);
+    env_copy = copy_env(env, 0);
 
     while((prompt = readline(line)))
     {
