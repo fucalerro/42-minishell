@@ -13,7 +13,6 @@ int main(int ac, char **av, char **env)
     t_node *lst;
     t_hist *history;
 
-	line = ft_strjoin(line, "🌻 ");
 
     history = NULL;
 
