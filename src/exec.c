@@ -58,20 +58,26 @@ char	**get_path(char *env[])
 	}
 	return (tmps);
 }
-int is_builtin(char **cmd, t_hist **hist)
+int is_builtin(char **cmd, t_hist **hist, char ***env)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
 		builtin_cd(cmd[1]);
-	if (!ft_strcmp(cmd[0], "history"))
+	else if (!ft_strcmp(cmd[0], "history"))
 		builtin_history(cmd, hist);
 	else if (!ft_strcmp(cmd[0],"exit"))
 		builtin_exit();
+	else if (!ft_strcmp(cmd[0],"env"))
+		builtin_env(*env);
+	else if (!ft_strcmp(cmd[0],"export"))
+		builtin_export(env, cmd[1]);
+	else if (!ft_strcmp(cmd[0], "unset"))
+		builtin_unset(*env, cmd[1]);
 	else
 		return 0;
 	return 1;
 }
 
-int exe_prompt(t_node *list, char **env, t_hist **hist)
+int exe_prompt(t_node *list, char ***env, t_hist **hist)
 {
 
 	int status;
@@ -82,14 +88,14 @@ int exe_prompt(t_node *list, char **env, t_hist **hist)
 
 	pid_stack = NULL;
 	node = list;
-	path = get_path(env);
+	path = get_path(*env);
 	while(node)
 	{
 		if(!node) 
 			break;
 		if(node->type == T_CMD)
 		{
-			if (is_builtin(node->cmd, hist))
+			if (is_builtin(node->cmd, hist, env))
 				;
 			else
 			{
