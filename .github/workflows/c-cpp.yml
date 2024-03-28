@@ -13,5 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: install readline lib
+      run: brew install readline
     - name: make
       run: make
