@@ -39,15 +39,25 @@ int is_quote(char c);
 char    *input_normalizer(char *input);
 void    print_string_tab(char **tab);
 // exec.c
-int exe_prompt(t_node *node, char **env, t_hist **hist);
+int exe_prompt(t_node *node, char ***env, t_hist **hist);
 // builtin.c
 char *builtin_pwd(void);
 void builtin_cd(const char *path);
 void builtin_exit(void);
 void builtin_history(char **cmd, t_hist **hist);
+// env
+void builtin_env(char **env);
+char **copy_env(char **env);
+
+
+
+
+
+
 //stack.c
 void	stack_add(t_stack **lst, int value);
 void	stack_drop(t_stack **lst);
+
 
 // print_line define for quick debug
 #define PL printf("line: %d file: %s\n", __LINE__,  __FILE__);
