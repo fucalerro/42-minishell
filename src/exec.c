@@ -69,7 +69,7 @@ int is_builtin(char **cmd, t_hist **hist, char ***env)
 	else if (!ft_strcmp(cmd[0],"env"))
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
-		builtin_export(env, cmd[1]);
+		builtin_export(env, cmd);
 	else if (!ft_strcmp(cmd[0], "unset"))
 		builtin_unset(*env, cmd[1]);
 	else

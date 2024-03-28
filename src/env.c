@@ -26,12 +26,10 @@ int does_var_exist(char **env, char *var)
 	int i;
 	int len;
 
+	i = 0;
 	len = 0;
 	while (var[len] != '=' && var[len])
 		len++;
-	printf("len: %d\n", len);
-
-	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], var, len) == 0)
@@ -41,7 +39,29 @@ int does_var_exist(char **env, char *var)
 	return (-1);
 }
 
-void	builtin_export(char ***env, char *var)
+
+int does_vars_exist(char **env, char *var)
+{
+	int i;
+	int len;
+
+	len = 0;
+	while (var[len] != '=' && var[len])
+		len++;
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], var, len) == 0)
+			return (i);
+		i++;
+	}
+
+}
+
+
+
+
+void	builtin_export(char ***env, char **var)
 {
 	char **new_env;
 	int env_size;
@@ -50,18 +70,48 @@ void	builtin_export(char ***env, char *var)
 	while ((*env)[env_size])
 		env_size++;
 	
-	int var_index;
-	
-	var_index = does_var_exist(*env, var);
-	printf("var_index: %d\n", var_index);
-	if (var_index >= 0)
+	int *var_index;
+	int var_nbr;
+
+	var_nbr = 0;
+	while (var[var_nbr])
+		var_nbr++;
+	var_nbr--;
+	var_index = malloc(var_nbr * sizeof(int));
+	PL;
+
+	int j;
+	j = 0;
+	while (var[++j])
+		var_index[j - 1] = does_var_exist(*env, var[j]);
+
+	printf("var_nbr: %d\n", var_nbr);
+	for (int i = 0; i < var_nbr; i++)
+		printf("varindex: %d\n", var_index[j]);
+	PL;
+
+
+	j = 0;
+	new_env = copy_env(*env, var_nbr);
+	while (var_index[j])
 	{
-		free((*env)[var_index]);
-		(*env)[var_index] = ft_strdup(var);
-		return ;
+		if (var_index[j] >= 0)
+		{
+			PL;
+			free((*env)[var_index[j]]);
+			(*env)[var_index[j]] = ft_strdup(var[j + 1]);
+			return ;
+		}
+		j++;
+
 	}
-	new_env = copy_env(*env, 1);
-	new_env[env_size++] = ft_strdup(var);
+	j = 0;
+	while (var[j])
+	{
+		new_env[env_size++] = ft_strdup(var[j]);
+		j++;
+	
+	}
 	new_env[env_size] = 0;
 	*env = new_env;
 }
