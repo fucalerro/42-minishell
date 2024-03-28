@@ -1,12 +1,14 @@
 #include "minishell.h"
-void exec(char **cmd)
+
+void exec(char **cmd, t_stack **stack)
 {
 	pid_t	pid;
+
 	pid = fork();
 	if (pid == 0)
 		execve(cmd[0], cmd, NULL);//, env);
 	else
-		wait(NULL);
+		stack_add(stack, pid);
 }
 
 
@@ -68,24 +70,42 @@ int is_builtin(char **cmd, t_hist **hist)
 		return 0;
 	return 1;
 }
-int exe_prompt(t_node *node, char **env, t_hist **hist)
-{
-	char **path;
 
+int exe_prompt(t_node *list, char **env, t_hist **hist)
+{
+
+	int status;
+	struct rusage usage; // For resource usage info
+	char **path;
+	t_node *node;
+	t_stack *pid_stack;
+
+	pid_stack = NULL;
+	node = list;
 	path = get_path(env);
-	if(node && node->cmd)
+	while(node)
 	{
-		if (is_builtin(node->cmd, hist))
-			;
-		else
+		if(!node) 
+			break;
+		if(node->type == T_CMD)
 		{
-			node->cmd[0] = get_cmd_path(node->cmd[0], path);
-			if(node->cmd)
-				exec(node->cmd);
+			if (is_builtin(node->cmd, hist))
+				;
+			else
+			{
+				node->cmd[0] = get_cmd_path(node->cmd[0], path);
+				if(node->cmd)
+					exec(node->cmd, &pid_stack);
+			}
+			printf("%i\n",pid_stack->value);
 		}
+		node = node->next;
+	}
+
+	while(pid_stack)
+	{
+		wait4(pid_stack->value, &status, 0, &usage); // this should not be here. To work proprely, we need to launch all the process in prompt and then wait for all process to finish
+		stack_drop(&pid_stack);	
 	}
 	return 0;
 }
-// there we can see how to fetch the path and after that we see how create the cmd
-//	input.path = get_path(envp);
-//	input.cmd = get_cmd(argv[input.i_cmd + 2], input.path);

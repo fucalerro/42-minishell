@@ -18,6 +18,7 @@
 #include "../libft/libft.h"
 #include "parser.h"
 #include "history.h"
+#include "stack.h"
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
@@ -44,6 +45,9 @@ char *builtin_pwd(void);
 void builtin_cd(const char *path);
 void builtin_exit(void);
 void builtin_history(char **cmd, t_hist **hist);
+//stack.c
+void	stack_add(t_stack **lst, int value);
+void	stack_drop(t_stack **lst);
 
 // print_line define for quick debug
 #define PL printf("line: %d file: %s\n", __LINE__,  __FILE__);
