@@ -12,7 +12,7 @@ int main(int ac, char **av, char **env)
 
     t_node *lst;
     t_hist *history;
-
+    char **env_copy;
 
     history = NULL;
 
@@ -26,7 +26,7 @@ int main(int ac, char **av, char **env)
         }
         tokens = tokenizer(prompt);
         lst = parser(tokens);
-		
+		env_copy = copy_env(env);
 		exe_prompt(lst, env, &history);
 		line = builtin_pwd();
 		line = ft_strjoin(line, "🌻 ");
