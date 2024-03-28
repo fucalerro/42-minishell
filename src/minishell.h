@@ -45,11 +45,6 @@ char *builtin_pwd(void);
 void builtin_cd(const char *path);
 void builtin_exit(void);
 void builtin_history(char **cmd, t_hist **hist);
-void builtin_env()
-char **copy_env(char **env);
-
-
-
 //stack.c
 void	stack_add(t_stack **lst, int value);
 void	stack_drop(t_stack **lst);
