@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 18:01:49 by lferro            #+#    #+#             */
-/*   Updated: 2024/03/28 15:19:51 by lferro           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:21:33 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ void    *ft_realloc(void *ptr, size_t old_size, size_t size)
     new_block = malloc(size);
     if (!new_block)
         return (NULL);
-    ft_memcpy(new_block, ptr, old_size < size ? old_size : size);
+
+    if (old_size < size)
+        ft_memcpy(new_block, ptr, old_size);
+    else
+        ft_memcpy(new_block, ptr, size);
     free(ptr);
     return (new_block);
 }
