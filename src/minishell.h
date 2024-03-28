@@ -13,7 +13,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <dirent.h>
-
+#include <sys/resource.h>
 #include "node.h"
 #include "../libft/libft.h"
 #include "parser.h"
