@@ -79,7 +79,7 @@ int is_builtin(char **cmd, t_hist **hist, char ***env)
 		return 0;
 	return 1;
 }
-int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack)
+int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {
 	pid_t	pid;
 	int  (*pipe_fd)[2];
@@ -89,7 +89,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack)
 	{
 		pipe(node->next->pipe[0]);
 	}
-	if (is_builtin(node->cmd, hist))
+	if (is_builtin(node->cmd, hist, env))
 		debug_print("this node is CMD builtin");
 	else
 	{
@@ -161,7 +161,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist)
 		if(!node) 
 			break;
 		if(node->type == T_CMD)
-			run_cmd(path, node, hist, &pid_stack);
+			run_cmd(path, node, hist, &pid_stack, env);
 		if (node && node->previous && node->previous->type == T_PIPE)
 		{
 			debug_print("closing parent side\n");

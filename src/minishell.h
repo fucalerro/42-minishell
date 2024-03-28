@@ -21,7 +21,7 @@
 #include "stack.h"
 #include "colors.h"
 
-#define MINI_DEBUG_MSG 1
+#define MINI_DEBUG_MSG 0
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
