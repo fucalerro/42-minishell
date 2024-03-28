@@ -11,6 +11,7 @@ char *builtin_pwd(void) {
     } else {
         perror("getcwd() error");
     }
+	return NULL;
 }
 
 void builtin_cd(const char *path) {

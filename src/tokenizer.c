@@ -140,6 +140,7 @@ int quotes_error_check(char *string)
         printf("Quotes are not closed\n");
         exit(1);
     }
+	return (0); //random value to silence the warning
 }
 
 

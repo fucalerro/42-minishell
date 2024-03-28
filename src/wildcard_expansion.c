@@ -67,15 +67,7 @@ char    **wildcard_expansion(char *pattern)
     {
         while (pattern[i] != '*' && pattern[i])
         {
-
         }
-
-
-
-
-
-
-
-
     }
+	return NULL; //random value to silence the warning
 }

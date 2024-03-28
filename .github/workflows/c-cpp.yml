@@ -15,5 +15,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: install readline lib
       run: brew install readline
+      run: brew info
     - name: make
       run: make re
