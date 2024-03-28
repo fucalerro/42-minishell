@@ -45,3 +45,6 @@ fclean: clean
 re: fclean all
 test :
 	echo "$(OS)"  $(LIB_DIR)
+
+run: all
+	./$(NAME)

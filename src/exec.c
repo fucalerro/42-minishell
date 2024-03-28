@@ -61,7 +61,7 @@ char	**get_path(char *env[])
 	}
 	return (tmps);
 }
-int is_builtin(char **cmd, t_hist **hist)
+int is_builtin(char **cmd, t_hist **hist, char ***env)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
 		builtin_cd(cmd[1]);
@@ -69,6 +69,12 @@ int is_builtin(char **cmd, t_hist **hist)
 		builtin_history(cmd, hist);
 	else if (!ft_strcmp(cmd[0],"exit"))
 		builtin_exit();
+	else if (!ft_strcmp(cmd[0],"env"))
+		builtin_env(*env);
+	else if (!ft_strcmp(cmd[0],"export"))
+		builtin_export(env, cmd);
+	else if (!ft_strcmp(cmd[0], "unset"))
+		builtin_unset(*env, cmd[1]);
 	else
 		return 0;
 	return 1;
@@ -135,7 +141,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack)
 	}
 }
 
-int exe_prompt(t_node *list, char **env, t_hist **hist)
+int exe_prompt(t_node *list, char ***env, t_hist **hist)
 {
 
 	int status;
@@ -146,7 +152,8 @@ int exe_prompt(t_node *list, char **env, t_hist **hist)
 
 	pid_stack = NULL;
 	node = list;
-	path = get_path(env);
+
+	path = get_path(*env);
 	
 	//while loop to exec
 	while(node)
@@ -160,7 +167,7 @@ int exe_prompt(t_node *list, char **env, t_hist **hist)
 			debug_print("closing parent side\n");
 			close(node->previous->pipe[0][0]);
 			close(node->previous->pipe[0][1]);
-		}
+    }
 		node = node->next;
 	}
 
