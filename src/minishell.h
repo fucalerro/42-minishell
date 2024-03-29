@@ -21,6 +21,8 @@
 #include "stack.h"
 #include "colors.h"
 
+#define MINI_DEBUG_MSG 0
+
 /* FUNCTIONS */
 void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);
