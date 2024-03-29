@@ -14,6 +14,7 @@
 #include <readline/history.h>
 #include <dirent.h>
 #include <sys/resource.h>
+#include <signal.h>
 #include "node.h"
 #include "../libft/libft.h"
 #include "parser.h"
@@ -68,6 +69,9 @@ void debug_print(char * msg);
 int sort_infile(t_node **lst);
 //infile.c
 void	exe_infile(t_node *node);
+//signal.c
+void sigint_handler(int sig);
+void sigquit_handler(int sig);
 
 
 // print_line define for quick debug

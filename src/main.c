@@ -14,6 +14,9 @@ int main(int ac, char **av, char **env)
     t_hist *history;
     char **env_copy;
 
+    signal(SIGINT, sigint_handler);  // Ctrl-C
+    signal(SIGQUIT, sigquit_handler);  // Ctrl-\
+									   
     history = NULL;
 
     line = ft_strjoin(line, "🌻 ");
