@@ -8,6 +8,9 @@
 #define T_HEREDOC 5
 #define T_CMD 6
 
+#define PIPE_NEXT 1
+#define PIPE_PREVIOUS 2
+
 typedef struct s_node
 {
 	int            type;
