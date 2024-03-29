@@ -95,7 +95,27 @@ char	**get_path(char *env[])
 	}
 	return (tmps);
 }
-int is_builtin(char **cmd, t_hist **hist, char ***env)
+
+
+int is_builtin(char **cmd)
+{
+	if (!ft_strcmp(cmd[0],"cd"))
+		return 1;	
+	else if (!ft_strcmp(cmd[0], "history"))
+		return 1;	
+	else if (!ft_strcmp(cmd[0],"exit"))
+		return 1;	
+	else if (!ft_strcmp(cmd[0],"env"))
+		return 1;	
+	else if (!ft_strcmp(cmd[0],"export"))
+		return 1;	
+	else if (!ft_strcmp(cmd[0], "unset"))
+		return 1;	
+	else
+		return 0;
+}
+
+int exe_builtin(char **cmd, t_hist **hist, char ***env)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
 		builtin_cd(cmd[1]);
@@ -118,30 +138,27 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	pid_t	pid;
 	char **cmd;
 
-	if (node->next && node->next->type == T_PIPE)
-		pipe(node->next->pipe[0]);
-
-	if (is_builtin(node->cmd, hist, env))
-		debug_print("this node is CMD builtin");
+	cmd = node->cmd;
+	if (is_builtin(cmd))
+	{
+		exe_builtin(cmd, hist, env);
+		return 0;
+	}
+	node->cmd[0] = get_cmd_path(node->cmd[0], path);
+	pid = fork();
+	if (pid == 0)
+	{
+		set_pipe(node);
+		execve(cmd[0], cmd, NULL);
+		exit(EXIT_FAILURE);
+	}
 	else
 	{
-		node->cmd[0] = get_cmd_path(node->cmd[0], path);
-		cmd = node->cmd;
-		pid = fork();
-		if (pid == 0)
+		stack_add(pid_stack, pid);
+		if (check_pipe(node) & PIPE_PREVIOUS)
 		{
-			set_pipe(node);
-			execve(cmd[0], cmd, NULL);
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			stack_add(pid_stack, pid);
-			if (check_pipe(node) & PIPE_PREVIOUS)
-			{
-				close(node->previous->pipe[0][0]);
-				close(node->previous->pipe[0][1]);
-			}
+			close(node->previous->pipe[0][0]);
+			close(node->previous->pipe[0][1]);
 		}
 	}
 }
@@ -165,6 +182,8 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist)
 	{
 		if(!node) 
 			break;
+		if (node->next && node->next->type == T_PIPE)
+			pipe(node->next->pipe[0]);
 		if(node->type == T_CMD)
 			run_cmd(path, node, hist, &pid_stack, env);
 		node = node->next;
