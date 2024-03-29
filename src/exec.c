@@ -135,7 +135,14 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 			exit(EXIT_FAILURE);
 		}
 		else
+		{
 			stack_add(pid_stack, pid);
+			if (check_pipe(node) & PIPE_PREVIOUS)
+			{
+				close(node->previous->pipe[0][0]);
+				close(node->previous->pipe[0][1]);
+			}
+		}
 	}
 }
 
@@ -160,12 +167,6 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist)
 			break;
 		if(node->type == T_CMD)
 			run_cmd(path, node, hist, &pid_stack, env);
-		if (node && node->previous && node->previous->type == T_PIPE)
-		{
-			debug_print("closing parent side\n");
-			close(node->previous->pipe[0][0]);
-			close(node->previous->pipe[0][1]);
-    }
 		node = node->next;
 	}
 
