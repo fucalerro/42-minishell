@@ -70,10 +70,38 @@ void	export_var(char ***env, char *var)
 
 }
 
+int	is_var_valid(char *var)
+{
+	int i;
+
+	i = 0;
+	if (!ft_isalpha(var[i]) && var[i] != '_')
+	{
+		printf("export: not a valid identifier\n");
+		return (false);
+	}
+	i++;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+		{
+			printf("export: not a valid identifier\n");
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
 
 void	builtin_export(char ***env, char **var)
 {
 	int i;
+	i = 0;
+	while (var[++i])
+	{
+		if(!is_var_valid(var[i]))
+			return ;
+	}
 	i = 0;
 	while (var[++i])
 		export_var(env, var[i]);
