@@ -19,6 +19,7 @@
 #include "parser.h"
 #include "history.h"
 #include "stack.h"
+#include "colors.h"
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
