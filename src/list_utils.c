@@ -21,17 +21,12 @@ int sort_infile(t_node **lst)
 			node->previous = node_next;
 			if(node_next2)
 				node_next2->previous = node;
-
 			node_next->next = node;
 			node_next->previous = node_prev;
 			if (node_prev)
-			{
 				node_prev->next = node_next ;
-			}
 			else
-			{
 				*lst = node_next;
-			}
 		}
 		node = node->next;
 	}
