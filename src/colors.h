@@ -9,5 +9,5 @@
 #define COLOR_YELLOW  "\033[0;33m"  // ANSI Yellow
 #define COLOR_CYAN    "\033[0;36m"  // ANSI Cyan
 #define COLOR_MAGENTA "\033[0;35m"  // ANSI Magenta
-									//
+									
 #endif

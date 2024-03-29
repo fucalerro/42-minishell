@@ -15,6 +15,7 @@ typedef struct s_node
 	char **cmd; // I think we should have commands an array ["cmd name", "cmd args"]
 	struct s_node *next;
 	struct s_node *previous;
+	int pipe[2][2];
 } t_node;
 
 t_node	*lst_new(int type, char *file, char **cmd);
