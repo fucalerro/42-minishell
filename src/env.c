@@ -93,10 +93,35 @@ int	is_var_valid(char *var)
 	return (true);
 }
 
+void	print_env(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("declare -x ");
+		int j = 0;
+		while (tab[i] && tab[i][j] != '=')
+			printf("%c", tab[i][j++]);
+		char *value = ft_strchr(tab[i], '=');
+		printf("=\"%s\"\n", ++value);
+		i++;
+
+	}
+}
+
+
 void	builtin_export(char ***env, char **var)
 {
 	int i;
 	i = 0;
+
+	if (!var[1])
+	{
+		print_env(*env);
+		return ;
+	}
 	while (var[++i])
 	{
 		if(!is_var_valid(var[i]))
@@ -106,6 +131,8 @@ void	builtin_export(char ***env, char **var)
 	while (var[++i])
 		export_var(env, var[i]);
 }
+
+
 
 
 void unset_var(char **env, char *var)
@@ -139,6 +166,8 @@ void	builtin_unset(char ***env, char **var)
 	while (var[++i])
 		unset_var(*env, var[i]);
 }
+
+
 
 void	builtin_env(char **env)
 {
