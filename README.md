@@ -60,11 +60,11 @@ while(1)
 # Minishell Development To-Do List
 
 ## Basic Shell Features
-- [ ] Display a prompt when waiting for a new command.
+- [x] Display a prompt when waiting for a new command.
 - [ ] Implement a working history feature.
 
 ## Command Execution
-- [ ] Search and launch the correct executable based on the PATH variable or using a relative/absolute path.
+- [x] Search and launch the correct executable based on the PATH variable or using a relative/absolute path.
 
 ## Signal Handling
 - [ ] Use only one global variable to indicate a received signal.
@@ -77,13 +77,13 @@ while(1)
 - [ ] Handle double quotes (`"`): ignore metacharacters except for `$` within the quotes.
 
 ## Redirections
-- [ ] Implement input redirection using `<`.
+- [x] Implement input redirection using `<`.
 - [ ] Implement output redirection using `>`.
 - [ ] Implement here-document (`<<`) with a delimiter (do not update history).
 - [ ] Implement output append redirection using `>>`.
 
 ## Pipes
-- [ ] Implement pipe functionality (`|` character).
+- [x] Implement pipe functionality (`|` character).
 
 ## Environment Variables and Exit Status
 - [ ] Handle environment variables expansion (`$` followed by characters).
@@ -96,8 +96,8 @@ while(1)
 
 ## Built-in Commands
 - [ ] Implement `echo` with `-n` option.
-- [ ] Implement `cd` with only a relative or absolute path.
-- [ ] Implement `pwd` with no options.
+- [x] Implement `cd` with only a relative or absolute path.
+- [x] Implement `pwd` with no options.
 - [ ] Implement `export` with no options.
 - [ ] Implement `unset` with no options.
 - [ ] Implement `env` with no options or arguments.
