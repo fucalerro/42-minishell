@@ -66,6 +66,8 @@ void	stack_drop(t_stack **lst);
 void debug_print(char * msg);
 //list_utils.c
 int sort_infile(t_node **lst);
+//infile.c
+void	exe_infile(t_node *node);
 
 
 // print_line define for quick debug

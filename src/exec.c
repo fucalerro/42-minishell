@@ -68,6 +68,10 @@ int set_pipe(t_node *node)
 		dup2(pipe_fd[0][0], STDIN_FILENO);
 		close(pipe_fd[0][0]);
 	}
+	if (node->previous && node->previous->type == T_INFILE)
+	{
+		exe_infile(node->previous);
+	}
 	return 0;
 }
 
@@ -184,6 +188,10 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist)
 			break;
 		if (node->next && node->next->type == T_PIPE)
 			pipe(node->next->pipe[0]);
+		if (node->type == T_INFILE && !node->next)
+		{
+			;//exe_infile(node);
+		}
 		if(node->type == T_CMD)
 			run_cmd(path, node, hist, &pid_stack, env);
 		node = node->next;
