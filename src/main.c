@@ -32,6 +32,10 @@ int main(int ac, char **av, char **env)
         }
         tokens = tokenizer(prompt);
         lst = parser(tokens);
+
+        print_list(lst);
+
+
 		sort_infile(&lst);
         exe_prompt(lst, &env_copy, &history);
         line = builtin_pwd();
