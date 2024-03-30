@@ -3,14 +3,14 @@
 // node_remove
 // node_insert
 
-
-t_node	*lst_new(int type, char *file, char **cmd)
+t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 {
 	t_node	*node;
 
 	node = (t_node *)malloc(sizeof(struct s_node));
 	if (!node)
 		return ((t_node *)0);
+	node->delimiter = delimiter;
 	node->type = type;
 	node->file = file;
 	node->cmd = cmd; // I think we should have commands an array ["cmd name", "cmd args"]
@@ -28,12 +28,12 @@ t_node	*lst_last(t_node *lst)
 	return (lst);
 }
 
-void	lst_append(t_node **lst, int type, char *file, char **cmd)
+void	lst_append(t_node **lst, int type, char *file, char **cmd, char *delimiter)
 {
 	t_node	*list;
 	t_node	*new;
 
-	new = lst_new(type, file, cmd);
+	new = lst_new(type, file, cmd, delimiter);
 	if (*lst)
 	{
 		list = lst_last(*lst);
@@ -56,6 +56,7 @@ void	print_list(t_node *lst)
 		printf("\nNODE %i\n",i_node++);
 		printf("\tnode.type: %s\n", type_table[list->type - 1]);
 		printf("\tnode.file: %s\n", list->file);
+		printf("\tnode.delimiter: %s\n", list->delimiter);
 		if (list->cmd)
 		{
 			printf("\tnode.cmd: [");

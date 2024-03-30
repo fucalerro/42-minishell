@@ -148,7 +148,6 @@ void    quotes_remover(char *string)
 {
     if (!is_quote(string[0]))
         return ;
-    PL;
     int i = 0;
     while (string[i])
     {
@@ -203,33 +202,34 @@ t_node *parser(char **input)
     {
         if (ft_strcmp(input[i], "|") == 0)
         {
-            lst_append(&lst, T_PIPE, NULL, NULL);
+            lst_append(&lst, T_PIPE, NULL, NULL, NULL);
             i++;
         }
         else if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
         {
-            lst_append(&lst, T_OUTFILE, input[i + 1], NULL);
+            lst_append(&lst, T_OUTFILE, input[i + 1], NULL, NULL);
             i += 2;
         }
-        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
+        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count) 
         {
-            lst_append(&lst, T_INFILE, input[i + 1], NULL);
+            lst_append(&lst, T_INFILE, input[i + 1], NULL, NULL);
             i += 2;
         }
-        else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count)
+        else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count) // append mode
         {
-            lst_append(&lst, T_OUTFILE_APPEND, NULL, NULL); // no file name yet
+            lst_append(&lst, T_OUTFILE_APPEND, input[i + 1], NULL, NULL); 
             i += 2;
         }
-        else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count)
+        else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count) // heredoc
         {
-            lst_append(&lst, T_HEREDOC, NULL, NULL); // not handled
+            quotes_remover(input[i + 1]);
+            lst_append(&lst, T_HEREDOC, NULL, NULL, input[i + 1]);
             i += 2;
         }
         else
         {
             consolidated_cmd = consolidate_cmd(input, i, &arg_count);
-            lst_append(&lst, T_CMD, NULL, consolidated_cmd);
+            lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
             i += arg_count + 1;
         }
     }
