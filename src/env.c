@@ -24,99 +24,118 @@ char **copy_env(char **env, int size)
 int does_var_exist(char **env, char *var)
 {
 	int i;
-	int len;
+	int var_len;
+
+	if (var == NULL)
+		return (-1);
 
 	i = 0;
-	len = 0;
-	while (var[len] != '=' && var[len])
-		len++;
+	var_len = 0;
+	while (var[var_len] != '=' && var[var_len])
+		var_len++;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], var, len) == 0)
+		int evar_len = 0;
+		while (env[i][evar_len] != '=' && env[i][evar_len])
+			evar_len++;
+		if (evar_len == var_len && ft_strncmp(env[i], var, var_len) == 0)
 			return (i);
 		i++;
 	}
 	return (-1);
 }
 
-
-int does_vars_exist(char **env, char *var)
-{
-	int i;
-	int len;
-
-	len = 0;
-	while (var[len] != '=' && var[len])
-		len++;
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], var, len) == 0)
-			return (i);
-		i++;
-	}
-
-}
-
-
-
-
-void	builtin_export(char ***env, char **var)
+void	export_var(char ***env, char *var)
 {
 	char **new_env;
 	int env_size;
-
+	int var_index;
+	
+	var_index = 0;
 	env_size = 0;
 	while ((*env)[env_size])
 		env_size++;
 	
-	int *var_index;
-	int var_nbr;
-
-	var_nbr = 0;
-	while (var[var_nbr])
-		var_nbr++;
-	var_nbr--;
-	var_index = malloc(var_nbr * sizeof(int));
-	PL;
-
-	int j;
-	j = 0;
-	while (var[++j])
-		var_index[j - 1] = does_var_exist(*env, var[j]);
-
-	printf("var_nbr: %d\n", var_nbr);
-	for (int i = 0; i < var_nbr; i++)
-		printf("varindex: %d\n", var_index[j]);
-	PL;
-
-
-	j = 0;
-	new_env = copy_env(*env, var_nbr);
-	while (var_index[j])
+	var_index = does_var_exist(*env, var);
+	if (var_index >= 0)
 	{
-		if (var_index[j] >= 0)
-		{
-			PL;
-			free((*env)[var_index[j]]);
-			(*env)[var_index[j]] = ft_strdup(var[j + 1]);
-			return ;
-		}
-		j++;
-
+		free((*env)[var_index]);
+		(*env)[var_index] = ft_strdup(var);
+		return ;
 	}
-	j = 0;
-	while (var[j])
-	{
-		new_env[env_size++] = ft_strdup(var[j]);
-		j++;
-	
-	}
-	new_env[env_size] = 0;
+	new_env = copy_env(*env, 1);
+	new_env[env_size] = ft_strdup(var);
+	new_env[env_size + 1] = 0;
 	*env = new_env;
+
 }
 
-void builtin_unset(char **env, char *var)
+int	is_var_valid(char *var)
+{
+	int i;
+
+	i = 0;
+	if (!ft_isalpha(var[i]) && var[i] != '_')
+	{
+		printf("export: not a valid identifier\n");
+		return (false);
+	}
+	i++;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+		{
+			printf("export: not a valid identifier\n");
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+void	print_env(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("declare -x ");
+		int j = 0;
+		while (tab[i] && tab[i][j] != '=')
+			printf("%c", tab[i][j++]);
+		char *value = ft_strchr(tab[i], '=');
+		printf("=\"%s\"\n", ++value);
+		i++;
+
+	}
+}
+
+
+void	builtin_export(char ***env, char **var)
+{
+	int i;
+	i = 0;
+
+	if (!var[1])
+	{
+		print_env(*env);
+		return ;
+	}
+	while (var[++i])
+	{
+		if(!is_var_valid(var[i]))
+			return ;
+	}
+	i = 0;
+	while (var[++i])
+		export_var(env, var[i]);
+}
+
+
+
+
+void unset_var(char **env, char *var)
 {
 	if (ft_strchr(var, '='))
 	{
@@ -133,20 +152,22 @@ void builtin_unset(char **env, char *var)
 		while (env[var_index])
 		{
 			env[var_index] = env[var_index + 1];
+			var_index++;
 		}
+		env[var_index] = 0;
 	}
 }
 
-
-void	print_env(char **env)
+void	builtin_unset(char ***env, char **var)
 {
 	int i;
 
 	i = 0;
-	while (env[i])
-		printf("%s\n", env[i++]);
-
+	while (var[++i])
+		unset_var(*env, var[i]);
 }
+
+
 
 void	builtin_env(char **env)
 {

@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 void debug_print(char * msg)
 {
 	char *color = COLOR_CYAN;

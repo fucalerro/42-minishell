@@ -2,7 +2,7 @@
 
 void exec(char **cmd, t_stack **stack)
 {
-	pid_t	pid;
+    pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
@@ -17,24 +17,24 @@ void exec(char **cmd, t_stack **stack)
 
 char	*get_cmd_path(char *raw, char **path)
 {
-	char	*cmd;
-	char	*tmp;
+    char	*cmd;
+    char	*tmp;
 
-	cmd = raw;
-	while (*path)
-	{
-		tmp = ft_strjoin(*path, cmd);
-		if (!access(tmp, X_OK))
-		{
-			free(cmd);
-			cmd = tmp;
-			return (cmd); 
-		}
-		free(tmp);
-		path++;
-	}
-	//free_cmd(cmd);
-	return (NULL);
+    cmd = raw;
+    while (*path)
+    {
+        tmp = ft_strjoin(*path, cmd);
+        if (!access(tmp, X_OK))
+        {
+            free(cmd);
+            cmd = tmp;
+            return (cmd); 
+        }
+        free(tmp);
+        path++;
+    }
+    //free_cmd(cmd);
+    return (NULL);
 }
 
 int check_pipe(t_node *node)
@@ -77,27 +77,27 @@ int set_pipe(t_node *node)
 
 char	**get_path(char *env[])
 {
-	char	**tmps;
-	char	*tmp;
-	int		i;
+    char	**tmps;
+    char	*tmp;
+    int		i;
 
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			break ;
-		i++;
-	}
-	tmps = ft_split(&env[i][5], ':');
-	i = 0;
-	while (tmps[i])
-	{
-		tmp = tmps[i];
-		tmps[i] = ft_strjoin(tmp, "/");
-		free(tmp);
-		i++;
-	}
-	return (tmps);
+    i = 0;
+    while (env[i] != NULL)
+    {
+        if (!ft_strncmp(env[i], "PATH=", 5))
+            break ;
+        i++;
+    }
+    tmps = ft_split(&env[i][5], ':');
+    i = 0;
+    while (tmps[i])
+    {
+        tmp = tmps[i];
+        tmps[i] = ft_strjoin(tmp, "/");
+        free(tmp);
+        i++;
+    }
+    return (tmps);
 }
 
 
@@ -132,7 +132,7 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 	else if (!ft_strcmp(cmd[0],"export"))
 		builtin_export(env, cmd);
 	else if (!ft_strcmp(cmd[0], "unset"))
-		builtin_unset(*env, cmd[1]);
+		builtin_unset(env, cmd);
 	else
 		return 0;
 	return 1;
@@ -170,11 +170,11 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 int exe_prompt(t_node *list, char ***env, t_hist **hist)
 {
 
-	int status;
-	struct rusage usage; // For resource usage info
-	char **path;
-	t_node *node;
-	t_stack *pid_stack;
+    int status;
+    struct rusage usage; // For resource usage info
+    char **path;
+    t_node *node;
+    t_stack *pid_stack;
 
 	pid_stack = NULL;
 	node = list;

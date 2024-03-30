@@ -53,12 +53,9 @@ void builtin_history(char **cmd, t_hist **hist);
 void builtin_env(char **env);
 void builtin_export(char ***env, char **var);
 char **copy_env(char **env, int size);
-void builtin_unset(char **env, char *var);
+void builtin_unset(char ***env, char **var);
 
-
-
-
-
+void debug_print(char *msg);
 
 //stack.c
 void	stack_add(t_stack **lst, int value);
