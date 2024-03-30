@@ -100,6 +100,13 @@ char *input_normalizer(char *input)
 //     while (in_quote = prev_in_quote)
 // }
 
+/**
+ * @brief Count the number of words in a string. Words are separated by spaces.
+ * Words within single or double quotes are considered as one word.
+ *
+ * @param input
+ * @return int
+ */
 int word_counter_quotes(char *input)
 {
     int i;
@@ -137,6 +144,20 @@ int is_quote(char c)
         return (0);
 }
 
+void    quotes_remover(char *string)
+{
+    if (!is_quote(string[0]))
+        return ;
+    PL;
+    int i = 0;
+    while (string[i])
+    {
+        string[i] = string[i + 1];
+        i++;
+    }
+    string[i - 2] = 0;
+}
+
 
 char **consolidate_cmd(char **input, int i, int *arg_count)
 {
@@ -155,6 +176,8 @@ char **consolidate_cmd(char **input, int i, int *arg_count)
     j = 0;
     while (input[i] && is_metachar(input[i][0]) == 0)
     {
+        if (is_quote(input[i][0]))
+            quotes_remover(input[i]);
         cmd[j] = ft_strdup(input[i]);
         i++;
         j++;
