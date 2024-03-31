@@ -145,7 +145,7 @@ int quotes_error_check(char *string)
 
 
 
-char    **tokenizer(char *string)
+char    **tokenizer(char *string, int status)
 {
     char    *normalized_input;
     char    **sp_tokenized;
@@ -176,7 +176,7 @@ char    **tokenizer(char *string)
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
-    expand_vars(tokenized);
+    expand_vars(tokenized, status);
     tokenized[i] = 0;
     return (tokenized);
 }

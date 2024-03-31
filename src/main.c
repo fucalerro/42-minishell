@@ -10,7 +10,9 @@ int main(int ac, char **av, char **env)
 	char *line;
 	char *prompt;
 	char **tokens;
+	int status;
 
+	status = 0;
 	t_node *lst;
 	t_hist *history;
 	char **env_copy;
@@ -21,7 +23,6 @@ int main(int ac, char **av, char **env)
 	history = NULL;
 
 	ft_read_history(&history);
-
 
 	line = ft_strjoin(tmpline, "🌻 ");
 	free(tmpline);
@@ -39,7 +40,7 @@ int main(int ac, char **av, char **env)
 		}
 
 		free(line);
-		tokens = tokenizer(prompt);
+		tokens = tokenizer(prompt, status);
 		lst = parser(tokens);
 		free_string_array(tokens);
 		if (lst)
@@ -51,7 +52,9 @@ int main(int ac, char **av, char **env)
 
 
 		sort_infile(&lst);
-		exe_prompt(lst, &env_copy, &history);
+		exe_prompt(lst, &env_copy, &history, &status);
+
+
 		tmpline = builtin_pwd();
 		line = ft_strjoin(tmpline, "🌻 ");
 		free(tmpline);
