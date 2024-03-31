@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <stdbool.h>
@@ -29,15 +30,14 @@ void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);
 // var_expansion.c
 char    *var_expander(char *string);
-void    expand_vars(char **tokens);
+void    expand_vars(char **tokens, int status);
 // array_utils.c
 int get_elem_count(char **array);
 char **flatten_3d_array(char ***array3d);
 void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
 size_t	wordcounter(char const *s, char c);
-char    *var_expander(char *string);
-char    **tokenizer(char *string);
+char    **tokenizer(char *string, int status);
 char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);
 int word_counter_quotes(char *input);
@@ -46,7 +46,7 @@ t_node  *parser(char **input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
 // exec.c
-int exe_prompt(t_node *node, char ***env, t_hist **hist);
+int exe_prompt(t_node *node, char ***env, t_hist **hist, int *status);
 // builtin.c
 char *builtin_pwd(void);
 void builtin_cd(const char *path);
