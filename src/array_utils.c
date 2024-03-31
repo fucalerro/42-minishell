@@ -48,12 +48,18 @@ char **flatten_3d_array(char ***array3d)
     while (array3d[i])
     {
         while (array3d[i][j])
-            arr_flatten[k++] = ft_strdup(array3d[i][j++]);
+        {
+            arr_flatten[k++] = ft_strdup(array3d[i][j]);
+            free(array3d[i][j]);
+            j++;
+        }
+        free(array3d[i]);
         j = 0;
         i++;
     }
     arr_flatten[k] = 0;
-    return arr_flatten;
+    free(array3d);
+    return (arr_flatten);
 }
 
 
@@ -82,4 +88,16 @@ void    print_string_tab(char **tab)
         printf("%s\n", tab[i]);
         i++;
     }
+}
+
+void    free_string_array(char **strings)
+{
+    int i;
+    i = 0;
+    while (strings[i])
+    {
+        free(strings[i]);
+        i++;
+    }
+    free(strings);
 }

@@ -197,6 +197,8 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist)
 		node = node->next;
 	}
 
+	free_string_array(path);
+
 	//while loop to waitpid
 	while(pid_stack)
 	{

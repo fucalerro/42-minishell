@@ -71,6 +71,24 @@ void	print_list(t_node *lst)
 }
 
 
+void	free_lst(t_node *lst)
+{
+	t_node	*tmp;
+
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		if (tmp->cmd)
+		{
+			for (int i = 0; tmp->cmd[i]; i++)
+				free(tmp->cmd[i]);
+			free(tmp->cmd);
+		}
+		free(tmp);
+	}
+}
+
 /*
 void main(void)
 {

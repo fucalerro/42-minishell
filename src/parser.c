@@ -144,17 +144,21 @@ int is_quote(char c)
         return (0);
 }
 
-void    quotes_remover(char *string)
+char    *quotes_remover(char *string)
 {
+    char *res;
+
     if (!is_quote(string[0]))
-        return ;
+        return (ft_strdup(string));
+    res = malloc(sizeof(char) * (ft_strlen(string) + 1));
     int i = 0;
     while (string[i])
     {
-        string[i] = string[i + 1];
+        res[i] = string[i + 1];
         i++;
     }
-    string[i - 2] = 0;
+    res[i - 2] = 0;
+    return (res);
 }
 
 
@@ -176,8 +180,13 @@ char **consolidate_cmd(char **input, int i, int *arg_count)
     while (input[i] && is_metachar(input[i][0]) == 0)
     {
         if (is_quote(input[i][0]))
-            quotes_remover(input[i]);
-        cmd[j] = ft_strdup(input[i]);
+        {
+            char *tmp = quotes_remover(input[i]);
+            cmd[j] = ft_strdup(tmp);
+            free(tmp);
+        }
+        else 
+            cmd[j] = ft_strdup(input[i]);
         i++;
         j++;
     }

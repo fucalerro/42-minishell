@@ -23,7 +23,7 @@ void	ft_read_history(t_hist **hist)
 	home = getenv("HOME");
 	path = ft_strjoin(home, "/.minishell_history");
 	hist_fd = open(path, O_RDWR | O_CREAT, 0644);
-
+	free(path);
 
 	line  = "";
 	if (hist_fd >= 0)
@@ -36,6 +36,7 @@ void	ft_read_history(t_hist **hist)
 				hist_append(hist, line);
 				remove_end_newline(line);
 				add_history(line);
+				free(line);
 			}
 		}
 	}
@@ -50,10 +51,10 @@ int	ft_write_history_file(char *line)
 	home = getenv("HOME");
 	path = ft_strjoin(home, "/.minishell_history");
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
+	free(path);
 	
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
-
 
 	return (0);
 }

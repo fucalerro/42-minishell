@@ -144,6 +144,7 @@ int quotes_error_check(char *string)
 }
 
 
+
 char    **tokenizer(char *string)
 {
     char    *normalized_input;
@@ -173,17 +174,9 @@ char    **tokenizer(char *string)
     op_tokenized[i] = 0;
 
     char **tokenized;
-
     tokenized = flatten_3d_array(op_tokenized);
 
-    // var expansion
-    i = 0;
-    while (tokenized[i])
-    {
-        if (tokenized[i][0] == '$')
-            tokenized[i] = ft_strdup(var_expander(tokenized[i]));
-        i++;
-    }
+    expand_vars(tokenized);
     tokenized[i] = 0;
     return (tokenized);
 }

@@ -27,10 +27,14 @@
 /* FUNCTIONS */
 void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);
+// var_expansion.c
+char    *var_expander(char *string);
+void    expand_vars(char **tokens);
+// array_utils.c
 int get_elem_count(char **array);
-char    *var_expander(char *string);
-char    *var_expander(char *string);
 char **flatten_3d_array(char ***array3d);
+void    free_string_array(char **strings);
+void    print_string_tab(char **tab);
 size_t	wordcounter(char const *s, char c);
 char    *var_expander(char *string);
 char    **tokenizer(char *string);
@@ -41,7 +45,6 @@ int is_in_quotes(char *input, int index);
 t_node  *parser(char **input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
-void    print_string_tab(char **tab);
 // exec.c
 int exe_prompt(t_node *node, char ***env, t_hist **hist);
 // builtin.c

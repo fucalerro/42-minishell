@@ -3,6 +3,8 @@
 void sigint_handler(int sig)
 {
 	(void) sig;
+
+
 	printf("\n");
 }
 

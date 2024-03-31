@@ -24,6 +24,7 @@ typedef struct s_node
 
 t_node	*lst_new(int type, char *file, char **cmd, char *delimiter);
 void	lst_append(t_node **lst, int type, char *file, char **cmd, char *delimiter);
+void	free_lst(t_node *lst);
 
 #endif
 
