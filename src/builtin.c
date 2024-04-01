@@ -26,8 +26,12 @@ void builtin_cd(const char *path) {
 
 
 
+
 void    builtin_history(char **cmd, t_hist **hist)
 {
+    char *home;
+    char *path;
+
     if (!hist)
     {
         return ;
@@ -38,6 +42,13 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
     else if (!ft_strcmp(cmd[1], "-c"))
     {
+        home = getenv("HOME");
+        path = ft_strjoin(home, "/.minishell_history");
+
+        unlink(path);
+        free(path);
+        PL;
+
         rl_clear_history();
         clear_hist(hist);
     }

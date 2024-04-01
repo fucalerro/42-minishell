@@ -16,7 +16,7 @@ int sort_infile(t_node **lst)
 			node_next = node->next;
 			node_next2 = node->next->next;
 			node_prev = node->previous;
-			
+
 			node->next = node_next2;
 			node->previous = node_next;
 			if(node_next2)
@@ -30,4 +30,5 @@ int sort_infile(t_node **lst)
 		}
 		node = node->next;
 	}
+	return (0);
 }
