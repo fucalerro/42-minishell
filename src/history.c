@@ -33,7 +33,7 @@ void	ft_read_history(t_hist **hist)
 			line = get_next_line(hist_fd);
 			if (line)
 			{
-				hist_append(hist, line);
+				add_to_history(hist, line);
 				remove_end_newline(line);
 				add_history(line);
 				free(line);
@@ -52,7 +52,7 @@ int	ft_write_history_file(char *line)
 	path = ft_strjoin(home, "/.minishell_history");
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
 	free(path);
-	
+
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
 
@@ -83,10 +83,13 @@ t_hist	*hist_last(t_hist *hist)
 	return (hist);
 }
 
-void	hist_append(t_hist **hist, char *line)
+void	add_to_history(t_hist **hist, char *line)
 {
 	t_hist	*history;
 	t_hist	*new;
+
+	add_history(line);
+	ft_write_history_file(line);
 
 	new = hist_new(line);
 	if (*hist)

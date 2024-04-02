@@ -11,27 +11,34 @@
 void process_input_loop(char **line, char ***env_copy, t_hist **history, int *status) {
     char *prompt;
     char *tmpline;
+	char **tokens;
+	t_node *lst;
+
+	int err_flag;
 
     while((prompt = readline(*line)))
 	{
-		if (prompt == NULL)
-		{
-			printf("exit\n");
+		err_flag = false;
+
+		if (!ft_strcmp(prompt, ""))
 			continue;
-		}
 
         free(*line);
-        char **tokens = tokenizer(prompt, *status); 
-        t_node *lst = parser(tokens); 
-        free_string_array(tokens);
-        if (lst) {
-            hist_append(history, prompt); 
-            add_history(prompt);
-            ft_write_history_file(prompt); 
-        }
+        tokens = tokenizer(prompt, *status);
+
+		if (parsing_error(tokens))
+			err_flag = true;
+
+		lst = parser(tokens);
+		free_string_array(tokens);
+
+        if (lst && !err_flag)
+            add_to_history(history, prompt);
 
         sort_infile(&lst);
-        exe_prompt(lst, env_copy, history, status);
+
+		if (!err_flag)
+			exe_prompt(lst, env_copy, history, status);
 
         tmpline = builtin_pwd();
         *line = ft_strjoin(tmpline, "🌻 ");

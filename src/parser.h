@@ -8,10 +8,7 @@
 #define DOUBLE          2
 #define NONE            0
 
-#define ERR_UNCLOSED_QUOTE  1
-#define ERR_UNEXPECTED_TOKEN 2
-#define ERR_
-#define ERR_
+
 
 
 
