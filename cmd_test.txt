@@ -1,0 +1,40 @@
+#TESTING ECHO
+echo helo
+echo "hello"
+echo a b
+echo ""
+echo
+#TESTING LS
+ls
+ls -la
+ls -l
+#TESTING CAT
+cat Makefile
+#TESTING PIPE
+cat Makefile | wc -l
+cat Makefile | wc -l | wc -c
+#TESTING INFILE
+< Makefile
+cat < Makefile
+#FROM MINISHELL TEST (maybe not accurate for our testing)
+env | sort | grep -v SHLVL | grep -v ^_
+export GHOST=123 | env | grep GHOST
+# Prints without a new line
+echo -n hello
+# update env variable value
+export HELLO=123 | echo $HELLO
+export HELLO="beautiful world" | echo $HELLO
+# keep track of OLDPWD
+cd | pwd
+echo $PWD $OLDPWD
+echo $?
+# Check if there isn't a zombie process called `cat`
+echo "hi" | cat | cat | cat | cat | cat | cat | cat | ps -a
+# Should skip the empty argument, and print hello after spaces
+echo - "" "  " hello
+# Neither of these unsets should break the shell, and you should still be able to call `/bin/ls`
+unset USER | unset PATH | unset PWD | /bin/ls
+# This should not change the current directory
+cd .. hi | pwd
+# Empty `cd` moves to home
+cd | pwd
