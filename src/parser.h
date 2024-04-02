@@ -8,6 +8,10 @@
 #define DOUBLE          2
 #define NONE            0
 
+
+
+
+
 int is_in_quotes(char *input, int index);
 
 #endif

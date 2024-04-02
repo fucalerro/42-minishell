@@ -42,15 +42,11 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
     else if (!ft_strcmp(cmd[1], "-c"))
     {
-        home = getenv("HOME");
-        path = ft_strjoin(home, "/.minishell_history");
-
+        path = get_history_path();
         unlink(path);
-        free(path);
-        PL;
-
+        // free(path);
         rl_clear_history();
-        clear_hist(hist);
+        // clear_hist(hist);
     }
 }
 

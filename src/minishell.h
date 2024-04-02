@@ -25,6 +25,14 @@
 
 #define MINI_DEBUG_MSG 0
 
+
+// Error codes
+
+
+#define ERR_UNCLOSED_QUOTE  1
+#define ERR_UNEXPECTED_TOKEN 2
+#define ERR_SYNTAX 3
+
 /* FUNCTIONS */
 void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);
@@ -36,6 +44,7 @@ int get_elem_count(char **array);
 char **flatten_3d_array(char ***array3d);
 void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
+// parser.c
 size_t	wordcounter(char const *s, char c);
 char    **tokenizer(char *string, int status);
 char    **op_tokenizer(char *string);
@@ -45,6 +54,9 @@ int is_in_quotes(char *input, int index);
 t_node  *parser(char **input);
 int is_quote(char c);
 char    *input_normalizer(char *input);
+//error_handling.c
+int    parsing_error(char **tokens);
+void    errror_msg(int type, int c);
 // exec.c
 int exe_prompt(t_node *node, char ***env, t_hist **hist, int *status);
 // builtin.c

@@ -185,7 +185,7 @@ char **consolidate_cmd(char **input, int i, int *arg_count)
             cmd[j] = ft_strdup(tmp);
             free(tmp);
         }
-        else 
+        else
             cmd[j] = ft_strdup(input[i]);
         i++;
         j++;
@@ -209,38 +209,39 @@ t_node *parser(char **input)
     i = 0;
     while (input[i])
     {
-        if (ft_strcmp(input[i], "|") == 0)
+        PL;
+        if (ft_strncmp(input[i], "|", 1) == 0)
         {
             lst_append(&lst, T_PIPE, NULL, NULL, NULL);
-            i++;
         }
         else if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
         {
             lst_append(&lst, T_OUTFILE, input[i + 1], NULL, NULL);
-            i += 2;
+            i ++;
         }
-        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count) 
+        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
         {
             lst_append(&lst, T_INFILE, input[i + 1], NULL, NULL);
-            i += 2;
+            i ++;
         }
         else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count) // append mode
         {
-            lst_append(&lst, T_OUTFILE_APPEND, input[i + 1], NULL, NULL); 
-            i += 2;
+            lst_append(&lst, T_OUTFILE_APPEND, input[i + 1], NULL, NULL);
+            i ++;
         }
         else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count) // heredoc
         {
             quotes_remover(input[i + 1]);
             lst_append(&lst, T_HEREDOC, NULL, NULL, input[i + 1]);
-            i += 2;
+            i ++;
         }
         else
         {
             consolidated_cmd = consolidate_cmd(input, i, &arg_count);
             lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
-            i += arg_count + 1;
+            i += arg_count;
         }
+        i++;
     }
     return (lst);
 }
