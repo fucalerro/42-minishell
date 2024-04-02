@@ -38,7 +38,10 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 			lst = parser(tokens);
 
 			if (lst)
+			{
 				add_to_history(history, prompt);
+				ft_write_history_file(prompt);
+			}
 			sort_infile(&lst);
 			exe_prompt(lst, env_copy, history, status);
 		}
@@ -69,7 +72,7 @@ int main(int ac, char **av, char **env)
 
 	history = NULL;
 
-	// ft_read_history(&history);
+	ft_read_history(&history);
 
 	line = ft_strjoin(tmpline, "🌻 ");
 	free(tmpline);

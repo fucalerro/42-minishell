@@ -10,7 +10,7 @@ typedef struct s_hist
 
 void    add_to_history(t_hist **hist, char *line);
 void    print_hist(t_hist *hist);
-void    clear_hist(t_hist **hist);
+char	*get_history_path(void);
 void	ft_read_history(t_hist **hist);
 int     ft_write_history_file(char *line);
 
