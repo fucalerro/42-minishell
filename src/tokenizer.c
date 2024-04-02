@@ -11,14 +11,14 @@ int is_single_op(char *string, int i)
 
 int is_double_op(char *string, int i)
 {
-    char    *double_op[] = { "&&", "||", "<<", ">>" };
+    char    *double_op[] = { "<<", ">>" };
     int     op_index;
 
     if (string[i] == 0 || string[i + 1] == 0)
         return false;
 
     op_index = 0;
-    while (op_index < 4)
+    while (op_index < sizeof(double_op) / sizeof(double_op[0]))
     {
         if (ft_strncmp(&string[i], double_op[op_index], 2) == 0)
             return (true);
@@ -143,8 +143,6 @@ int quotes_error_check(char *string)
 	return (0); //random value to silence the warning
 }
 
-
-
 char    **tokenizer(char *string, int status)
 {
     char    *normalized_input;
@@ -177,7 +175,7 @@ char    **tokenizer(char *string, int status)
     tokenized = flatten_3d_array(op_tokenized);
 
     expand_vars(tokenized, status);
-    tokenized[i] = 0;
+
     return (tokenized);
 }
 
