@@ -38,7 +38,7 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
     if (!cmd[1])
     {
-        print_hist(*hist);
+        print_hist();
     }
     else if (!ft_strcmp(cmd[1], "-c"))
     {
