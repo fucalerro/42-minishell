@@ -78,7 +78,6 @@ int	ft_write_history_file(char *line)
 
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
 
-	PL;
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
 

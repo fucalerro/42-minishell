@@ -209,7 +209,6 @@ t_node *parser(char **input)
     i = 0;
     while (input[i])
     {
-        PL;
         if (ft_strncmp(input[i], "|", 1) == 0)
         {
             lst_append(&lst, T_PIPE, NULL, NULL, NULL);
