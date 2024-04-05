@@ -34,7 +34,7 @@ do
             echo -e "\t${RED}failed${NC} : $cmd"
         fi
     fi
-done < cmd_test.txt
+done < test/cmd_test.txt
 
 # Print the test summary
 if [ $passed_tests -eq $total_tests ]; then

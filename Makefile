@@ -32,7 +32,7 @@ $(LIBFT):
 
 $(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(OBJ) $(LIBFT) -o $(NAME) $(LIB_DIR) -lreadline
-	./tester.sh
+	./test/tester.sh
 
 clean:
 	rm -f $(OBJ)
