@@ -23,3 +23,17 @@ void	exe_infile(t_node *node)
 	}
 	//close_pipe(&pipefd[0], node);
 }
+
+void	exe_outfile(char *outfile)
+{
+	int fd = open(outfile, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
+	dup2(fd , STDOUT_FILENO);
+	close(fd);
+}
+
+void exe_outfile_append(char *outfile) {
+    int fd = open(outfile, O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
+    dup2(fd, STDOUT_FILENO);
+    close(fd);
+}
+

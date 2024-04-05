@@ -48,7 +48,7 @@ void	print_list(t_node *lst)
 {
 	t_node	*list;
 
-	char *type_table[] = {"T_PIPE", "T_INFILE", "T_OUTFILE", "T_OUTFILE_APPEND", "T_HEREDOC", "T_CMD"};
+	char *type_table[] = {"T_PIPE", "T_INFILE", "T_HEREDOC", "T_CMD", "T_OUTFILE","T_OUTFILE_APPEND"};
 	int i_node = 0;
 	list = lst;
 	while (list)

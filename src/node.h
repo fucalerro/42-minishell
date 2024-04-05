@@ -3,10 +3,10 @@
 
 #define T_PIPE 1
 #define T_INFILE 2
-#define T_OUTFILE 3
-#define T_OUTFILE_APPEND 4
-#define T_HEREDOC 5
-#define T_CMD 6
+#define T_HEREDOC 3
+#define T_CMD 4
+#define T_OUTFILE 5
+#define T_OUTFILE_APPEND 6
 
 #define PIPE_NEXT 1
 #define PIPE_PREVIOUS 2

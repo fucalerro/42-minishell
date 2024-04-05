@@ -72,6 +72,14 @@ int set_pipe(t_node *node)
 	{
 		exe_infile(node->previous);
 	}
+	if (node->next && node->next->type == T_OUTFILE)
+	{
+		exe_outfile(node->next->file);
+	}
+	if (node->next && node->next->type == T_OUTFILE_APPEND)
+	{
+		exe_outfile_append(node->next->file);
+	}
 	return 0;
 }
 

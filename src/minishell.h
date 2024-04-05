@@ -81,6 +81,8 @@ void debug_print(char * msg);
 int sort_infile(t_node **lst);
 //infile.c
 void	exe_infile(t_node *node);
+void	exe_outfile(char *outfile);
+void	exe_outfile_append(char *outfile);
 //signal.c
 void sigint_handler(int sig);
 void sigquit_handler(int sig);

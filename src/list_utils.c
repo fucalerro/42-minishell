@@ -37,8 +37,11 @@ int sort_infile(t_node **lst)
 
 	while(node)
 	{
-		if (node->next && node->type == T_CMD && node->next->type == T_INFILE)
+		if (node->next && (node->type > node->next->type) && node->type != T_PIPE && node->next->type != T_PIPE)
+		{
 			switch_node_n_node_next(lst, node);
+			node = *lst;
+		}
 		else
 			node = node->next;
 	}
