@@ -19,6 +19,7 @@ cat < Makefile
 < Makefile cat
 ls | cat < Makefile
 ls | < Makefile cat
+cat < test/infile1 < test/infile2 < test/infile3
 #FROM MINISHELL TEST (maybe not accurate for our testing)
 env | sort | grep -v SHLVL | grep -v ^_
 export GHOST=123 | env | grep GHOST
