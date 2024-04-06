@@ -22,18 +22,10 @@
 #include "history.h"
 #include "stack.h"
 #include "colors.h"
+#include "error.h"
 
 #define MINI_DEBUG_MSG 0
 
-
-// Error codes
-
-
-#define ERR_UNCLOSED_QUOTE  1
-#define ERR_UNEXPECTED_TOKEN 2
-#define ERR_SYNTAX 3
-
-//
 
 #include <errno.h>
 extern int errno;
@@ -67,7 +59,7 @@ int exe_prompt(t_node *node, char ***env, t_hist **hist, int *status);
 // builtin.c
 char *builtin_pwd(void);
 void builtin_cd(const char *path);
-void builtin_exit(void);
+void builtin_exit(char* exit_code);
 void builtin_history(char **cmd, t_hist **hist);
 // env
 void builtin_env(char **env);

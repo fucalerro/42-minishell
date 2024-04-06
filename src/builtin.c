@@ -24,9 +24,6 @@ void builtin_cd(const char *path) {
     }
 }
 
-
-
-
 void    builtin_history(char **cmd, t_hist **hist)
 {
     char *home;
@@ -50,7 +47,11 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
 }
 
-void builtin_exit(void)
+void builtin_exit(char *exit_code)
 {
-	exit(EXIT_SUCCESS);
+	if(exit_code)
+	{
+		exit(atoi(exit_code));
+	}
+	exit(0);
 }

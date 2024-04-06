@@ -125,7 +125,7 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 	else if (!ft_strcmp(cmd[0], "history"))
 		builtin_history(cmd, hist);
 	else if (!ft_strcmp(cmd[0],"exit"))
-		builtin_exit();
+		builtin_exit(cmd[1]);
 	else if (!ft_strcmp(cmd[0],"env"))
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
@@ -149,6 +149,11 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		return 0;
 	}
 	node->cmd[0] = get_cmd_path(node->cmd[0], path);
+	if (!node->cmd[0])
+	{
+		perror(" command not found");
+		return(ERR_CMD_NOT_FOUND);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
@@ -165,6 +170,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 			close(node->previous->pipe[0][1]);
 		}
 	}
+	return 0;
 }
 
 int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
@@ -188,7 +194,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		if (node->next && node->next->type == T_PIPE)
 			pipe(node->next->pipe[0]);
 		if(node->type == T_CMD)
-			run_cmd(path, node, hist, &pid_stack, env);
+			*status = run_cmd(path, node, hist, &pid_stack, env);
 		node = node->next;
 	}
 
