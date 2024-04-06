@@ -33,6 +33,11 @@
 #define ERR_UNEXPECTED_TOKEN 2
 #define ERR_SYNTAX 3
 
+//
+
+#include <errno.h>
+extern int errno;
+
 /* FUNCTIONS */
 void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);

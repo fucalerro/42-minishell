@@ -170,7 +170,6 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 {
 
-    // int status;
     struct rusage usage; // For resource usage info
     char **path;
     t_node *node;
