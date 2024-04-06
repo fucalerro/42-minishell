@@ -63,8 +63,8 @@ int set_pipe(t_node *node)
 			return 0;
 		if (node_tmp->type == T_INFILE)
 			exe_infile(node_tmp);
-//		if (node_tmp->type == T_HEREDOC)
-//			exe_heredoc(node_tmp);
+		if (node_tmp->type == T_HEREDOC)
+			exe_heredoc(node_tmp);
 		if (node_tmp->type == T_OUTFILE)
 			exe_outfile(node_tmp);
 		if (node_tmp->type == T_OUTFILE_APPEND)
@@ -193,8 +193,10 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 			break;
 		if (node->next && node->next->type == T_PIPE)
 			pipe(node->next->pipe[0]);
-		if(node->type == T_CMD)
+		if (node->type == T_CMD)
 			*status = run_cmd(path, node, hist, &pid_stack, env);
+//		if (node->type == T_HEREDOC)
+//			exe_heredoc(node);
 		node = node->next;
 	}
 
