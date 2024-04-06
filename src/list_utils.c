@@ -25,7 +25,17 @@ int switch_node_n_node_next(t_node **lst, t_node *node)
 	}
 	return (0);
 }
-
+int correct_order(t_node *node)
+{
+	if (node->next && (node->type > node->next->type) && node->type != T_PIPE && node->next->type != T_PIPE)
+	{
+		if (node->type >= T_CMD && node->next->type <= T_CMD)
+			return 1;
+		if (node->type <= T_CMD && node->next->type >= T_CMD)
+			return 1;
+	}
+	return 0;
+}
 int sort_infile(t_node **lst)
 {
 	t_node *node;
@@ -37,7 +47,7 @@ int sort_infile(t_node **lst)
 
 	while(node)
 	{
-		if (node->next && (node->type > node->next->type) && node->type != T_PIPE && node->next->type != T_PIPE)
+		if (correct_order(node))
 		{
 			switch_node_n_node_next(lst, node);
 			node = *lst;
@@ -46,20 +56,4 @@ int sort_infile(t_node **lst)
 			node = node->next;
 	}
 	return (0);
-}
-//	0 -> last pipe (if not = start of list)
-//	1 -> infile
-//	2 -> here doc
-//	3 -> cmd
-//	4 -> outfile
-//	5 -> outfile append
-//	6 -> next pipe (if not = end of list)
-void sort_prompt(t_node **lst)
-{
-	t_node *node = *lst;
-
-
-	if(!lst)
-		return;
-
 }
