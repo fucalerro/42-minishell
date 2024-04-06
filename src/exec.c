@@ -1,20 +1,5 @@
 #include "minishell.h"
 
-void exec(char **cmd, t_stack **stack)
-{
-    pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(cmd[0], cmd, NULL);//, env);
-		exit(EXIT_FAILURE);
-	}
-	else
-		stack_add(stack, pid);
-}
-
-
 char	*get_cmd_path(char *raw, char **path)
 {
     char	*cmd;
@@ -52,6 +37,7 @@ int set_pipe(t_node *node)
 {
 	int check_value;
 	int  (*pipe_fd)[2];
+	t_node *node_tmp;
 
 	check_value = check_pipe(node);
 	if (check_value & PIPE_NEXT)
@@ -68,9 +54,22 @@ int set_pipe(t_node *node)
 		dup2(pipe_fd[0][0], STDIN_FILENO);
 		close(pipe_fd[0][0]);
 	}
-	if (node->previous && node->previous->type == T_INFILE)
+	node_tmp = node;
+	while(node_tmp && node_tmp->previous && node_tmp->previous->type != T_PIPE)
+		node_tmp = node_tmp->previous;
+	while (node_tmp && node_tmp->type != T_PIPE)
 	{
-		exe_infile(node->previous);
+		if (node_tmp->type == T_CMD && node_tmp != node)
+			return 0;
+		if (node_tmp->type == T_INFILE)
+			exe_infile(node_tmp);
+//		if (node_tmp->type == T_HEREDOC)
+//			exe_heredoc(node_tmp);
+		if (node_tmp->type == T_OUTFILE)
+			exe_outfile(node_tmp);
+		if (node_tmp->type == T_OUTFILE_APPEND)
+			exe_outfile_append(node_tmp);
+		node_tmp = node_tmp->next;
 	}
 	return 0;
 }
@@ -145,6 +144,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	cmd = node->cmd;
 	if (is_builtin(cmd))
 	{
+		set_pipe(node);
 		exe_builtin(cmd, hist, env);
 		return 0;
 	}
