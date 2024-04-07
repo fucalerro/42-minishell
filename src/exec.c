@@ -136,6 +136,16 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 		return 0;
 	return 1;
 }
+int cmd_do_not_include_path(char *cmd)
+{
+	while(*cmd)
+	{
+		if (*cmd == '/')
+			return 0;
+		cmd++;
+	}
+	return (1);
+}
 int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {
 	pid_t	pid;
@@ -148,12 +158,24 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		exe_builtin(cmd, hist, env);
 		return 0;
 	}
-	node->cmd[0] = get_cmd_path(node->cmd[0], path);
+	if (cmd_do_not_include_path(node->cmd[0]))
+		node->cmd[0] = get_cmd_path(node->cmd[0], path);
+	else if (access(node->cmd[0], F_OK))
+	{
+		perror(strerror(errno));
+		return(127);
+	} else if (access(node->cmd[0], X_OK))
+	{
+		perror(strerror(errno));
+		return(126);
+	}
+
 	if (!node->cmd[0])
 	{
 		perror(" command not found");
 		return(ERR_CMD_NOT_FOUND);
 	}
+
 	pid = fork();
 	if (pid == 0)
 	{
