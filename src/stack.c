@@ -15,12 +15,20 @@ t_stack	*stack_new(int content)
 void	stack_add(t_stack **lst, int value)
 {
 	t_stack *new;
+	t_stack *node;
+
+	node = *lst;
 	new = stack_new(value);
-	if (!lst || !(*lst))
-		new->next = NULL;
-	else
-		new->next = *lst;
-	*lst = new;
+	if(!lst)
+		return;
+	if (!node)
+	{
+		*lst = new;
+		return;
+	}
+	while(node && node->next)
+		node = node->next;
+	node->next = new;
 }
 
 void	stack_drop(t_stack **lst)

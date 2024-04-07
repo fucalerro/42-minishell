@@ -195,8 +195,6 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 			pipe(node->next->pipe[0]);
 		if (node->type == T_CMD)
 			*status = run_cmd(path, node, hist, &pid_stack, env);
-//		if (node->type == T_HEREDOC)
-//			exe_heredoc(node);
 		node = node->next;
 	}
 
@@ -206,6 +204,8 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	while(pid_stack)
 	{
 		wait4(pid_stack->value, status, 0, &usage);
+		if (WIFEXITED(status))
+			*status = WEXITSTATUS(status);
 		stack_drop(&pid_stack);	
 	}
 	return 0;

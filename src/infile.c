@@ -6,6 +6,7 @@ void	exe_infile(t_node *node)
 
 	if (access(node->file, F_OK))
 	{
+		perror(strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 	fd = open(node->file, O_RDONLY);
