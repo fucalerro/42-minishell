@@ -158,16 +158,32 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		exe_builtin(cmd, hist, env);
 		return 0;
 	}
+
 	if (cmd_do_not_include_path(node->cmd[0]))
+	{
 		node->cmd[0] = get_cmd_path(node->cmd[0], path);
-	else if (access(node->cmd[0], F_OK))
+	}
+	else
 	{
-		perror(strerror(errno));
-		return(127);
-	} else if (access(node->cmd[0], X_OK))
-	{
-		perror(strerror(errno));
-		return(126);
+		struct stat path_stat;
+		stat(node->cmd[0], &path_stat);
+
+		// Check if it's a directory
+		if (access(node->cmd[0], F_OK))
+		{
+			perror(strerror(errno));
+			return(ERR_CMD_NOT_FOUND);
+		}
+		if (S_ISDIR(path_stat.st_mode)) 
+		{
+			perror(strerror(errno));
+			return(ERR_CMD_CANT_EXE);
+		}
+		if (access(node->cmd[0], X_OK))
+		{
+			perror(strerror(errno));
+			return(ERR_CMD_CANT_EXE);
+		}
 	}
 
 	if (!node->cmd[0])

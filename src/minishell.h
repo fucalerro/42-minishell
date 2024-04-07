@@ -23,6 +23,8 @@
 #include "stack.h"
 #include "colors.h"
 #include "error.h"
+#include <sys/stat.h>
+
 
 #define MINI_DEBUG_MSG 0
 
