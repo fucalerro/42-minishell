@@ -118,7 +118,7 @@ char	**sp_tokenizer(char *string, char c)
 	{
 		if (string[i] != c && index < 0)
 			index = i;
-		else if ((string[i] == c || i == ft_strlen(string)) && index >= 0 && is_in_quotes(string, i) == 0)
+		else if ((string[i] == c || i == ft_strlen(string)) && index >= 0 && !is_in_quotes(string, i))
 		{
 			res[j++] = wordmaker(string, index, i);
 			index = -1;
@@ -174,7 +174,25 @@ char    **tokenizer(char *string, int status)
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
-    expand_vars(tokenized, status);
+
+    expand_env_vars(tokenized, status);
+
+    print_string_tab(tokenized);
+
+
+    i = 0;
+    while (tokenized[i])
+    {
+        if (ft_strchr(tokenized[i], '\'') || ft_strchr(tokenized[i], '\"'))
+        {
+            char *temp = all_quotes_remover(tokenized[i]);
+            printf("temp: %s\n", temp);
+            free(tokenized[i]);
+            tokenized[i] = ft_strdup(temp);
+        }
+        i++;
+    }
+
 
     return (tokenized);
 }

@@ -13,5 +13,6 @@
 
 
 int is_in_quotes(char *input, int index);
+char    *all_quotes_remover(char *string);
 
 #endif

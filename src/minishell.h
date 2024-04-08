@@ -37,7 +37,7 @@ void	print_list(t_node *lst);
 char **consolidate_cmd(char **input, int i, int *token_count);
 // var_expansion.c
 char    *var_expander(char *string);
-void    expand_vars(char **tokens, int status);
+void    expand_env_vars(char **tokens, int status);
 // array_utils.c
 int get_elem_count(char **array);
 char **flatten_3d_array(char ***array3d);
