@@ -112,6 +112,8 @@ int is_builtin(char **cmd)
 		return 1;	
 	else if (!ft_strcmp(cmd[0],"export"))
 		return 1;	
+	else if (!ft_strcmp(cmd[0], "pwd"))
+		return 1;	
 	else if (!ft_strcmp(cmd[0], "unset"))
 		return 1;	
 	else
@@ -130,6 +132,8 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
 		builtin_export(env, cmd);
+	else if (!ft_strcmp(cmd[0],"pwd"))
+		printf("%s\n",builtin_pwd());
 	else if (!ft_strcmp(cmd[0], "unset"))
 		builtin_unset(env, cmd);
 	else
