@@ -10,3 +10,10 @@ void debug_print(char * msg)
 		fflush(stdout);
 	}
 }
+
+void write_err(char *str)
+{
+	int size;
+	size = ft_strlen(str);
+	write(2, str, size);
+}

@@ -76,6 +76,7 @@ void	stack_add(t_stack **lst, int value);
 void	stack_drop(t_stack **lst);
 //erreur.c
 void debug_print(char * msg);
+void write_err(char *str);
 //list_utils.c
 int sort_infile(t_node **lst);
 //infile.c

@@ -175,24 +175,24 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		// Check if it's a directory
 		if (access(node->cmd[0], F_OK))
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_NOT_FOUND);
 		}
 		if (S_ISDIR(path_stat.st_mode)) 
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_CANT_EXE);
 		}
 		if (access(node->cmd[0], X_OK))
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_CANT_EXE);
 		}
 	}
 
 	if (!node->cmd[0])
 	{
-		perror(" command not found");
+		write_err(" command not found\n");
 		return(ERR_CMD_NOT_FOUND);
 	}
 
@@ -246,8 +246,8 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	while(pid_stack)
 	{
 		wait4(pid_stack->value, status, 0, &usage);
-		if (WIFEXITED(status))
-			*status = WEXITSTATUS(status);
+		if (WIFEXITED(*status))
+			*status = WEXITSTATUS(*status);
 		stack_drop(&pid_stack);	
 	}
 	return 0;
