@@ -76,13 +76,14 @@ void	stack_add(t_stack **lst, int value);
 void	stack_drop(t_stack **lst);
 //erreur.c
 void debug_print(char * msg);
+void write_err(char *str);
 //list_utils.c
 int sort_infile(t_node **lst);
 //infile.c
-void	exe_infile(t_node *node);
-void	exe_outfile_append(t_node *node);
-void	exe_outfile(t_node *node);
-void	exe_heredoc(t_node *node);
+int exe_infile(t_node *node);
+int exe_outfile_append(t_node *node);
+int exe_outfile(t_node *node);
+int exe_heredoc(t_node *node);
 //signal.c
 void sigint_handler(int sig);
 void sigquit_handler(int sig);

@@ -15,7 +15,7 @@ typedef struct s_node
 {
 	int				type;
 	char			*file;
-	char			**cmd; // I think we should have commands an array ["cmd name", "cmd args"]
+	char			**cmd;
 	struct s_node	*next;
 	struct s_node	*previous;
 	char			*delimiter;

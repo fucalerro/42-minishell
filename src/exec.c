@@ -33,11 +33,38 @@ int check_pipe(t_node *node)
 		return_value += 2;
 	return(return_value);
 }
+int run_redirection_file(t_node *node)
+{
+	t_node *node_tmp;
+	node_tmp = node;
+	int return_value;
+
+	return_value = 0;
+
+	while(node_tmp && node_tmp->previous && node_tmp->previous->type != T_PIPE)
+		node_tmp = node_tmp->previous;
+	while (node_tmp && node_tmp->type != T_PIPE)
+	{
+		if (node_tmp->type == T_CMD && node_tmp != node)
+			return 0;
+		else if (node_tmp->type == T_INFILE)
+			return_value = exe_infile(node_tmp);
+		else if (node_tmp->type == T_HEREDOC)
+			return_value = exe_heredoc(node_tmp);
+		else if (node_tmp->type == T_OUTFILE)
+			return_value = exe_outfile(node_tmp);
+		else if (node_tmp->type == T_OUTFILE_APPEND)
+			return_value = exe_outfile_append(node_tmp);
+		if(return_value)
+			return return_value;
+		node_tmp = node_tmp->next;
+	}
+	return return_value;
+}
 int set_pipe(t_node *node)
 {
 	int check_value;
 	int  (*pipe_fd)[2];
-	t_node *node_tmp;
 
 	check_value = check_pipe(node);
 	if (check_value & PIPE_NEXT)
@@ -53,23 +80,6 @@ int set_pipe(t_node *node)
 		close(pipe_fd[0][1]);
 		dup2(pipe_fd[0][0], STDIN_FILENO);
 		close(pipe_fd[0][0]);
-	}
-	node_tmp = node;
-	while(node_tmp && node_tmp->previous && node_tmp->previous->type != T_PIPE)
-		node_tmp = node_tmp->previous;
-	while (node_tmp && node_tmp->type != T_PIPE)
-	{
-		if (node_tmp->type == T_CMD && node_tmp != node)
-			return 0;
-		if (node_tmp->type == T_INFILE)
-			exe_infile(node_tmp);
-		if (node_tmp->type == T_HEREDOC)
-			exe_heredoc(node_tmp);
-		if (node_tmp->type == T_OUTFILE)
-			exe_outfile(node_tmp);
-		if (node_tmp->type == T_OUTFILE_APPEND)
-			exe_outfile_append(node_tmp);
-		node_tmp = node_tmp->next;
 	}
 	return 0;
 }
@@ -112,6 +122,8 @@ int is_builtin(char **cmd)
 		return 1;	
 	else if (!ft_strcmp(cmd[0],"export"))
 		return 1;	
+	else if (!ft_strcmp(cmd[0], "pwd"))
+		return 1;	
 	else if (!ft_strcmp(cmd[0], "unset"))
 		return 1;	
 	else
@@ -130,6 +142,8 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
 		builtin_export(env, cmd);
+	else if (!ft_strcmp(cmd[0],"pwd"))
+		printf("%s\n",builtin_pwd());
 	else if (!ft_strcmp(cmd[0], "unset"))
 		builtin_unset(env, cmd);
 	else
@@ -155,6 +169,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	if (is_builtin(cmd))
 	{
 		set_pipe(node);
+		run_redirection_file(node);
 		exe_builtin(cmd, hist, env);
 		return 0;
 	}
@@ -171,24 +186,24 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		// Check if it's a directory
 		if (access(node->cmd[0], F_OK))
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_NOT_FOUND);
 		}
 		if (S_ISDIR(path_stat.st_mode)) 
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_CANT_EXE);
 		}
 		if (access(node->cmd[0], X_OK))
 		{
-			perror(strerror(errno));
+			perror(NULL);
 			return(ERR_CMD_CANT_EXE);
 		}
 	}
 
 	if (!node->cmd[0])
 	{
-		perror(" command not found");
+		write_err(" command not found\n");
 		return(ERR_CMD_NOT_FOUND);
 	}
 
@@ -196,6 +211,8 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	if (pid == 0)
 	{
 		set_pipe(node);
+		if(run_redirection_file(node))
+			exit(EXIT_FAILURE);
 		execve(cmd[0], cmd, NULL);
 		exit(EXIT_FAILURE);
 	}
@@ -232,7 +249,9 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		if (node->next && node->next->type == T_PIPE)
 			pipe(node->next->pipe[0]);
 		if (node->type == T_CMD)
+		{
 			*status = run_cmd(path, node, hist, &pid_stack, env);
+		}
 		node = node->next;
 	}
 
@@ -242,8 +261,8 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	while(pid_stack)
 	{
 		wait4(pid_stack->value, status, 0, &usage);
-		if (WIFEXITED(status))
-			*status = WEXITSTATUS(status);
+		if (WIFEXITED(*status))
+			*status = WEXITSTATUS(*status);
 		stack_drop(&pid_stack);	
 	}
 	return 0;
