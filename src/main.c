@@ -48,7 +48,7 @@ void deal_with_multi_cmd(t_node *node)
 				node->next->previous = node->previous;
 			//node = node->previous;
 			//need to free dropped node here
-			cmd_seen = 0;
+			cmd_seen = 1;
 		}
 		if (node->type == T_PIPE)
 			cmd_seen = 0;
