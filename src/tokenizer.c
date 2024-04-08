@@ -177,7 +177,7 @@ char    **tokenizer(char *string, int status)
 
     expand_env_vars(tokenized, status);
 
-
+    // print_string_tab(tokenized);
 
     i = 0;
     while (tokenized[i])

@@ -153,17 +153,37 @@ char    *all_quotes_remover(char *string)
 {
     char *token;
 
+
     token = malloc(sizeof(char) * (ft_strlen(string) + 1));
 
     int i = 0;
     int j = 0;
+
+    int is_in_quote = 0;
+
+    char quote_type;
+
     while (string[i])
     {
-        if (is_quote(string[i]) && (!is_in_quotes(string, i) || !is_in_quotes(string, i - 1)))
+        if (!is_in_quote && !is_quote(string[i]))
+        {
+            token[j++] = string[i++];
+        }
+        else if (is_in_quote)
+        {
+            if (string[i] != is_in_quote)
+                token[j++] = string[i++];
+            else
+                i++;
+        }
+        else if (is_quote(string[i]))
+        {
+            if (!is_in_quote)
+                is_in_quote = string[i];
+            else
+                is_in_quote = 0;
             i++;
-        token[j] = string[i];
-        j++;
-        i++;
+        }
     }
     token[j] = 0;
     return (token);
