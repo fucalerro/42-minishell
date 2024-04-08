@@ -7,7 +7,54 @@
 #ifndef UNIT_TESTS
 
 
+void deal_with_multi_cmd(t_node *node)
+{
+	int cmd_seen = 0;
+	t_node *prev_cmd;
+	char **tmp;
 
+	prev_cmd = NULL;
+	while (node)
+	{
+		if (node->type == T_CMD)
+			cmd_seen ++;
+		if(cmd_seen > 1)
+		{
+			prev_cmd = node->previous;
+			while(prev_cmd && prev_cmd->type != T_CMD)
+				prev_cmd = prev_cmd->previous;
+			int count = 0;
+			int i = 0;
+			while(node->cmd[i++])
+				count++;
+			i=0;
+			while(prev_cmd->cmd[i++])
+				count++;
+			tmp = (char **) malloc(sizeof(char *) * (count + 1));
+			if(!tmp)
+				return;
+			int ii = 0;
+			i = 0;
+			while(prev_cmd->cmd[i])
+				tmp[ii++] = prev_cmd->cmd[i++];
+			i = 0;
+			while(node->cmd[i])
+				tmp[ii++] = node->cmd[i++];
+			tmp[ii] = NULL;
+			free(prev_cmd->cmd);// we need to free that here but lest do that antoher day
+			prev_cmd->cmd = tmp;
+			node->previous->next = node->next;
+			if (node->next)
+				node->next->previous = node->previous;
+			//node = node->previous;
+			//need to free dropped node here
+			cmd_seen = 0;
+		}
+		if (node->type == T_PIPE)
+			cmd_seen = 0;
+		node = node->next;
+	}
+}
 void process_input_loop(char **line, char ***env_copy, t_hist **history, int *status) {
     char *prompt;
     char *tmpline;
@@ -43,6 +90,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 				ft_write_history_file(prompt);
 			}
 			sort_infile(&lst);
+			deal_with_multi_cmd(lst);
 			exe_prompt(lst, env_copy, history, status);
 		}
 

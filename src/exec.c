@@ -249,7 +249,9 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		if (node->next && node->next->type == T_PIPE)
 			pipe(node->next->pipe[0]);
 		if (node->type == T_CMD)
+		{
 			*status = run_cmd(path, node, hist, &pid_stack, env);
+		}
 		node = node->next;
 	}
 
