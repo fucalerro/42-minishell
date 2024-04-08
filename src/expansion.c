@@ -14,7 +14,7 @@ char    *expand_last_status(int status, char *token)
     return (token);
 }
 
-char *expand_var(char *token)
+char *expand_var(char *token, int status)
 {
     char *var_value;
     char *var_name;
@@ -33,7 +33,15 @@ char *expand_var(char *token)
     {
         if (token[i] == '$' && is_in_quotes(token, i) != 1)
         {
-            if (!token[i + 1] || !ft_isalnum(token[i + 1]))
+            if (token[i + 1] == '?')
+            {
+                char *temp = ft_strjoin(new_token, ft_itoa(status));
+                free(new_token);
+                new_token = temp;
+                new_token_len = ft_strlen(new_token);
+                i += 2;
+            }
+            else if (!token[i + 1] || !ft_isalnum(token[i + 1]))
             {
                 new_token[new_token_len++] = token[i++];
                 new_token[new_token_len] = 0;
@@ -77,7 +85,7 @@ void    expand_env_vars(char **tokens, int status)
     {
         char *tmp;
 
-        tmp = expand_var(tokens[i]);
+        tmp = expand_var(tokens[i], status);
         if (tmp)
         {
             tokens[i] = ft_strdup(tmp);
