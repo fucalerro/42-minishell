@@ -177,7 +177,6 @@ char    **tokenizer(char *string, int status)
 
     expand_env_vars(tokenized, status);
 
-    print_string_tab(tokenized);
 
 
     i = 0;
@@ -186,7 +185,6 @@ char    **tokenizer(char *string, int status)
         if (ft_strchr(tokenized[i], '\'') || ft_strchr(tokenized[i], '\"'))
         {
             char *temp = all_quotes_remover(tokenized[i]);
-            printf("temp: %s\n", temp);
             free(tokenized[i]);
             tokenized[i] = ft_strdup(temp);
         }
