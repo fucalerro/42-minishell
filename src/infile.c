@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-void	exe_infile(t_node *node)
+int	exe_infile(t_node *node)
 {
 	int	fd;
 
 	if (access(node->file, F_OK))
 	{
 		perror(strerror(errno));
-		exit(EXIT_FAILURE);
+		return (1);
 	}
 	fd = open(node->file, O_RDONLY);
 	if (fd < 0)
@@ -19,39 +19,43 @@ void	exe_infile(t_node *node)
 	{
 		dup2(fd, STDIN_FILENO);
 	}
+	return 0;
 }
 
-void	exe_outfile(t_node *node)
+int	exe_outfile(t_node *node)
 {
 	if (!access(node->file, F_OK))
 	{
 		if(access(node->file, W_OK))
 		{
+			write_err("cant write here\n");
 			perror(strerror(errno));
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 	}
 	int fd = open(node->file, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
 	dup2(fd , STDOUT_FILENO);
 	close(fd);
+	return 0;
 }
 
-void exe_outfile_append(t_node *node)
+int exe_outfile_append(t_node *node)
 {
 	if (!access(node->file, F_OK))
 	{
 		if(access(node->file, W_OK))
 		{
 			perror(strerror(errno));
-			exit(EXIT_FAILURE);
+			return (1);
 		}
 	}
     int fd = open(node->file, O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
     dup2(fd, STDOUT_FILENO);
     close(fd);
+	return 0;
 }
 
-void exe_heredoc(t_node *node) {
+int exe_heredoc(t_node *node) {
     int fd[2];
 
     if (pipe(fd) == -1) {
@@ -73,4 +77,5 @@ void exe_heredoc(t_node *node) {
     close(fd[1]);
     dup2(fd[0], STDIN_FILENO);
     close(fd[0]);
+	return 0;
 }
