@@ -114,6 +114,7 @@ int main(int ac, char **av, char **env)
 
 	tmpline = builtin_pwd();
 
+
 	status = 0;
 	signal(SIGINT, sigint_handler);  // Ctrl-C
 	signal(SIGQUIT, sigquit_handler);  // Ctrl-'\'
