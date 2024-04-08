@@ -28,7 +28,6 @@ int	exe_outfile(t_node *node)
 	{
 		if(access(node->file, W_OK))
 		{
-			write_err("cant write here\n");
 			perror(strerror(errno));
 			return (1);
 		}
