@@ -9,7 +9,11 @@
 #define NONE            0
 
 
-
+typedef struct s_tokens
+{
+    char    *token;
+    int     type;
+}           t_tokens;
 
 
 int is_in_quotes(char *input, int index);
