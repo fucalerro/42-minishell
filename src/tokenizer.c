@@ -197,8 +197,9 @@ t_tokens **tokenizer(char *string, int status)
     op_tokenized = malloc((i + 1) * sizeof(char **));
     i = 0;
 
-    // print_string_tab(sp_tokenized);
 
+
+    print_string_tab(sp_tokenized);
     expand_env_vars(sp_tokenized, status);
     while (sp_tokenized[i])
     {
