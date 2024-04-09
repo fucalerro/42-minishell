@@ -47,11 +47,29 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
 }
 
-void builtin_exit(char *exit_code)
+int builtin_exit(t_node *node)
 {
-	if(exit_code)
+	char *cmd;
+	if (node->cmd[2])
 	{
-		exit(atoi(exit_code));
+		write_err( "too many arguments\n");
+		return 1;
+	}
+	cmd = node->cmd[1];
+	if(*cmd == '-' || *cmd == '+')
+		cmd++;
+	while(*cmd)
+	{
+		if (!ft_isdigit(*cmd))
+		{
+			write_err(" numeric argument required\n");
+			exit (255);
+		}
+		cmd++;
+	}
+	if (node->cmd[1])
+	{
+		exit(atoi(node->cmd[1]));
 	}
 	exit(0);
 }

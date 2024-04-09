@@ -130,14 +130,15 @@ int is_builtin(char **cmd)
 		return 0;
 }
 
-int exe_builtin(char **cmd, t_hist **hist, char ***env)
+int exe_builtin(t_node *node, t_hist **hist, char ***env)
 {
+	char **cmd = node->cmd;
 	if (!ft_strcmp(cmd[0],"cd"))
 		builtin_cd(cmd[1]);
 	else if (!ft_strcmp(cmd[0], "history"))
 		builtin_history(cmd, hist);
 	else if (!ft_strcmp(cmd[0],"exit"))
-		builtin_exit(cmd[1]);
+		return builtin_exit(node);
 	else if (!ft_strcmp(cmd[0],"env"))
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
@@ -146,9 +147,7 @@ int exe_builtin(char **cmd, t_hist **hist, char ***env)
 		printf("%s\n",builtin_pwd());
 	else if (!ft_strcmp(cmd[0], "unset"))
 		builtin_unset(env, cmd);
-	else
-		return 0;
-	return 1;
+	return 0;
 }
 int cmd_do_not_include_path(char *cmd)
 {
@@ -170,8 +169,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	{
 		set_pipe(node);
 		run_redirection_file(node);
-		exe_builtin(cmd, hist, env);
-		return 0;
+		return exe_builtin(node, hist, env);
 	}
 
 	if (cmd_do_not_include_path(node->cmd[0]))
