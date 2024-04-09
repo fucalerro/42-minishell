@@ -34,27 +34,30 @@ extern int errno;
 
 /* FUNCTIONS */
 void	print_list(t_node *lst);
-char **consolidate_cmd(char **input, int i, int *token_count);
 // var_expansion.c
 char    *var_expander(char *string);
 void    expand_env_vars(char **tokens, int status);
 // array_utils.c
-int get_elem_count(char **array);
+void    print_tokens(t_tokens **tokens);
+int get_elem_count_tok(t_tokens **array);
+int get_elem_count_arr(char **array);
 char **flatten_3d_array(char ***array3d);
 void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
 // parser.c
 size_t	wordcounter(char const *s, char c);
-char    **tokenizer(char *string, int status);
-char    **op_tokenizer(char *string);
-char    **sp_tokenizer(char *string, char c);
-int word_counter_quotes(char *input);
-int is_in_quotes(char *input, int index);
-t_node  *parser(char **input);
+t_node *parser(t_tokens **tokens);
 int is_quote(char c);
 char    *input_normalizer(char *input);
+int word_counter_quotes(char *input);
+int is_in_quotes(char *input, int index);
+char **consolidate_cmd(t_tokens **input, int i, int *arg_count);
+// tokenizer.c
+t_tokens **tokenizer(char *string, int status);
+char    **op_tokenizer(char *string);
+char    **sp_tokenizer(char *string, char c);
 //error_handling.c
-int    parsing_error(char **tokens);
+int    parsing_error(t_tokens **tokens);
 void    errror_msg(int type, int c);
 // exec.c
 int exe_prompt(t_node *node, char ***env, t_hist **hist, int *status);

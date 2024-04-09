@@ -8,8 +8,15 @@
 #define DOUBLE          2
 #define NONE            0
 
+#define QUOTED          1
+#define UNQUOTED        0
 
 
+typedef struct s_tokens
+{
+    char    *token;
+    int     type;
+}           t_tokens;
 
 
 int is_in_quotes(char *input, int index);
