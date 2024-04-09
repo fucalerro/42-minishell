@@ -60,7 +60,7 @@ void    errror_msg(int type, int c);
 int exe_prompt(t_node *node, char ***env, t_hist **hist, int *status);
 // builtin.c
 char *builtin_pwd(void);
-void builtin_cd(const char *path);
+int builtin_cd(const char *path);
 int builtin_exit(t_node *node);
 void builtin_history(char **cmd, t_hist **hist);
 // env
