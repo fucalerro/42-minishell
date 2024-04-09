@@ -10,7 +10,7 @@ char    *expand_last_status(int status, char *token)
         token = ft_strjoin(status_string, &token[2]);
     else
         token = ft_strdup(status_string);
-    free(status_string);
+    // free(status_string);
     return (token);
 }
 
@@ -36,7 +36,7 @@ char *expand_var(char *token, int status)
             if (token[i + 1] == '?')
             {
                 char *temp = ft_strjoin(new_token, ft_itoa(status));
-                free(new_token);
+                // free(new_token);
                 new_token = temp;
                 new_token_len = ft_strlen(new_token);
                 i += 2;
@@ -59,7 +59,7 @@ char *expand_var(char *token, int status)
                 if (var_value)
                 {
                     char *temp = ft_strjoin(new_token, var_value);
-                    free(new_token);
+                    // free(new_token);
                     new_token = temp;
                 }
                 new_token_len = ft_strlen(new_token);
@@ -71,7 +71,7 @@ char *expand_var(char *token, int status)
             new_token[new_token_len] = 0;
         }
     }
-    free(var_name);
+    // free(var_name);
     return (new_token);
 }
 
@@ -89,35 +89,8 @@ void    expand_env_vars(char **tokens, int status)
         if (tmp)
         {
             tokens[i] = ft_strdup(tmp);
-            free(tmp);
+            // free(tmp);
         }
-        // if (tokens[i][0] == '$')
-        // {
-        //     if (tokens[i][1] == '?')
-        //     {
-        //         tmp = ft_strdup(tokens[i]);
-        //         tokens[i] = expand_last_status(status, tmp);
-        //         free(tmp);
-        //     }
-        //     else
-        //         tokens[i] = ft_strdup(var_expander(tokens[i]));
-        // }
         i++;
     }
 }
-
-/**
- * @brief expand a variable in a string
- *
- * @param string string to expand
- * @return char* pointer to expanded string
- */
-char    *var_expander(char *string)
-{
-    char    *var_value;
-
-    if (*(string++) == '$')
-        var_value = getenv(string);
-    return (var_value);
-}
-
