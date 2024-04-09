@@ -202,27 +202,32 @@ char **consolidate_cmd(t_tokens **input, int i, int *arg_count)
 
     j = i;
     cmd_len = 0;
-    while (input[j] && is_metachar(input[j]->token[0]) == 0)
+    while (input[j] && (!is_metachar(input[j]->token[0]) || (is_metachar(input[j]->token[0]) && input[j]->type == QUOTED)))
     {
+        // printf("is_metachar: %d\n", is_metachar(input[j]->token[0]));
+        // printf("input[j]->token: %s\n", input[j]->token);
         cmd_len++;
         j++;
     }
     cmd = malloc(sizeof(char *) * (cmd_len + 1));
     j = 0;
-    while (input[i] && is_metachar(input[i]->token[0]) == 0)
+    while (input[i] && (!is_metachar(input[i]->token[0]) || (is_metachar(input[i]->token[0]) && input[i]->type == QUOTED)))
     {
-        if (is_quote(input[i]->token[0]))
-        {
-            char *tmp = around_quotes_remover(input[i]->token);
-            cmd[j] = ft_strdup(tmp);
-            free(tmp);
-        }
-        else
+        // if (is_quote(input[i]->token[0]))
+        // {
+        //     char *tmp = around_quotes_remover(input[i]->token);
+        //     cmd[j] = ft_strdup(tmp);
+        //     free(tmp);
+        // }
+        // else
             cmd[j] = ft_strdup(input[i]->token);
         i++;
         j++;
     }
+
     *arg_count = cmd_len - 1;
+    // if (*arg_count < 1)
+    //     *arg_count = 1;
     cmd[j] = 0;
     return (cmd);
 }
@@ -235,6 +240,8 @@ t_node *parser(t_tokens **tokens)
     int token_count;
     char **consolidated_cmd;
     int arg_count;
+
+    print_tokens(tokens);
 
     lst = NULL;
     token_count = get_elem_count_tok(tokens);
@@ -268,14 +275,16 @@ t_node *parser(t_tokens **tokens)
         }
         else
         {
+            // PL;
             consolidated_cmd = consolidate_cmd(tokens, i, &arg_count);
             lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
             i += arg_count;
+            // printf("i: %d\n", i);
         }
         i++;
     }
 
-    print_list(lst);
+    // print_list(lst);
 
     return (lst);
 }

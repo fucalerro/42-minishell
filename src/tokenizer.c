@@ -36,10 +36,11 @@ int count_op(char *string)
     count = 0;
     while (string[i])
     {
-        if (is_single_op(string, i) || is_double_op(string, i))
+        if ((is_single_op(string, i) || is_double_op(string, i)) && !is_in_quotes(string, i))
             count++;
         i++;
     }
+    // printf("count: %d\n", count);
     return (count);
 }
 
@@ -55,43 +56,37 @@ char    **op_tokenizer(char *string)
     int     op_flag;
     int     i;
     int     j;
-    int     quote_type;
+    // int     quote_type;
 
     op_flag = 0;
     i = 0;
     j = 0;
     res = malloc(sizeof(char *) * (count_op(string) + 1) * 2);
 
-    if (ft_strchr(string, '\'') || ft_strchr(string, '\"'))
-    {
-        res[0] = ft_strdup(string);
-        res[1] = 0;
-        return (res);
-    }
 
     while (string[i])
     {
-        if (is_double_op(string, i) && op_flag != 1)
+        if (is_double_op(string, i) && !op_flag && !is_in_quotes(string, i))
         {
-            op_flag = 1;
+            op_flag = true;
             res[j++] = ft_substr(string, i, 2);
             i += 2;
         }
-        else if (is_single_op(string, i) && op_flag != 1)
+        else if (is_single_op(string, i) && !op_flag && !is_in_quotes(string, i))
         {
-            op_flag = 1;
+            op_flag = true;
             res[j++] = ft_substr(string, i++, 1);
         }
         else
         {
             int start = i;
-            while (string[i] && !is_double_op(string, i) && !is_single_op(string, i))
+            while (string[i] && ((!is_double_op(string, i) && !is_single_op(string, i)) || is_in_quotes(string, i)))
                 i++;
             if (i > start)
             {
                 res[j++] = ft_substr(string, start, i - start);
             }
-            op_flag = 0;
+            op_flag = false;
         }
     }
     res[j] = 0;
@@ -202,11 +197,11 @@ t_tokens **tokenizer(char *string, int status)
     op_tokenized = malloc((i + 1) * sizeof(char **));
     i = 0;
 
+    // print_string_tab(sp_tokenized);
 
     expand_env_vars(sp_tokenized, status);
-    // print_string_tab(sp_tokenized);
     while (sp_tokenized[i])
-{
+    {
         op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
         free(sp_tokenized[i]);
         i++;
@@ -214,13 +209,16 @@ t_tokens **tokenizer(char *string, int status)
     free(sp_tokenized);
     op_tokenized[i] = 0;
 
+
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
+    // print_string_tab(tokenized);
+
     tokens = quotes_tokenizer(tokenized);
 
-
     // print_tokens(tokens);
+
     // printf("------------\n");
     // print_string_tab(tokenized);
     // printf("------------\n");

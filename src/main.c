@@ -66,7 +66,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 	err_flag = false;
     while((prompt = readline(*line)))
 	{
-        // free(*line);
+        free(*line);
 
 		if (ft_strlen(prompt) == 0)
 			continue;
@@ -75,7 +75,6 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 
         tokens = tokenizer(prompt, *status);
 
-		print_tokens(tokens);
 
 		if (parsing_error(tokens))
 			err_flag = true;

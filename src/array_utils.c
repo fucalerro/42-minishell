@@ -109,8 +109,8 @@ void    print_tokens(t_tokens **tokens)
     i = 0;
     while (tokens[i])
     {
-        printf("token: %s\n", tokens[i]->token);
-        printf("type:  %d\n", tokens[i]->type);
+        // printf("token: %s\n", tokens[i]->token);
+        // printf("type:  %d\n", tokens[i]->type);
         i++;
     }
 }
