@@ -57,7 +57,7 @@ int builtin_exit(t_node *node)
 		exit(0);
 	if (node->cmd[1] && node->cmd[2])
 	{
-		write_err( "too many arguments\n");
+		write_err(" too many arguments\n");
 		return 1;
 	}
 	cmd = node->cmd[1];
