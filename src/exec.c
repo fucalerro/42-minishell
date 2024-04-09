@@ -126,6 +126,8 @@ int is_builtin(char **cmd)
 		return 1;	
 	else if (!ft_strcmp(cmd[0], "unset"))
 		return 1;	
+	else if (!ft_strcmp(cmd[0], "echo"))
+		return 1;	
 	else
 		return 0;
 }
@@ -147,6 +149,8 @@ int exe_builtin(t_node *node, t_hist **hist, char ***env)
 		printf("%s\n",builtin_pwd());
 	else if (!ft_strcmp(cmd[0], "unset"))
 		builtin_unset(env, cmd);
+	else if (!ft_strcmp(cmd[0], "echo"))
+		builtin_echo(node);
 	return 0;
 }
 int cmd_do_not_include_path(char *cmd)

@@ -78,3 +78,27 @@ int builtin_exit(t_node *node)
 	}
 	return 0;
 }
+int builtin_echo(t_node *node)
+{
+	char **cmd = node->cmd;
+	int i = 1;
+	int new_line = 1;
+	
+	if(!cmd[1])
+	{
+		printf("\n");
+		return 1;
+	}
+	if (cmd[1][0] == '-' && cmd[1][1] == 'n' && !cmd[1][2])
+	{
+		i++;
+		new_line=0;
+	}
+	if (cmd[i])
+		printf("%s",cmd[i++]);
+	while(cmd[i])
+		printf(" %s",cmd[i++]);
+	if(new_line)
+		printf("\n");
+	return 0;
+}

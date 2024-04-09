@@ -71,6 +71,7 @@ void builtin_env(char **env);
 void builtin_export(char ***env, char **var);
 char **copy_env(char **env, int size);
 void builtin_unset(char ***env, char **var);
+int builtin_echo(t_node *node);
 
 void debug_print(char *msg);
 
