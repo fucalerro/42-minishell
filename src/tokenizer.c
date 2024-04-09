@@ -149,26 +149,38 @@ int quotes_error_check(char *string)
 
 
 
-char **quotes_tokenizer(char **tokens)
+t_tokens    **quotes_tokenizer(char **tokens)
 {
     int i;
+    t_tokens **res;
+
+    res = malloc(sizeof(t_tokens *) * (get_elem_count_arr(tokens) + 1));
+
     i = 0;
     while (tokens[i])
     {
+        res[i] = malloc(sizeof(t_tokens));
         if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
         {
+            res[i]->type = QUOTED;
             char *temp = all_quotes_remover(tokens[i]);
             free(tokens[i]);
-            tokens[i] = ft_strdup(temp);
+            res[i]->token = ft_strdup(temp);
+        }
+        else
+        {
+            res[i]->type = UNQUOTED;
+            res[i]->token = ft_strdup(tokens[i]);
         }
         i++;
     }
-    return (tokens);
+    res[i] = 0;
+    return (res);
 }
 
 
 
-char    **tokenizer(char *string, int status)
+t_tokens **tokenizer(char *string, int status)
 {
     char    *normalized_input;
     char    **sp_tokenized;
@@ -176,6 +188,8 @@ char    **tokenizer(char *string, int status)
     char    *temp;
     int i;
     int j;
+
+    t_tokens **tokens;
 
     quotes_error_check(string);
 
@@ -190,7 +204,6 @@ char    **tokenizer(char *string, int status)
 
 
     expand_env_vars(sp_tokenized, status);
-
     // print_string_tab(sp_tokenized);
     while (sp_tokenized[i])
 {
@@ -204,13 +217,15 @@ char    **tokenizer(char *string, int status)
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
-    print_string_tab(tokenized);
-    quotes_tokenizer(tokenized);
-    printf("------------\n");
+    tokens = quotes_tokenizer(tokenized);
 
-    print_string_tab(tokenized);
-    printf("------------\n");
 
-    return (tokenized);
+    // print_tokens(tokens);
+    // printf("------------\n");
+    // print_string_tab(tokenized);
+    // printf("------------\n");
+
+    return (tokens);
 }
+
 

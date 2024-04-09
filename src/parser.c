@@ -91,19 +91,6 @@ char *input_normalizer(char *input)
     return (output);
 }
 
-// int get_quoted_string_len(char string, int start)
-// {
-//     int i;
-
-//     int in_quote;
-//     int prev_in_quote;
-
-//     in_quote = false;
-//     prev_in_quote = false;
-
-//     i = 0;
-//     while (in_quote = prev_in_quote)
-// }
 
 /**
  * @brief Count the number of words in a string. Words are separated by spaces.
@@ -152,7 +139,6 @@ int is_quote(char c)
 char    *all_quotes_remover(char *string)
 {
     char *token;
-
 
     token = malloc(sizeof(char) * (ft_strlen(string) + 1));
 
@@ -208,7 +194,7 @@ char    *around_quotes_remover(char *string)
 }
 
 
-char **consolidate_cmd(char **input, int i, int *arg_count)
+char **consolidate_cmd(t_tokens **input, int i, int *arg_count)
 {
     char **cmd;
     int j;
@@ -216,23 +202,23 @@ char **consolidate_cmd(char **input, int i, int *arg_count)
 
     j = i;
     cmd_len = 0;
-    while (input[j] && is_metachar(input[j][0]) == 0)
+    while (input[j] && is_metachar(input[j]->token[0]) == 0)
     {
         cmd_len++;
         j++;
     }
     cmd = malloc(sizeof(char *) * (cmd_len + 1));
     j = 0;
-    while (input[i] && is_metachar(input[i][0]) == 0)
+    while (input[i] && is_metachar(input[i]->token[0]) == 0)
     {
-        if (is_quote(input[i][0]))
+        if (is_quote(input[i]->token[0]))
         {
-            char *tmp = around_quotes_remover(input[i]);
+            char *tmp = around_quotes_remover(input[i]->token);
             cmd[j] = ft_strdup(tmp);
             free(tmp);
         }
         else
-            cmd[j] = ft_strdup(input[i]);
+            cmd[j] = ft_strdup(input[i]->token);
         i++;
         j++;
     }
@@ -242,7 +228,7 @@ char **consolidate_cmd(char **input, int i, int *arg_count)
 }
 
 
-t_node *parser(char **input)
+t_node *parser(t_tokens **tokens)
 {
     t_node *lst;
     int i;
@@ -251,43 +237,46 @@ t_node *parser(char **input)
     int arg_count;
 
     lst = NULL;
-    token_count = get_elem_count(input);
+    token_count = get_elem_count_tok(tokens);
     i = 0;
-    while (input[i])
+    while (tokens[i])
     {
-        if (ft_strncmp(input[i], "|", 1) == 0)
+        if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->type == UNQUOTED)
         {
             lst_append(&lst, T_PIPE, NULL, NULL, NULL);
         }
-        else if (ft_strcmp(input[i], ">") == 0 && i + 1 < token_count)
+        else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->type == UNQUOTED && i + 1 < token_count)
         {
-            lst_append(&lst, T_OUTFILE, input[i + 1], NULL, NULL);
+            lst_append(&lst, T_OUTFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(input[i], "<") == 0 && i + 1 < token_count)
+        else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED)
         {
-            lst_append(&lst, T_INFILE, input[i + 1], NULL, NULL);
+            lst_append(&lst, T_INFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(input[i], ">>") == 0 && i + 1 < token_count) // append mode
+        else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED) // append mode
         {
-            lst_append(&lst, T_OUTFILE_APPEND, input[i + 1], NULL, NULL);
+            lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(input[i], "<<") == 0 && i + 1 < token_count) // heredoc
+        else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED) // heredoc
         {
-            around_quotes_remover(input[i + 1]);
-            lst_append(&lst, T_HEREDOC, NULL, NULL, input[i + 1]);
+            around_quotes_remover(tokens[i + 1]->token);
+            lst_append(&lst, T_HEREDOC, NULL, NULL, tokens[i + 1]->token);
             i ++;
         }
         else
         {
-            consolidated_cmd = consolidate_cmd(input, i, &arg_count);
+            consolidated_cmd = consolidate_cmd(tokens, i, &arg_count);
             lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
             i += arg_count;
         }
         i++;
     }
+
+    print_list(lst);
+
     return (lst);
 }
 

@@ -58,7 +58,7 @@ void deal_with_multi_cmd(t_node *node)
 void process_input_loop(char **line, char ***env_copy, t_hist **history, int *status) {
     char *prompt;
     char *tmpline;
-	char **tokens;
+	t_tokens **tokens;
 	t_node *lst;
 
 	int err_flag;
@@ -75,10 +75,11 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 
         tokens = tokenizer(prompt, *status);
 
-		// print_string_tab(tokens);
+		print_tokens(tokens);
 
 		if (parsing_error(tokens))
 			err_flag = true;
+
 
 		if (!err_flag)
 		{
@@ -97,7 +98,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
         tmpline = builtin_pwd();
         *line = ft_strjoin(tmpline, "🌻 ");
 
-		free_string_array(tokens);
+		// free_string_array(tokens);
         free(tmpline);
     }
 }

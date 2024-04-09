@@ -108,7 +108,7 @@ int is_unhandled_operator(char *tokens)
  * @param tokens
  * @return int
  */
-int    parsing_error(char **tokens)
+int    parsing_error(t_tokens **tokens)
 {
     int i;
     int op_flag;
@@ -118,36 +118,36 @@ int    parsing_error(char **tokens)
     op_flag = true;
     fop_flag = false;
 
-    while (tokens[++i])
+    while (tokens[++i]->token)
     {
-        if (is_unhandled_operator(tokens[i]))
+        if (is_unhandled_operator(tokens[i]->token))
         {
-            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i][0]);
+            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
         }
-        if (fop_flag && (is_file_operator(tokens[i]) || is_operator(tokens[i])))
+        if (fop_flag && (is_file_operator(tokens[i]->token) || is_operator(tokens[i]->token)))
         {
-            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i][0]);
+            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
         }
-        else if (is_file_operator(tokens[i]))
+        else if (is_file_operator(tokens[i]->token))
             fop_flag = true;
         else
             fop_flag = false;
 
-        if (op_flag && is_operator(tokens[i]))
+        if (op_flag && is_operator(tokens[i]->token))
         {
-            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i][0]);
+            errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
         }
-        else if (!is_operator(tokens[i]))
+        else if (!is_operator(tokens[i]->token))
             op_flag = false;
         else
             op_flag = true;
     }
-    if (is_operator(tokens[i - 1]) || is_file_operator(tokens[i - 1]))
+    if (is_operator(tokens[i - 1]->token) || is_file_operator(tokens[i - 1]->token))
     {
-        errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1][0]);
+        errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->token[0]);
         return (1);
     }
     return (0);

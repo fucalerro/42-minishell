@@ -68,7 +68,19 @@ char **flatten_3d_array(char ***array3d)
  * @brief get the number of elems in an array
  *
  */
-int get_elem_count(char **array)
+int get_elem_count_tok(t_tokens **array)
+{
+    int i;
+
+    i = 0;
+    while (array[i])
+    {
+        i++;
+    }
+    return (i);
+}
+
+int get_elem_count_arr(char **array)
 {
     int i;
 
@@ -86,6 +98,19 @@ void    print_string_tab(char **tab)
     while (tab[i])
     {
         printf("%s\n", tab[i]);
+        i++;
+    }
+}
+
+void    print_tokens(t_tokens **tokens)
+{
+    int i;
+
+    i = 0;
+    while (tokens[i])
+    {
+        printf("token: %s\n", tokens[i]->token);
+        printf("type:  %d\n", tokens[i]->type);
         i++;
     }
 }
