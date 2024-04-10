@@ -126,8 +126,8 @@ int is_builtin(char **cmd)
 		return 1;	
 	else if (!ft_strcmp(cmd[0], "unset"))
 		return 1;	
-	//else if (!ft_strcmp(cmd[0], "echo"))
-	//	return 1;	
+	else if (!ft_strcmp(cmd[0], "echo"))
+		return 1;	
 	else
 		return 0;
 }
