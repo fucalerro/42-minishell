@@ -171,9 +171,27 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	cmd = node->cmd;
 	if (is_builtin(cmd))
 	{
-		set_pipe(node);
-		run_redirection_file(node);
-		return exe_builtin(node, hist, env);
+		
+		if (!ft_strcmp(cmd[0], "echo"))
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				set_pipe(node);
+				run_redirection_file(node);
+				exit(exe_builtin(node, hist, env));
+			} else {
+				stack_add(pid_stack, pid);
+				return 0;
+			}
+
+		}
+		else
+		{
+			set_pipe(node);
+			run_redirection_file(node);
+			return exe_builtin(node, hist, env);
+		}
 	}
 
 	if (cmd_do_not_include_path(node->cmd[0]))
