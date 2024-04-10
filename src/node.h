@@ -14,6 +14,7 @@
 typedef struct s_node
 {
 	int				type;
+	int				active;
 	char			*file;
 	char			**cmd;
 	struct s_node	*next;

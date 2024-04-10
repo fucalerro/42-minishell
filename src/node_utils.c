@@ -12,6 +12,7 @@ t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 		return ((t_node *)0);
 	node->delimiter = delimiter;
 	node->type = type;
+	node->active = 1;
 	node->file = file;
 	node->cmd = cmd; // I think we should have commands an array ["cmd name", "cmd args"]
 	node->previous = (t_node *)0;
@@ -55,6 +56,7 @@ void	print_list(t_node *lst)
 	{
 		printf("\nNODE %i\n",i_node++);
 		printf("\tnode.type: %s\n", type_table[list->type - 1]);
+		printf("\tnode.active: %i\n", list->active);
 		printf("\tnode.file: %s\n", list->file);
 		printf("\tnode.delimiter: %s\n", list->delimiter);
 		if (list->cmd)
