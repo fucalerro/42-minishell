@@ -177,7 +177,7 @@ t_tokens    **quotes_tokenizer(char **tokens)
         res[i] = malloc(sizeof(t_tokens));
         // if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
         // {
-            res[i]->type = is_quote(tokens[i][0]);
+            res[i]->quoted = is_quote(tokens[i][0]);
             char *temp = all_quotes_remover(tokens[i]);
             // free(tokens[i]);
             res[i]->token = ft_strdup(temp);
@@ -217,6 +217,7 @@ t_tokens **tokenizer(char *string, int status)
 
     // PL;
     expand_env_vars(sp_tokenized, status);
+    // print_string_tab(sp_tokenized);
 
     while (sp_tokenized[i])
     {
@@ -231,7 +232,6 @@ t_tokens **tokenizer(char *string, int status)
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
-    // print_string_tab(tokenized);
 
     tokens = quotes_tokenizer(tokenized);
 

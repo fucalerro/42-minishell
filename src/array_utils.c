@@ -110,7 +110,7 @@ void    print_tokens(t_tokens **tokens)
     while (tokens[i])
     {
         printf("token: %s\n", tokens[i]->token);
-        printf("type:  %d\n", tokens[i]->type);
+        printf("type:  %d\n\n", tokens[i]->quoted);
         i++;
     }
 }

@@ -202,14 +202,14 @@ char **consolidate_cmd(t_tokens **input, int i, int *arg_count)
 
     j = i;
     cmd_len = 0;
-    while (input[j] && (!is_metachar(input[j]->token[0]) || (is_metachar(input[j]->token[0]) && input[j]->type == QUOTED)))
+    while (input[j] && (!is_metachar(input[j]->token[0]) || (is_metachar(input[j]->token[0]) && input[j]->quoted)))
     {
         cmd_len++;
         j++;
     }
     cmd = malloc(sizeof(char *) * (cmd_len + 1));
     j = 0;
-    while (input[i] && (!is_metachar(input[i]->token[0]) || (is_metachar(input[i]->token[0]) && input[i]->type == QUOTED)))
+    while (input[i] && (!is_metachar(input[i]->token[0]) || (is_metachar(input[i]->token[0]) && input[i]->quoted)))
     {
         cmd[j] = ft_strdup(input[i]->token);
         i++;
@@ -238,26 +238,26 @@ t_node *parser(t_tokens **tokens)
     i = 0;
     while (tokens[i])
     {
-        if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->type == 0)
+        if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->quoted == 0)
         {
             lst_append(&lst, T_PIPE, NULL, NULL, NULL);
         }
-        else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->type == 0 && i + 1 < token_count)
+        else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->quoted == 0 && i + 1 < token_count)
         {
             lst_append(&lst, T_OUTFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count && tokens[i]->type == 0)
+        else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count && tokens[i]->quoted == 0)
         {
             lst_append(&lst, T_INFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count && tokens[i]->type == 0) // append mode
+        else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count && tokens[i]->quoted == 0) // append mode
         {
             lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count && tokens[i]->type == 0) // heredoc
+        else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count && tokens[i]->quoted == 0) // heredoc
         {
             around_quotes_remover(tokens[i + 1]->token);
             lst_append(&lst, T_HEREDOC, NULL, NULL, tokens[i + 1]->token);

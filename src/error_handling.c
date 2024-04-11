@@ -120,12 +120,12 @@ int    parsing_error(t_tokens **tokens)
 
     while (tokens[++i])
     {
-        if (is_unhandled_operator(tokens[i]->token) && tokens[i]->type == UNQUOTED)
+        if (is_unhandled_operator(tokens[i]->token) && tokens[i]->quoted == UNQUOTED)
         {
             errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
         }
-        else if (fileop_flag && tokens[i]->type == UNQUOTED && (is_file_operator(tokens[i]->token) || is_operator(tokens[i]->token)))
+        else if (fileop_flag && tokens[i]->quoted == UNQUOTED && (is_file_operator(tokens[i]->token) || is_operator(tokens[i]->token)))
         {
             errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
@@ -135,7 +135,7 @@ int    parsing_error(t_tokens **tokens)
         else
             fileop_flag = false;
 
-        if (op_flag && is_operator(tokens[i]->token) && tokens[i]->type == UNQUOTED)
+        if (op_flag && is_operator(tokens[i]->token) && tokens[i]->quoted == UNQUOTED)
         {
             errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->token[0]);
             return (1);
@@ -145,7 +145,7 @@ int    parsing_error(t_tokens **tokens)
         else
             op_flag = true;
     }
-    if ((is_operator(tokens[i - 1]->token) || is_file_operator(tokens[i - 1]->token)) && tokens[i - 1]->type == UNQUOTED)
+    if ((is_operator(tokens[i - 1]->token) || is_file_operator(tokens[i - 1]->token)) && tokens[i - 1]->quoted == UNQUOTED)
     {
         errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->token[0]);
         return (1);

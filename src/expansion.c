@@ -95,7 +95,7 @@ char *expand_token(char *token, int status)
             k = i;
             while (token[k] && token[k] != '\'')
                 k++;
-            res[j++] = ft_substr(token, i, k - i);
+            res[j++] = ft_substr(token, i - 1, (k - i) + 2);
             i = k + 1;
         }
         else if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
