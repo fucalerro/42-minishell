@@ -11,6 +11,9 @@
 #define QUOTED          1
 #define UNQUOTED        0
 
+#define NO_QUOTES       'N'
+#define S_QUOTES        'S'
+#define D_QUOTES        'D'
 
 typedef struct s_tokens
 {

@@ -204,8 +204,6 @@ char **consolidate_cmd(t_tokens **input, int i, int *arg_count)
     cmd_len = 0;
     while (input[j] && (!is_metachar(input[j]->token[0]) || (is_metachar(input[j]->token[0]) && input[j]->type == QUOTED)))
     {
-        // printf("is_metachar: %d\n", is_metachar(input[j]->token[0]));
-        // printf("input[j]->token: %s\n", input[j]->token);
         cmd_len++;
         j++;
     }
@@ -213,14 +211,7 @@ char **consolidate_cmd(t_tokens **input, int i, int *arg_count)
     j = 0;
     while (input[i] && (!is_metachar(input[i]->token[0]) || (is_metachar(input[i]->token[0]) && input[i]->type == QUOTED)))
     {
-        // if (is_quote(input[i]->token[0]))
-        // {
-        //     char *tmp = around_quotes_remover(input[i]->token);
-        //     cmd[j] = ft_strdup(tmp);
-        //     free(tmp);
-        // }
-        // else
-            cmd[j] = ft_strdup(input[i]->token);
+        cmd[j] = ft_strdup(input[i]->token);
         i++;
         j++;
     }
@@ -241,33 +232,32 @@ t_node *parser(t_tokens **tokens)
     char **consolidated_cmd;
     int arg_count;
 
-    print_tokens(tokens);
 
     lst = NULL;
     token_count = get_elem_count_tok(tokens);
     i = 0;
     while (tokens[i])
     {
-        if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->type == UNQUOTED)
+        if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->type == 0)
         {
             lst_append(&lst, T_PIPE, NULL, NULL, NULL);
         }
-        else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->type == UNQUOTED && i + 1 < token_count)
+        else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->type == 0 && i + 1 < token_count)
         {
             lst_append(&lst, T_OUTFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED)
+        else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count && tokens[i]->type == 0)
         {
             lst_append(&lst, T_INFILE, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED) // append mode
+        else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count && tokens[i]->type == 0) // append mode
         {
             lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL, NULL);
             i ++;
         }
-        else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count && tokens[i]->type == UNQUOTED) // heredoc
+        else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count && tokens[i]->type == 0) // heredoc
         {
             around_quotes_remover(tokens[i + 1]->token);
             lst_append(&lst, T_HEREDOC, NULL, NULL, tokens[i + 1]->token);
@@ -275,11 +265,9 @@ t_node *parser(t_tokens **tokens)
         }
         else
         {
-            // PL;
             consolidated_cmd = consolidate_cmd(tokens, i, &arg_count);
             lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
             i += arg_count;
-            // printf("i: %d\n", i);
         }
         i++;
     }

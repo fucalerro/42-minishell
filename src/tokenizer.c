@@ -175,20 +175,15 @@ t_tokens    **quotes_tokenizer(char **tokens)
     while (tokens[i])
     {
         res[i] = malloc(sizeof(t_tokens));
-        if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
-        {
-            res[i]->is_in_quotes = set_is_in_quotes(tokens[i]);
-            printf("is_in_quotes: %s\n", res[i]->is_in_quotes);
-            res[i]->type = QUOTED;
+        // if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
+        // {
+            res[i]->type = is_quote(tokens[i][0]);
             char *temp = all_quotes_remover(tokens[i]);
             // free(tokens[i]);
             res[i]->token = ft_strdup(temp);
-        }
-        else
-        {
-            res[i]->type = UNQUOTED;
-            res[i]->token = ft_strdup(tokens[i]);
-        }
+        // }
+        // else
+            // res[i]->token = ft_strdup(tokens[i]);
         i++;
     }
     res[i] = 0;
