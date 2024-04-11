@@ -16,6 +16,7 @@ typedef struct s_tokens
 {
     char    *token;
     int     type;
+    char    *is_in_quotes;
 }           t_tokens;
 
 

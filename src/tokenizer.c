@@ -143,6 +143,26 @@ int quotes_error_check(char *string)
 }
 
 
+char    *set_is_in_quotes(char *token)
+{
+    char *res;
+    int i;
+
+    res = malloc(sizeof(char) * (ft_strlen(token) + 1));
+    i = 0;
+    while (token[i])
+    {
+        if (is_in_quotes(token, i) == SINGLE_QUOTE)
+            res[i] = 'S';
+        else if (is_in_quotes(token, i) == DOUBLE_QUOTE)
+            res[i] = 'D';
+        else
+            res[i] = 'N';
+        i++;
+    }
+    return (res);
+}
+
 
 t_tokens    **quotes_tokenizer(char **tokens)
 {
@@ -157,6 +177,8 @@ t_tokens    **quotes_tokenizer(char **tokens)
         res[i] = malloc(sizeof(t_tokens));
         if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
         {
+            res[i]->is_in_quotes = set_is_in_quotes(tokens[i]);
+            printf("is_in_quotes: %s\n", res[i]->is_in_quotes);
             res[i]->type = QUOTED;
             char *temp = all_quotes_remover(tokens[i]);
             // free(tokens[i]);
