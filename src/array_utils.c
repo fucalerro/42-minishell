@@ -109,8 +109,8 @@ void    print_tokens(t_tokens **tokens)
     i = 0;
     while (tokens[i])
     {
-        // printf("token: %s\n", tokens[i]->token);
-        // printf("type:  %d\n", tokens[i]->type);
+        printf("token: %s\n", tokens[i]->token);
+        printf("type:  %d\n\n", tokens[i]->quoted);
         i++;
     }
 }
@@ -125,4 +125,42 @@ void    free_string_array(char **strings)
         i++;
     }
     free(strings);
+}
+
+char *flatten_2d_array(char **array)
+{
+    char *res;
+    int i;
+    int j;
+    int k;
+
+    i = 0;
+    j = 0;
+    k = 0;
+    while (array[i])
+    {
+        while (array[i][j])
+        {
+            k++;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+    res = malloc(sizeof(char) * (k + 1));
+    i = 0;
+    j = 0;
+    k = 0;
+    while (array[i])
+    {
+        while (array[i][j])
+        {
+            res[k++] = array[i][j];
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+    res[k] = 0;
+    return (res);
 }

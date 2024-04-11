@@ -143,6 +143,26 @@ int quotes_error_check(char *string)
 }
 
 
+char    *set_is_in_quotes(char *token)
+{
+    char *res;
+    int i;
+
+    res = malloc(sizeof(char) * (ft_strlen(token) + 1));
+    i = 0;
+    while (token[i])
+    {
+        if (is_in_quotes(token, i) == SINGLE_QUOTE)
+            res[i] = 'S';
+        else if (is_in_quotes(token, i) == DOUBLE_QUOTE)
+            res[i] = 'D';
+        else
+            res[i] = 'N';
+        i++;
+    }
+    return (res);
+}
+
 
 t_tokens    **quotes_tokenizer(char **tokens)
 {
@@ -155,18 +175,15 @@ t_tokens    **quotes_tokenizer(char **tokens)
     while (tokens[i])
     {
         res[i] = malloc(sizeof(t_tokens));
-        if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
-        {
-            res[i]->type = QUOTED;
+        // if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
+        // {
+            res[i]->quoted = is_quote(tokens[i][0]);
             char *temp = all_quotes_remover(tokens[i]);
             // free(tokens[i]);
             res[i]->token = ft_strdup(temp);
-        }
-        else
-        {
-            res[i]->type = UNQUOTED;
-            res[i]->token = ft_strdup(tokens[i]);
-        }
+        // }
+        // else
+            // res[i]->token = ft_strdup(tokens[i]);
         i++;
     }
     res[i] = 0;
@@ -197,9 +214,11 @@ t_tokens **tokenizer(char *string, int status)
     op_tokenized = malloc((i + 1) * sizeof(char **));
     i = 0;
 
+
+    // PL;
+    expand_env_vars(sp_tokenized, status);
     // print_string_tab(sp_tokenized);
 
-    expand_env_vars(sp_tokenized, status);
     while (sp_tokenized[i])
     {
         op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
@@ -213,7 +232,6 @@ t_tokens **tokenizer(char *string, int status)
     char **tokenized;
     tokenized = flatten_3d_array(op_tokenized);
 
-    // print_string_tab(tokenized);
 
     tokens = quotes_tokenizer(tokenized);
 

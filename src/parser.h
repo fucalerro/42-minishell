@@ -11,11 +11,15 @@
 #define QUOTED          1
 #define UNQUOTED        0
 
+#define NO_QUOTES       'N'
+#define S_QUOTES        'S'
+#define D_QUOTES        'D'
 
 typedef struct s_tokens
 {
     char    *token;
-    int     type;
+    int     quoted;
+    char    *is_in_quotes;
 }           t_tokens;
 
 
