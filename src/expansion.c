@@ -28,7 +28,7 @@ char *get_var_name(char *token)
     }
     if (!token[i] || !ft_isalnum(token[i]))
     {
-        return (0);
+        return (ft_strdup("$"));
     }
     var_name = malloc(sizeof(char) * ft_strlen(token) + 1);
     while (token[i] && ft_isalnum(token[i]))
@@ -43,6 +43,11 @@ char    *get_var_value(char *var_name, int status)
 {
     char *var_value;
 
+    if (!ft_strcmp(var_name, "$"))
+    {
+        return (ft_strdup("$"));
+    }
+
     if (!ft_strcmp("?", var_name))
         return (ft_itoa(status));
 
@@ -52,69 +57,68 @@ char    *get_var_value(char *var_name, int status)
     return (0);
 }
 
-char *expand_token(char *token, int status)
+int get_nbr_of_vars(char *token)
 {
-    char *var_value;
-    char *var_name;
-    char *new_token;
-    int new_token_len;
-
-    char **res;
-
-
-    int nbr_of_vars;
     int i;
+    int nbr_of_vars;
 
     i = 0;
     nbr_of_vars = 0;
-
     while (token[i])
     {
         if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
             nbr_of_vars++;
         i++;
     }
-    printf("nbr_of_vars: %d\n", nbr_of_vars);
+    return (nbr_of_vars);
+}
+
+char *expand_token(char *token, int status)
+{
+    char *var_value;
+    char *var_name;
+    int nbr_of_vars;
+    int i;
+    int j;
+    int k;
+    char **res;
+
+    nbr_of_vars = get_nbr_of_vars(token);
     res = malloc(sizeof(char *) * (nbr_of_vars * 3 + 1));
 
-
-    int j;
-    i = 0;
     j = 0;
-    new_token_len = 0;
-
+    i = 0;
     while (token[i])
     {
-        printf("token[i]: %c\n", token[i]);
-        if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
+        if (is_in_quotes(token, i) == SINGLE_QUOTE)
+        {
+            k = i;
+            while (token[k] && token[k] != '\'')
+                k++;
+            res[j++] = ft_substr(token, i, k - i);
+            i = k + 1;
+        }
+        else if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
         {
             var_name = get_var_name(&token[i]);
             var_value = get_var_value(var_name, status);
             if (var_value)
-            {
                 res[j++] = ft_strdup(var_value);
-                printf("res[j]: %s\n", res[j - 1]);
-            }
+            else
+                res[j++] = ft_strdup("");
+            i += ft_strlen(var_name) + 1;
         }
         else
         {
-
-
-            res[j++] = ft_strdup(&token[i]);
-            printf("res[j]: %s\n", res[j - 1]);
-            // new_token[new_token_len++] = token[i++];
-            // new_token[new_token_len] = 0;
+            k = i;
+            while (token[k] && token[k] != '$')
+                k++;
+            res[j++] = ft_substr(token, i, k - i);
+            i = k;
         }
-        i++;
     }
     res[j] = 0;
-
-    printf("------------\n");
-
-    print_string_tab(res);
-
-
-    // free(var_name);
+    char *new_token = flatten_2d_array(res);
     return (new_token);
 }
 
@@ -129,10 +133,11 @@ void    expand_env_vars(char **tokens, int status)
         if (ft_strchr(tokens[i], '$'))
         {
             tmp = expand_token(tokens[i], status);
+            // PL;
             if (tmp)
             {
                 tokens[i] = ft_strdup(tmp);
-                // free(tmp);
+                free(tmp);
             }
         }
         i++;

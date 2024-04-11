@@ -198,9 +198,9 @@ t_tokens **tokenizer(char *string, int status)
     i = 0;
 
 
-
-    print_string_tab(sp_tokenized);
+    // PL;
     expand_env_vars(sp_tokenized, status);
+
     while (sp_tokenized[i])
     {
         op_tokenized[i] = op_tokenizer(sp_tokenized[i]);

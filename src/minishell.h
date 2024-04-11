@@ -44,6 +44,7 @@ int get_elem_count_arr(char **array);
 char **flatten_3d_array(char ***array3d);
 void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
+char *flatten_2d_array(char **array);
 // parser.c
 size_t	wordcounter(char const *s, char c);
 t_node *parser(t_tokens **tokens);
