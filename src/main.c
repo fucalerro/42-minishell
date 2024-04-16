@@ -89,11 +89,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 				add_to_history(history, prompt);
 				ft_write_history_file(prompt, *env_copy);
 			}
-			//sort_infile(&lst);
 			deal_with_multi_cmd(lst);
-			exe_prompt(lst, env_copy, history, status);
-		}
-
         tmpline = builtin_pwd();
         *line = ft_strjoin(tmpline, "🌻 ");
 
