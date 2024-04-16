@@ -1,19 +1,5 @@
 #include "minishell.h"
 
-char    *expand_last_status(int status, char *token)
-{
-    char *status_string;
-
-    status_string = ft_itoa(status);
-
-    if (token[2])
-        token = ft_strjoin(status_string, &token[2]);
-    else
-        token = ft_strdup(status_string);
-    // free(status_string);
-    return (token);
-}
-
 char *get_var_name(char *token)
 {
     char *var_name;

@@ -70,22 +70,47 @@ void	export_var(char ***env, char *var)
 
 }
 
-int	is_var_valid(char *var)
+int is_varname_valid(char *var)
 {
 	int i;
 
 	i = 0;
 	if (!ft_isalpha(var[i]) && var[i] != '_')
 	{
-		printf("export: not a valid identifier\n");
+		errno = EINVAL;
+		write_err("export: not a valid identifier\n");
 		return (false);
 	}
 	i++;
-	while (var[i])
+	while (var[i] && var[i] != '=')
 	{
 		if (!ft_isalnum(var[i]) && var[i] != '_')
 		{
-			printf("export: not a valid identifier\n");
+			errno = EINVAL;
+			write_err("export: not a valid identifier\n");
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+int is_varvalue_valid(char *var)
+{
+	int i;
+
+	i = 0;
+	while (var[i] && var[i] != '=')
+		i++;
+	if (var[i] != '=')
+		return (true);
+	i++;
+	while (var[i])
+	{
+		if (!ft_isprint(var[i]))
+		{
+			errno = EINVAL;
+			write_err("export: not a valid identifier\n");
 			return (false);
 		}
 		i++;
@@ -96,23 +121,36 @@ int	is_var_valid(char *var)
 void	print_env(char **tab)
 {
 	int i;
+	int j;
+	char *value;
 
 	i = 0;
 	while (tab[i])
 	{
+		j = 0;
 		printf("declare -x ");
-		int j = 0;
-		while (tab[i] && tab[i][j] != '=')
-			printf("%c", tab[i][j++]);
-		char *value = ft_strchr(tab[i], '=');
-		printf("=\"%s\"\n", ++value);
-		i++;
 
+		while (tab[i][j] && tab[i][j] != '=')
+		{
+			printf("%c", tab[i][j++]);
+		}
+
+		if (ft_strchr(tab[i], '='))
+		{
+			value = ft_strchr(tab[i], '=');
+			printf("=\"%s\"\n", ++value);
+		}
+		else
+		{
+			printf("\n");
+		}
+
+		i++;
 	}
 }
 
 
-void	builtin_export(char ***env, char **var)
+int	builtin_export(char ***env, char **var)
 {
 	int i;
 	i = 0;
@@ -120,20 +158,20 @@ void	builtin_export(char ***env, char **var)
 	if (!var[1])
 	{
 		print_env(*env);
-		return ;
+		return (0);
 	}
 	while (var[++i])
 	{
-		if(!is_var_valid(var[i]))
-			return ;
+		if(!is_varvalue_valid(var[i]))
+			return (1);
+		if(!is_varname_valid(var[i]))
+			return (1);
 	}
 	i = 0;
 	while (var[++i])
 		export_var(env, var[i]);
+	return (0);
 }
-
-
-
 
 void unset_var(char **env, char *var)
 {

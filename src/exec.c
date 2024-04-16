@@ -13,7 +13,7 @@ char	*get_cmd_path(char *raw, char **path)
         {
             free(cmd);
             cmd = tmp;
-            return (cmd); 
+            return (cmd);
         }
         free(tmp);
         path++;
@@ -113,21 +113,21 @@ char	**get_path(char *env[])
 int is_builtin(char **cmd)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0], "history"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0],"exit"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0],"env"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0],"export"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0], "pwd"))
-		return 1;	
+		return 1;
 	else if (!ft_strcmp(cmd[0], "unset"))
-		return 1;	
+		return 1;
 	//else if (!ft_strcmp(cmd[0], "echo"))
-	//	return 1;	
+	//	return 1;
 	else
 		return 0;
 }
@@ -144,7 +144,7 @@ int exe_builtin(t_node *node, t_hist **hist, char ***env)
 	else if (!ft_strcmp(cmd[0],"env"))
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0],"export"))
-		builtin_export(env, cmd);
+		return (builtin_export(env, cmd));
 	else if (!ft_strcmp(cmd[0],"pwd"))
 		printf("%s\n",builtin_pwd());
 	else if (!ft_strcmp(cmd[0], "unset"))
