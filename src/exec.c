@@ -136,9 +136,9 @@ int exe_builtin(t_node *node, t_hist **hist, char ***env)
 {
 	char **cmd = node->cmd;
 	if (!ft_strcmp(cmd[0],"cd"))
-		return builtin_cd(cmd[1]);
+		return builtin_cd(cmd[1], *env);
 	else if (!ft_strcmp(cmd[0], "history"))
-		builtin_history(cmd, hist);
+		builtin_history(cmd, hist, *env);
 	else if (!ft_strcmp(cmd[0],"exit"))
 		return builtin_exit(node);
 	else if (!ft_strcmp(cmd[0],"env"))

@@ -11,9 +11,9 @@ char *builtin_pwd(void) {
 	return NULL;
 }
 
-int builtin_cd(const char *path) {
+int builtin_cd(const char *path, char **env) {
     if (path == NULL) {
-        path = getenv("HOME");
+        path = ft_getenv("HOME", env);
         if (path == NULL) {
             write_err("cd: HOME not set\n");
             return 1;
@@ -27,7 +27,7 @@ int builtin_cd(const char *path) {
 	return 0;
 }
 
-void    builtin_history(char **cmd, t_hist **hist)
+void    builtin_history(char **cmd, t_hist **hist, char **env)
 {
     char *home;
     char *path;
@@ -38,11 +38,11 @@ void    builtin_history(char **cmd, t_hist **hist)
     }
     if (!cmd[1])
     {
-        print_hist();
+        print_hist(env);
     }
     else if (!ft_strcmp(cmd[1], "-c"))
     {
-        path = get_history_path();
+        path = get_history_path(env);
         unlink(path);
         // free(path);
         rl_clear_history();
@@ -83,7 +83,7 @@ int builtin_echo(t_node *node)
 	char **cmd = node->cmd;
 	int i = 1;
 	int new_line = 1;
-	
+
 	if(!cmd[1])
 	{
 		printf("\n");

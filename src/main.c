@@ -87,7 +87,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 			if (lst)
 			{
 				add_to_history(history, prompt);
-				ft_write_history_file(prompt);
+				ft_write_history_file(prompt, *env_copy);
 			}
 			//sort_infile(&lst);
 			deal_with_multi_cmd(lst);
@@ -121,12 +121,12 @@ int main(int ac, char **av, char **env)
 
 	history = NULL;
 
-	ft_read_history(&history);
 
 	line = ft_strjoin(tmpline, "🌻 ");
 	free(tmpline);
 	env_copy = copy_env(env, 0);
 
+	ft_read_history(&history, env_copy);
 
 
 	process_input_loop(&line, &env_copy, &history, &status);

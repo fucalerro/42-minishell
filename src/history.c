@@ -12,13 +12,18 @@ void	remove_end_newline(char *line)
 		line[i - 1] = 0;
 }
 
-char	*get_history_path(void)
+char	*get_history_path(char **env)
 {
 	char *home;
 	char *path;
 	char *filename = ".minishell_history";
 
 	home = getenv("HOME");
+	if (!home)
+	{
+		write_err("HOME not set\n");
+		return (0);
+	}
 	path = ft_strjoin(home, filename);
 
 	return (filename);
@@ -26,14 +31,14 @@ char	*get_history_path(void)
 	// return (path);
 }
 
-void	ft_read_history(t_hist **hist)
+void	ft_read_history(t_hist **hist, char **env)
 {
 	int	hist_fd;
 	char *home;
 	char *line;
 	char *path;
 
-	path = get_history_path();
+	path = get_history_path(env);
 
 	hist_fd = open(path, O_RDONLY, 0644);
 	if (hist_fd < 0)
@@ -67,14 +72,14 @@ void	ft_read_history(t_hist **hist)
 
 }
 
-int	ft_write_history_file(char *line)
+int	ft_write_history_file(char *line, char **env)
 {
 	int	hist_fd;
 	char *path;
 
 	remove_end_newline(line);
 
-	path = get_history_path();
+	path = get_history_path(env);
 
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
 
@@ -85,30 +90,6 @@ int	ft_write_history_file(char *line)
 	return (0);
 }
 
-
-
-// t_hist	*hist_new(char *line)
-// {
-// 	t_hist	*node;
-
-// 	node = (t_hist *)malloc(sizeof(struct s_hist));
-// 	if (!node)
-// 		return ((t_hist *)0);
-// 	node->line = line;
-// 	node->previous = (t_hist *)0;
-// 	node->next = (t_hist *)0;
-// 	return (node);
-// }
-
-// t_hist	*hist_last(t_hist *hist)
-// {
-// 	if (!hist)
-// 		return ((t_hist *)0);
-// 	while (hist->next)
-// 		hist = hist->next;
-// 	return (hist);
-// }
-
 void	add_to_history(t_hist **hist, char *line)
 {
 	t_hist	*history;
@@ -116,25 +97,14 @@ void	add_to_history(t_hist **hist, char *line)
 
 	add_history(line);
 	remove_end_newline(line);
-	// ft_write_history_file(line);
-
-	// new = hist_new(line);
-	// if (*hist)
-	// {
-	// 	history = hist_last(*hist);
-	// 	history->next = new;
-	// 	new->previous = history;
-	// }
-	// else
-	// 	*hist = new;
 }
 
-void	print_hist()
+void	print_hist(char **env)
 {
 	int hist_fd;
 	char *path;
 
-	path = get_history_path();
+	path = get_history_path(env);
 
 	hist_fd = open(path, O_RDONLY);
 	char *line;
@@ -146,41 +116,3 @@ void	print_hist()
 		line = get_next_line(hist_fd);
 	}
 }
-
-
-
-// void	print_hist(t_hist *hist)
-// {
-// 	int hist_fd;
-// 	char *home;
-// 	char *path;
-
-// 	path = ft_strjoin(getenv("HOME"), "/.minishell_history");
-// 	hist_fd = open(path, O_RDONLY);
-// 	char *line;
-// 	line = "";
-// 	if (hist_fd >= 0)
-// 	{
-// 		while (line)
-// 		{
-// 			line = get_next_line(hist_fd);
-// 			if (line)
-// 				printf("%s", line);
-// 		}
-// 	}
-
-// }
-
-// void    clear_hist(t_hist **hist)
-// {
-//     t_hist  *tmp;
-
-//     while (*hist)
-//     {
-//         tmp = *hist;
-//         *hist = tmp->next;
-//         free(tmp->line);
-//         free(tmp);
-//     }
-//     *hist = NULL;
-// }
