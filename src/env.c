@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+char *ft_getenv(char *varname, char **env)
+{
+	int i;
+	int varname_len;
+	char *var_value;
+
+	i = -1;
+	varname_len = ft_strlen(varname);
+	while (env[++i])
+		if (!ft_strncmp(varname, env[i], varname_len))
+			return (env[i] + varname_len + 1);
+	return (0);
+}
+
 char **copy_env(char **env, int size)
 {
 	int env_size;
