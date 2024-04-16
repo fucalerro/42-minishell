@@ -36,7 +36,7 @@ extern int errno;
 void	print_list(t_node *lst);
 // var_expansion.c
 char    *var_expander(char *string);
-void    expand_env_vars(char **tokens, int status);
+void    expand_env_vars(char **tokens, int status, char **env);
 // array_utils.c
 void    print_tokens(t_tokens **tokens);
 int get_elem_count_tok(t_tokens **array);
@@ -54,7 +54,7 @@ int word_counter_quotes(char *input);
 int is_in_quotes(char *input, int index);
 char **consolidate_cmd(t_tokens **input, int i, int *arg_count);
 // tokenizer.c
-t_tokens **tokenizer(char *string, int status);
+t_tokens **tokenizer(char *string, int status, char **env);
 char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);
 //error_handling.c
@@ -67,7 +67,8 @@ char *builtin_pwd(void);
 int builtin_cd(const char *path);
 int builtin_exit(t_node *node);
 void builtin_history(char **cmd, t_hist **hist);
-// env
+// env.c
+char *ft_getenv(char *varname, char **env);
 void builtin_env(char **env);
 int builtin_export(char ***env, char **var);
 char **copy_env(char **env, int size);

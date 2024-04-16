@@ -25,7 +25,7 @@ char *get_var_name(char *token)
     return (var_name);
 }
 
-char    *get_var_value(char *var_name, int status)
+char    *get_var_value(char *var_name, int status, char **env)
 {
     char *var_value;
 
@@ -37,7 +37,7 @@ char    *get_var_value(char *var_name, int status)
     if (!ft_strcmp("?", var_name))
         return (ft_itoa(status));
 
-    var_value = getenv(var_name);
+    var_value = ft_getenv(var_name, env);
     if (var_value)
         return (ft_strdup(var_value));
     return (0);
@@ -59,7 +59,7 @@ int get_nbr_of_vars(char *token)
     return (nbr_of_vars);
 }
 
-char *expand_token(char *token, int status)
+char *expand_token(char *token, int status, char **env)
 {
     char *var_value;
     char *var_name;
@@ -87,7 +87,7 @@ char *expand_token(char *token, int status)
         else if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
         {
             var_name = get_var_name(&token[i]);
-            var_value = get_var_value(var_name, status);
+            var_value = get_var_value(var_name, status, env);
             if (var_value)
             {
                 if (!ft_strcmp(var_value, "$"))
@@ -112,7 +112,7 @@ char *expand_token(char *token, int status)
     return (new_token);
 }
 
-void    expand_env_vars(char **tokens, int status)
+void    expand_env_vars(char **tokens, int status, char **env)
 {
     int i;
     char *tmp;
@@ -122,7 +122,7 @@ void    expand_env_vars(char **tokens, int status)
     {
         if (ft_strchr(tokens[i], '$'))
         {
-            tmp = expand_token(tokens[i], status);
+            tmp = expand_token(tokens[i], status, env);
             // PL;
             if (tmp)
             {

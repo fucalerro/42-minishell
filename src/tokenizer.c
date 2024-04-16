@@ -192,7 +192,7 @@ t_tokens    **quotes_tokenizer(char **tokens)
 
 
 
-t_tokens **tokenizer(char *string, int status)
+t_tokens **tokenizer(char *string, int status, char **env)
 {
     char    *normalized_input;
     char    **sp_tokenized;
@@ -216,7 +216,7 @@ t_tokens **tokenizer(char *string, int status)
 
 
     // PL;
-    expand_env_vars(sp_tokenized, status);
+    expand_env_vars(sp_tokenized, status, env);
     // print_string_tab(sp_tokenized);
 
     while (sp_tokenized[i])

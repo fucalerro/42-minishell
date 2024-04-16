@@ -73,7 +73,7 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 
 		err_flag = false;
 
-        tokens = tokenizer(prompt, *status);
+        tokens = tokenizer(prompt, *status, *env_copy);
 
 
 		if (parsing_error(tokens))
