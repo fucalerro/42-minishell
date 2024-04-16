@@ -12,12 +12,12 @@ char *get_var_name(char *token)
     {
         return (ft_strdup("?"));
     }
-    if (!token[i] || !ft_isalnum(token[i]))
+    if (!token[i] || (!ft_isalnum(token[i]) && token[i] != '_'))
     {
         return (ft_strdup("$"));
     }
     var_name = malloc(sizeof(char) * ft_strlen(token) + 1);
-    while (token[i] && ft_isalnum(token[i]))
+    while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
     {
         var_name[j++] = token[i++];
     }
@@ -89,7 +89,11 @@ char *expand_token(char *token, int status)
             var_name = get_var_name(&token[i]);
             var_value = get_var_value(var_name, status);
             if (var_value)
+            {
+                if (!ft_strcmp(var_value, "$"))
+                    i--;
                 res[j++] = ft_strdup(var_value);
+            }
             else
                 res[j++] = ft_strdup("");
             i += ft_strlen(var_name) + 1;
