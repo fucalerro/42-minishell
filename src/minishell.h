@@ -69,7 +69,7 @@ int builtin_exit(t_node *node);
 void builtin_history(char **cmd, t_hist **hist);
 // env
 void builtin_env(char **env);
-void builtin_export(char ***env, char **var);
+int builtin_export(char ***env, char **var);
 char **copy_env(char **env, int size);
 void builtin_unset(char ***env, char **var);
 int builtin_echo(t_node *node);
