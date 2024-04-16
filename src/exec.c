@@ -99,6 +99,8 @@ char	**get_path(char *env[])
             break ;
         i++;
     }
+	if (!env[i])
+		return NULL;
     tmps = ft_split(&env[i][5], ':');
     i = 0;
     while (tmps[i])
@@ -177,7 +179,14 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		run_redirection_file(node);
 		return exe_builtin(node, hist, env);
 	}
-
+	else if (!path)
+	{
+		write_err("minishell: command not found: ");
+		write_err(cmd[0]);
+		write_err("\n");
+		return(ERR_CMD_NOT_FOUND);
+	}
+	else
 	if (cmd_do_not_include_path(node->cmd[0]))
 	{
 		node->cmd[0] = get_cmd_path(node->cmd[0], path);
@@ -244,7 +253,6 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	node = list;
 
 	path = get_path(*env);
-	
 	//while loop to exec
 	while(node)
 	{
@@ -259,7 +267,9 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		node = node->next;
 	}
 
-	free_string_array(path);
+	// PL;
+	if (path)
+		free_string_array(path);
 
 	//while loop to waitpid
 	while(pid_stack)
