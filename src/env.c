@@ -9,7 +9,7 @@ char *ft_getenv(char *varname, char **env)
 	i = -1;
 	varname_len = ft_strlen(varname);
 	while (env[++i])
-		if (!ft_strncmp(varname, env[i], varname_len))
+		if (!ft_strncmp(varname, env[i], varname_len) && env[i][varname_len] == '=')
 			return (env[i] + varname_len + 1);
 	return (0);
 }
