@@ -42,6 +42,7 @@ int check_pipe(t_node *node)
 		return_value += 2;
 	return(return_value);
 }
+
 int run_redirection_file(t_node *node)
 {
 	t_node *node_tmp;
@@ -70,6 +71,7 @@ int run_redirection_file(t_node *node)
 	}
 	return return_value;
 }
+
 int set_pipe(t_node *node)
 {
 	int check_value;
@@ -120,7 +122,6 @@ char	**get_path(char *env[])
     return (tmps);
 }
 
-
 int is_builtin(char **cmd)
 {
 	if (!ft_strcmp(cmd[0],"cd"))
@@ -164,6 +165,7 @@ int exe_builtin(t_node *node, t_hist **hist, char ***env)
 		builtin_echo(node);
 	return 0;
 }
+
 int cmd_do_not_include_path(char *cmd)
 {
 	while(*cmd)
@@ -174,31 +176,6 @@ int cmd_do_not_include_path(char *cmd)
 	}
 	return (1);
 }
-
-int init_pipe(t_node *node)
-{
-	while (node)
-	{
-		if (node->type == T_PIPE && node->active)
-			pipe(node->pipe);
-		node = node->next;
-	}
-	return 0;
-}
-int close_pipe(t_node *node)
-{
-	while (node)
-	{
-		if (node->type == T_PIPE && node->active)
-		{
-			close(node->pipe[0]);
-			close(node->pipe[1]);
-		}
-		node = node->next;
-	}
-	return 0;
-}
-
 
 int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {

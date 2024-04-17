@@ -26,3 +26,28 @@ void check_pipe_status(t_node *node)
 		node = node->next;
 	}
 }
+
+int init_pipe(t_node *node)
+{
+	while (node)
+	{
+		if (node->type == T_PIPE && node->active)
+			pipe(node->pipe);
+		node = node->next;
+	}
+	return 0;
+}
+
+int close_pipe(t_node *node)
+{
+	while (node)
+	{
+		if (node->type == T_PIPE && node->active)
+		{
+			close(node->pipe[0]);
+			close(node->pipe[1]);
+		}
+		node = node->next;
+	}
+	return 0;
+}

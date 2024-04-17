@@ -95,6 +95,8 @@ void sigint_handler(int sig);
 void sigquit_handler(int sig);
 //pipe.c
 void check_pipe_status(t_node *node);
+int init_pipe(t_node *node);
+int close_pipe(t_node *node);
 
 
 // print_line define for quick debug
