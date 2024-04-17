@@ -185,6 +185,31 @@ int cmd_do_not_include_path(char *cmd)
 	return (1);
 }
 
+void xxclose_pipe(int way, t_node *node) //way 1 = next --- way -1 = previous
+{
+	t_node *tmp;
+	int *pipe_fd;
+
+	tmp = node;
+	if (way == 1)
+	{
+		while (tmp->type != T_PIPE)
+			tmp = tmp->next;
+		pipe_fd = tmp->pipe;
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+	}
+	else if (way == -1)
+	{
+		while (tmp->type != T_PIPE)
+			tmp = tmp->previous;
+		pipe_fd = tmp->pipe;
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+	}
+
+}
+
 int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {
 	pid_t	pid;
