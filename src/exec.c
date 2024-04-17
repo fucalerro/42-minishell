@@ -27,11 +27,18 @@ char	*get_cmd_path(char *raw, char **path)
 int check_pipe(t_node *node)
 {
 	int return_value;
+	t_node *tmp;
 
+	tmp = node;
 	return_value = 0;
-	if(node && node->next && node->next->type == T_PIPE)
+	while(tmp && tmp->type != T_PIPE)
+		tmp = tmp->next;
+	if(tmp && tmp->type == T_PIPE && tmp->active)
 		return_value += 1;
-	if(node && node->previous && node->previous->type == T_PIPE)
+	tmp=node;
+	while(tmp && tmp->type != T_PIPE)
+		tmp = tmp->previous;
+	if(tmp && tmp->type == T_PIPE && tmp->active)
 		return_value += 2;
 	return(return_value);
 }
@@ -178,6 +185,20 @@ int init_pipe(t_node *node)
 	}
 	return 0;
 }
+int close_pipe(t_node *node)
+{
+	while (node)
+	{
+		if (node->type == T_PIPE && node->active)
+		{
+			close(node->pipe[0]);
+			close(node->pipe[1]);
+		}
+		node = node->next;
+	}
+	return 0;
+}
+
 
 int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {
@@ -266,12 +287,11 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 
 	path = get_path(*env);
 	//while loop to exec
+	init_pipe(node);
 	while(node)
 	{
 		if(!node) 
 			break;
-		if (node->next && node->next->type == T_PIPE)
-			pipe(node->next->pipe);
 		if (node->type == T_CMD)
 		{
 			*status = run_cmd(path, node, hist, &pid_stack, env);
@@ -279,6 +299,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		node = node->next;
 	}
 
+	close_pipe(list);
 	// PL;
 	if (path)
 		free_string_array(path);
