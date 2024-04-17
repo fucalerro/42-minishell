@@ -293,8 +293,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		stack_add(pid_stack, pid);
 		if (check_pipe(node) & PIPE_PREVIOUS)
 		{
-			close(node->previous->pipe[0]);
-			close(node->previous->pipe[1]);
+			xxclose_pipe(-1, node);
 		}
 	}
 	return 0;
@@ -343,7 +342,6 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		node = node->next;
 	}
 
-	close_pipe(list);
 	// PL;
 	if (path)
 		free_string_array(path);
