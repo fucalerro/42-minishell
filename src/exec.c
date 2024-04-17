@@ -251,6 +251,23 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	return 0;
 }
 
+void flag_builtin_fork(t_node *node)
+{
+	t_node *tmp;
+	tmp = node;
+	while(tmp && tmp->type != T_PIPE)
+		tmp= tmp->next;
+	if (!tmp || tmp->type != T_PIPE)
+		return;
+	tmp = node;
+	while(tmp)
+	{
+		if (tmp->type == T_CMD)
+			tmp->active = 2;
+		tmp = tmp->next;
+	}
+}
+
 int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 {
 
@@ -265,6 +282,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	path = get_path(*env);
 	//while loop to exec
 	init_pipe(node);
+	flag_builtin_fork(node);
 	while(node)
 	{
 		if(!node) 
