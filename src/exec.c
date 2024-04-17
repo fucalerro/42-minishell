@@ -329,6 +329,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 
 	path = get_path(*env);
 	//while loop to exec
+	check_pipe_status(node);
 	init_pipe(node);
 	flag_builtin_fork(node);
 	while(node)
