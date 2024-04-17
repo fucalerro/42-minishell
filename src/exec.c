@@ -66,22 +66,22 @@ int run_redirection_file(t_node *node)
 int set_pipe(t_node *node)
 {
 	int check_value;
-	int  (*pipe_fd)[2];
+	int  *pipe_fd;
 
 	check_value = check_pipe(node);
 	if (check_value & PIPE_NEXT)
 	{
 		pipe_fd = node->next->pipe;
-		close(pipe_fd[0][0]);
-		dup2(pipe_fd[0][1], STDOUT_FILENO);
-		close(pipe_fd[0][1]);
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
 	}
 	if (check_value & PIPE_PREVIOUS)
 	{
 		pipe_fd = node->previous->pipe;
-		close(pipe_fd[0][1]);
-		dup2(pipe_fd[0][0], STDIN_FILENO);
-		close(pipe_fd[0][0]);
+		close(pipe_fd[1]);
+		dup2(pipe_fd[0], STDIN_FILENO);
+		close(pipe_fd[0]);
 	}
 	return 0;
 }
@@ -167,6 +167,18 @@ int cmd_do_not_include_path(char *cmd)
 	}
 	return (1);
 }
+
+int init_pipe(t_node *node)
+{
+	while (node)
+	{
+		if (node->type == T_PIPE && node->active)
+			pipe(node->pipe);
+		node = node->next;
+	}
+	return 0;
+}
+
 int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 {
 	pid_t	pid;
@@ -234,8 +246,8 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		stack_add(pid_stack, pid);
 		if (check_pipe(node) & PIPE_PREVIOUS)
 		{
-			close(node->previous->pipe[0][0]);
-			close(node->previous->pipe[0][1]);
+			close(node->previous->pipe[0]);
+			close(node->previous->pipe[1]);
 		}
 	}
 	return 0;
@@ -259,7 +271,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		if(!node) 
 			break;
 		if (node->next && node->next->type == T_PIPE)
-			pipe(node->next->pipe[0]);
+			pipe(node->next->pipe);
 		if (node->type == T_CMD)
 		{
 			*status = run_cmd(path, node, hist, &pid_stack, env);

@@ -20,7 +20,7 @@ typedef struct s_node
 	struct s_node	*next;
 	struct s_node	*previous;
 	char			*delimiter;
-	int 			pipe[2][2];
+	int 			pipe[2];
 } 					t_node;
 
 t_node	*lst_new(int type, char *file, char **cmd, char *delimiter);
