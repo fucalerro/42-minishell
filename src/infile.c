@@ -13,12 +13,14 @@ int	exe_infile(t_node *node)
 	if (fd < 0)
 	{
 		perror(strerror(errno));
+		close(fd);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		dup2(fd, STDIN_FILENO);
 	}
+	close(fd);
 	return 0;
 }
 
