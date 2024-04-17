@@ -76,18 +76,26 @@ int set_pipe(t_node *node)
 {
 	int check_value;
 	int  *pipe_fd;
+	t_node *tmp;
+
+	tmp = node;
 
 	check_value = check_pipe(node);
 	if (check_value & PIPE_NEXT)
 	{
-		pipe_fd = node->next->pipe;
+		while (tmp->type != T_PIPE)
+			tmp = tmp->next;
+		pipe_fd = tmp->pipe;
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 	}
+	tmp = node;
 	if (check_value & PIPE_PREVIOUS)
 	{
-		pipe_fd = node->previous->pipe;
+		while (tmp->type != T_PIPE)
+			tmp = tmp->previous;
+		pipe_fd = tmp->pipe;
 		close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
@@ -185,7 +193,23 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	cmd = node->cmd;
 	if (is_builtin(cmd))
 	{
-		set_pipe(node);
+		if (node->active == 2)
+		{
+			pid = fork();
+			if (pid)
+			{
+				stack_add(pid_stack, pid);
+				return 0;
+			}
+			else
+			{
+				set_pipe(node);
+				run_redirection_file(node);
+				exit(exe_builtin(node, hist, env));
+				
+			}
+		}
+
 		run_redirection_file(node);
 		return exe_builtin(node, hist, env);
 	}
