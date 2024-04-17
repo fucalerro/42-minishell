@@ -229,6 +229,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 			else
 			{
 				set_pipe(node);
+				close_pipe(node);
 				run_redirection_file(node);
 				exit(exe_builtin(node, hist, env));
 				
@@ -283,6 +284,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 	if (pid == 0)
 	{
 		set_pipe(node);
+		close_pipe(node);
 		if(run_redirection_file(node))
 			exit(EXIT_FAILURE);
 		execve(cmd[0], cmd, NULL);

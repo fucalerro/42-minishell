@@ -40,6 +40,8 @@ int init_pipe(t_node *node)
 
 int close_pipe(t_node *node)
 {
+	while (node && node->previous)
+		node = node->previous;
 	while (node)
 	{
 		if (node->type == T_PIPE && node->active)
