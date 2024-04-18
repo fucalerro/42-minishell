@@ -15,7 +15,6 @@ void	remove_end_newline(char *line)
 char	*get_history_path(char **env)
 {
 	char	*home;
-	char	*path;
 	char	*filename;
 
 	(void) env; //remove it if useless
@@ -26,7 +25,6 @@ char	*get_history_path(char **env)
 		write_err("HOME not set\n");
 		return (0);
 	}
-	path = ft_strjoin(home, filename);
 	return (filename);
 }
 

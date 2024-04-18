@@ -183,7 +183,6 @@ int	builtin_export(char ***env, char **var)
 void	unset_var(char **env, char *var)
 {
 	int	var_index;
-	int	i;
 
 	if (ft_strchr(var, '='))
 	{
@@ -194,7 +193,6 @@ void	unset_var(char **env, char *var)
 	if (var_index >= 0)
 	{
 		free(env[var_index]);
-		i = var_index;
 		while (env[var_index])
 		{
 			env[var_index] = env[var_index + 1];

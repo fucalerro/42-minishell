@@ -69,10 +69,8 @@ int	run_redirection_file(t_node *node)
 {
 	t_node	*node_tmp;
 	int		return_value;
-	char	**cmd;
 
 	node_tmp = node;
-	cmd = node->cmd;
 	return_value = 0;
 	while (node_tmp && node_tmp->previous && node_tmp->previous->type != T_PIPE)
 		node_tmp = node_tmp->previous;
