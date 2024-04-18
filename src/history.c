@@ -27,7 +27,6 @@ char	*get_history_path(char **env)
 	}
 	path = ft_strjoin(home, filename);
 	return (filename);
-	// return (path);
 }
 
 void	ft_read_history(t_hist **hist, char **env)

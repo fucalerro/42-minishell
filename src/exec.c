@@ -162,7 +162,7 @@ int	exe_builtin(t_node *node, t_hist **hist, char ***env)
 	else if (!ft_strcmp(cmd[0], "history"))
 		builtin_history(cmd, hist, *env);
 	else if (!ft_strcmp(cmd[0], "exit"))
-		return builtin_exit(node);
+		return (builtin_exit(node));
 	else if (!ft_strcmp(cmd[0], "env"))
 		builtin_env(*env);
 	else if (!ft_strcmp(cmd[0], "export"))
@@ -173,7 +173,7 @@ int	exe_builtin(t_node *node, t_hist **hist, char ***env)
 		builtin_unset(env, cmd);
 	else if (!ft_strcmp(cmd[0], "echo"))
 		builtin_echo(node);
-	return 0;
+	return (0);
 }
 
 int	cmd_do_not_include_path(char *cmd)
@@ -181,7 +181,7 @@ int	cmd_do_not_include_path(char *cmd)
 	while (*cmd)
 	{
 		if (*cmd == '/')
-			return 0;
+			return (0);
 		cmd++;
 	}
 	return (1);
@@ -190,9 +190,9 @@ int	cmd_do_not_include_path(char *cmd)
 int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 		char ***env)
 {
-	pid_t	pid;
-	char	**cmd;
-		struct stat path_stat;
+	pid_t		pid;
+	char		**cmd;
+	struct stat	path_stat;
 
 	cmd = node->cmd;
 	if (is_builtin(cmd))
@@ -203,7 +203,7 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 			if (pid)
 			{
 				stack_add(pid_stack, pid);
-				return 0;
+				return (0);
 			}
 			else
 			{
@@ -216,9 +216,9 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 			}
 		}
 		if (!run_redirection_file(node))
-			return exe_builtin(node, hist, env);
+			return (exe_builtin(node, hist, env));
 		else
-			return 1;
+			return (1);
 	}
 	else if (!path)
 	{
@@ -270,7 +270,7 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 	{
 		stack_add(pid_stack, pid);
 	}
-	return 0;
+	return (0);
 }
 
 void	flag_builtin_fork(t_node *node)
@@ -327,5 +327,5 @@ int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 			*status = WEXITSTATUS(*status);
 		stack_drop(&pid_stack);
 	}
-	return 0;
+	return (0);
 }
