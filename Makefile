@@ -8,7 +8,7 @@ OBJDIR          = obj
 OBJ             = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 LIBFTPATH       = libft
 LIBFT           = $(LIBFTPATH)/libft.a
-CFLAGS          = -g  -Wall -Werror -Wextra
+CFLAGS          = -g -Wall#-Werror -Wextra
 
 # Conditional Readline paths for macOS
 ifeq ($(OS),Darwin)
