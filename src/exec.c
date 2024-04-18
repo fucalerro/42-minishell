@@ -43,11 +43,36 @@ int check_pipe(t_node *node)
 	return(return_value);
 }
 
+int is_builtin(char **cmd)
+{
+	if (!ft_strcmp(cmd[0],"cd"))
+		return 1;
+	else if (!ft_strcmp(cmd[0], "history"))
+		return 1;
+	else if (!ft_strcmp(cmd[0],"exit"))
+		return 1;
+	else if (!ft_strcmp(cmd[0],"env"))
+		return 1;
+	else if (!ft_strcmp(cmd[0],"export"))
+		return 1;
+	else if (!ft_strcmp(cmd[0], "pwd"))
+		return 1;
+	else if (!ft_strcmp(cmd[0], "unset"))
+		return 1;
+	else if (!ft_strcmp(cmd[0], "echo"))
+		return 1;
+	else
+		return 0;
+}
+
 int run_redirection_file(t_node *node)
 {
 	t_node *node_tmp;
 	node_tmp = node;
 	int return_value;
+	char **cmd;
+
+	cmd = node->cmd;
 
 	return_value = 0;
 
@@ -130,27 +155,6 @@ char	**get_path(char *env[])
     return (tmps);
 }
 
-int is_builtin(char **cmd)
-{
-	if (!ft_strcmp(cmd[0],"cd"))
-		return 1;
-	else if (!ft_strcmp(cmd[0], "history"))
-		return 1;
-	else if (!ft_strcmp(cmd[0],"exit"))
-		return 1;
-	else if (!ft_strcmp(cmd[0],"env"))
-		return 1;
-	else if (!ft_strcmp(cmd[0],"export"))
-		return 1;
-	else if (!ft_strcmp(cmd[0], "pwd"))
-		return 1;
-	else if (!ft_strcmp(cmd[0], "unset"))
-		return 1;
-	//else if (!ft_strcmp(cmd[0], "echo"))
-	//	return 1;
-	else
-		return 0;
-}
 
 int exe_builtin(t_node *node, t_hist **hist, char ***env)
 {
@@ -236,14 +240,18 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 			{
 				set_pipe(node);
 				close_pipe(node);
-				run_redirection_file(node);
-				exit(exe_builtin(node, hist, env));
+				if (!run_redirection_file(node))
+					exit(exe_builtin(node, hist, env));
+				else
+					exit(1);
 				
 			}
 		}
 
-		run_redirection_file(node);
-		return exe_builtin(node, hist, env);
+		if(!run_redirection_file(node))
+			return exe_builtin(node, hist, env);
+		else
+			return 1;
 	}
 	else if (!path)
 	{

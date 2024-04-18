@@ -61,11 +61,15 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 	t_tokens **tokens;
 	t_node *lst;
 
+
 	int err_flag;
 
 	err_flag = false;
     while((prompt = readline(*line)))
 	{
+
+	int original_stdin = dup(STDIN_FILENO);
+	int original_stdout = dup(STDOUT_FILENO);
         // free(*line);
 
 		if (ft_strlen(prompt) == 0)
@@ -90,8 +94,23 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 				ft_write_history_file(prompt, *env_copy);
 			}
 			deal_with_multi_cmd(lst);
-			//print_list(lst);
+			print_list(lst);
 			exe_prompt(lst, env_copy, history, status);
+// Restore original stdin
+if (dup2(original_stdin, STDIN_FILENO) == -1) {
+    perror("dup2");
+    exit(EXIT_FAILURE);
+}
+
+// Restore original stdout
+if (dup2(original_stdout, STDOUT_FILENO) == -1) {
+    perror("dup2");
+    exit(EXIT_FAILURE);
+}
+
+// Close the saved descriptors no longer needed
+close(original_stdin);
+close(original_stdout);
 		}
 
         tmpline = builtin_pwd();
