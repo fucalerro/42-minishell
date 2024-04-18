@@ -145,7 +145,7 @@ int    parsing_error(t_tokens **tokens)
         else
             op_flag = true;
     }
-    if ((is_operator(tokens[i - 1]->token) || is_file_operator(tokens[i - 1]->token)) && tokens[i - 1]->quoted == UNQUOTED)
+    if (tokens[i] && (is_operator(tokens[i - 1]->token) || is_file_operator(tokens[i - 1]->token)) && tokens[i - 1]->quoted == UNQUOTED)
     {
         errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->token[0]);
         return (1);
