@@ -14,31 +14,31 @@ t_stack	*stack_new(int content)
 
 void	stack_add(t_stack **lst, int value)
 {
-	t_stack *new;
-	t_stack *node;
+	t_stack	*new;
+	t_stack	*node;
 
 	node = *lst;
 	new = stack_new(value);
-	if(!lst)
-		return;
+	if (!lst)
+		return ;
 	if (!node)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
-	while(node && node->next)
+	while (node && node->next)
 		node = node->next;
 	node->next = new;
 }
 
 void	stack_drop(t_stack **lst)
 {
-	if(lst && *lst)
-	{
 		t_stack *next;
+
+	if (lst && *lst)
+	{
 		next = (*lst)->next;
 		free(*lst);
 		*lst = next;
 	}
 }
-

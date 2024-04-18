@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 // node_create(cmd, special);
 // node_remove
 // node_insert
@@ -14,7 +15,7 @@ t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 	node->type = type;
 	node->active = 1;
 	node->file = file;
-	node->cmd = cmd; // I think we should have commands an array ["cmd name", "cmd args"]
+	node->cmd = cmd;
 	node->previous = (t_node *)0;
 	node->next = (t_node *)0;
 	return (node);
@@ -29,7 +30,8 @@ t_node	*lst_last(t_node *lst)
 	return (lst);
 }
 
-void	lst_append(t_node **lst, int type, char *file, char **cmd, char *delimiter)
+void	lst_append(t_node **lst, int type, char *file, char **cmd,
+		char *delimiter)
 {
 	t_node	*list;
 	t_node	*new;
@@ -48,13 +50,15 @@ void	lst_append(t_node **lst, int type, char *file, char **cmd, char *delimiter)
 void	print_list(t_node *lst)
 {
 	t_node	*list;
+	char	*type_table[] = {"T_PIPE", "T_INFILE", "T_HEREDOC", "T_CMD", "T_OUTFILE",
+		"T_OUTFILE_APPEND"};
+	int		i_node;
 
-	char *type_table[] = {"T_PIPE", "T_INFILE", "T_HEREDOC", "T_CMD", "T_OUTFILE","T_OUTFILE_APPEND"};
-	int i_node = 0;
+	i_node = 0;
 	list = lst;
 	while (list)
 	{
-		printf("\nNODE %i\n",i_node++);
+		printf("\nNODE %i\n", i_node++);
 		printf("\tnode.type: %s\n", type_table[list->type - 1]);
 		printf("\tnode.active: %i\n", list->active);
 		printf("\tnode.file: %s\n", list->file);
@@ -71,7 +75,6 @@ void	print_list(t_node *lst)
 		list = list->next;
 	}
 }
-
 
 void	free_lst(t_node *lst)
 {
@@ -92,12 +95,11 @@ void	free_lst(t_node *lst)
 }
 
 /*
-void main(void)
+void	main(void)
 {
-	t_node *lst;
+	t_node	*lst;
 
 	lst = NULL;
-
 	lst_append(&lst, 0, NULL, NULL);
 	lst_append(&lst, 0, NULL, NULL);
 	lst_append(&lst, 0, NULL, NULL);

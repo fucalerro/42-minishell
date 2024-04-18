@@ -3,7 +3,7 @@
 
 void	remove_end_newline(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -14,10 +14,11 @@ void	remove_end_newline(char *line)
 
 char	*get_history_path(char **env)
 {
-	char *home;
-	char *path;
-	char *filename = ".minishell_history";
+	char	*home;
+	char	*path;
+	char	*filename;
 
+	filename = ".minishell_history";
 	home = getenv("HOME");
 	if (!home)
 	{
@@ -25,21 +26,18 @@ char	*get_history_path(char **env)
 		return (0);
 	}
 	path = ft_strjoin(home, filename);
-
 	return (filename);
-
 	// return (path);
 }
 
 void	ft_read_history(t_hist **hist, char **env)
 {
-	int	hist_fd;
-	char *home;
-	char *line;
-	char *path;
+	int		hist_fd;
+	char	*home;
+	char	*line;
+	char	*path;
 
 	path = get_history_path(env);
-
 	hist_fd = open(path, O_RDONLY, 0644);
 	if (hist_fd < 0)
 	{
@@ -53,8 +51,7 @@ void	ft_read_history(t_hist **hist, char **env)
 		return ;
 	}
 	// free(path);
-
-	line  = "";
+	line = "";
 	if (hist_fd >= 0)
 	{
 		line = get_next_line(hist_fd);
@@ -69,23 +66,18 @@ void	ft_read_history(t_hist **hist, char **env)
 			line = get_next_line(hist_fd);
 		}
 	}
-
 }
 
 int	ft_write_history_file(char *line, char **env)
 {
-	int	hist_fd;
-	char *path;
+	int		hist_fd;
+	char	*path;
 
 	remove_end_newline(line);
-
 	path = get_history_path(env);
-
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
-
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
-
 	// free(path);
 	return (0);
 }
@@ -101,13 +93,12 @@ void	add_to_history(t_hist **hist, char *line)
 
 void	print_hist(char **env)
 {
-	int hist_fd;
-	char *path;
+	int		hist_fd;
+	char	*path;
+	char	*line;
 
 	path = get_history_path(env);
-
 	hist_fd = open(path, O_RDONLY);
-	char *line;
 	line = get_next_line(hist_fd);
 	while (line)
 	{
