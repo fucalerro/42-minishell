@@ -86,7 +86,7 @@ int builtin_echo(t_node *node)
 
 	if(!cmd[1])
 	{
-		printf("\n");
+		ft_putstr_fd("\n",1);
 		return 1;
 	}
 	if (cmd[1][0] == '-' && cmd[1][1] == 'n' && !cmd[1][2])
@@ -95,10 +95,10 @@ int builtin_echo(t_node *node)
 		new_line=0;
 	}
 	if (cmd[i])
-		printf("%s",cmd[i++]);
+		ft_putstr_fd(cmd[i++],1);
 	while(cmd[i])
-		printf(" %s",cmd[i++]);
+		ft_putstr_fd(ft_strjoin(" ",cmd[i++]),1);
 	if(new_line)
-		printf("\n");
+		ft_putstr_fd("\n",1);
 	return 0;
 }
