@@ -278,7 +278,7 @@ int run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack, char 
 		}
 		if (S_ISDIR(path_stat.st_mode)) 
 		{
-			perror(NULL);
+			write_err(" is a directory\n");
 			return(ERR_CMD_CANT_EXE);
 		}
 		if (access(node->cmd[0], X_OK))
