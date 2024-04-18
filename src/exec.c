@@ -193,19 +193,25 @@ void xxclose_pipe(int way, t_node *node) //way 1 = next --- way -1 = previous
 	tmp = node;
 	if (way == 1)
 	{
-		while (tmp->type != T_PIPE)
+		while (tmp && tmp->type != T_PIPE)
 			tmp = tmp->next;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
+		if (tmp && tmp->type == T_PIPE)
+		{
+			pipe_fd = tmp->pipe;
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+		}
 	}
 	else if (way == -1)
 	{
-		while (tmp->type != T_PIPE)
+		while (tmp && tmp->type != T_PIPE)
 			tmp = tmp->previous;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
+		if (tmp && tmp->type == T_PIPE)
+		{
+			pipe_fd = tmp->pipe;
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+		}
 	}
 
 }
@@ -344,6 +350,7 @@ int exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		}
 		node = node->next;
 	}
+	close_pipe(list);
 
 	// PL;
 	if (path)
