@@ -13,7 +13,7 @@ int	is_single_op(char *string, int i)
 int	is_double_op(char *string, int i)
 {
 	char	*double_op[] = {"<<", ">>"};
-	int		op_index;
+	unsigned long		op_index;
 	if (string[i] == 0 || string[i + 1] == 0)
 		return (false);
 	op_index = 0;
@@ -40,7 +40,6 @@ int	count_op(char *string)
 			count++;
 		i++;
 	}
-	// printf("count: %d\n", count);
 	return (count);
 }
 
@@ -57,7 +56,6 @@ char	**op_tokenizer(char *string)
 	int		j;
 	int		start;
 
-	// int     quote_type;
 	op_flag = 0;
 	i = 0;
 	j = 0;
@@ -132,9 +130,7 @@ char	**sp_tokenizer(char *string, char c)
 int	quotes_error_check(char *string)
 {
 	int	len;
-	int	err;
 
-	// check if quotes are closed
 	len = ft_strlen(string);
 	if (is_in_quotes(string, len - 1) == 1)
 	{
@@ -175,15 +171,9 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	while (tokens[i])
 	{
 		res[i] = malloc(sizeof(t_tokens));
-		// if (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '\"'))
-		// {
 		res[i]->quoted = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
-		// free(tokens[i]);
 		res[i]->token = ft_strdup(temp);
-		// }
-		// else
-		// res[i]->token = ft_strdup(tokens[i]);
 		i++;
 	}
 	res[i] = 0;
@@ -195,9 +185,7 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	char		*normalized_input;
 	char		**sp_tokenized;
 	char		***op_tokenized;
-	char		*temp;
 	int			i;
-	int			j;
 	t_tokens	**tokens;
 	char		**tokenized;
 
@@ -210,9 +198,7 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 		i++;
 	op_tokenized = malloc((i + 1) * sizeof(char **));
 	i = 0;
-	// PL;
 	expand_env_vars(sp_tokenized, status, env);
-	// print_string_tab(sp_tokenized);
 	while (sp_tokenized[i])
 	{
 		op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
@@ -223,9 +209,5 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	op_tokenized[i] = 0;
 	tokenized = flatten_3d_array(op_tokenized);
 	tokens = quotes_tokenizer(tokenized);
-	// print_tokens(tokens);
-	// printf("------------\n");
-	// print_string_tab(tokenized);
-	// printf("------------\n");
 	return (tokens);
 }

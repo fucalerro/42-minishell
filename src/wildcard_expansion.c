@@ -43,19 +43,9 @@ char	**get_files_list(char *dirname)
 	return (files_list);
 }
 
-// char    *find_segment(char *string, int start)
-// {
-//     char    *found;
-
-//     while
-
-//     ft_strstr(string, )
-// }
-
 char	**wildcard_expansion(char *pattern)
 {
 	int		i;
-	char	**files_matched;
 
 	i = 0;
 	if (ft_strchr(pattern, '*'))

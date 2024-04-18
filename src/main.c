@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-// extern char **environ;
-
-// volatile sig_atomic_t g_signal = 1;
 
 #ifndef UNIT_TESTS
 
@@ -119,11 +116,13 @@ int	main(int ac, char **av, char **env)
 {
 	char	*tmpline;
 	char	*line;
-	char	**tokens;
 	int		status;
 	t_hist	*history;
 	char	**env_copy;
 
+	if (ac > 2)
+		exit(1);
+	(void) av;
 	tmpline = builtin_pwd();
 	status = 0;
 	signal(SIGINT, sigint_handler);   // Ctrl-C

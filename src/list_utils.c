@@ -39,9 +39,6 @@ int	correct_order(t_node *node)
 int	sort_infile(t_node **lst)
 {
 	t_node	*node;
-	t_node	*node_prev;
-	t_node	*node_next;
-	t_node	*node_next2;
 
 	node = *lst;
 	while (node)

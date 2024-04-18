@@ -33,7 +33,6 @@ int	is_in_quotes(char *input, int index)
 		if (i == index)
 			break ;
 	}
-	// printf("in_quotes: %d\n", in_single_quote || in_double_quote);
 	if (in_single_quote)
 		return (SINGLE_QUOTE);
 	if (in_double_quote)
@@ -140,7 +139,6 @@ char	*all_quotes_remover(char *string)
 	int		i;
 	int		j;
 	int		is_in_quote;
-	char	quote_type;
 
 	token = malloc(sizeof(char) * (ft_strlen(string) + 1));
 	i = 0;
@@ -214,8 +212,6 @@ char	**consolidate_cmd(t_tokens **input, int i, int *arg_count)
 		j++;
 	}
 	*arg_count = cmd_len - 1;
-	// if (*arg_count < 1)
-	//     *arg_count = 1;
 	cmd[j] = 0;
 	return (cmd);
 }
@@ -250,14 +246,14 @@ t_node	*parser(t_tokens **tokens)
 			i++;
 		}
 		else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count
-			&& tokens[i]->quoted == 0) // append mode
+			&& tokens[i]->quoted == 0)
 		{
 			lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL,
 				NULL);
 			i++;
 		}
 		else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count
-			&& tokens[i]->quoted == 0) // heredoc
+			&& tokens[i]->quoted == 0)
 		{
 			around_quotes_remover(tokens[i + 1]->token);
 			lst_append(&lst, T_HEREDOC, NULL, NULL, tokens[i + 1]->token);
@@ -271,6 +267,5 @@ t_node	*parser(t_tokens **tokens)
 		}
 		i++;
 	}
-	// print_list(lst);
 	return (lst);
 }

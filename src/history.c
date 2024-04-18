@@ -18,6 +18,7 @@ char	*get_history_path(char **env)
 	char	*path;
 	char	*filename;
 
+	(void) env; //remove it if useless
 	filename = ".minishell_history";
 	home = getenv("HOME");
 	if (!home)
@@ -32,7 +33,6 @@ char	*get_history_path(char **env)
 void	ft_read_history(t_hist **hist, char **env)
 {
 	int		hist_fd;
-	char	*home;
 	char	*line;
 	char	*path;
 
@@ -83,9 +83,8 @@ int	ft_write_history_file(char *line, char **env)
 
 void	add_to_history(t_hist **hist, char *line)
 {
-	t_hist	*history;
-	t_hist	*new;
 
+	(void) hist; //remove it if not used
 	add_history(line);
 	remove_end_newline(line);
 }

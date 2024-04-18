@@ -37,7 +37,6 @@ int	builtin_cd(const char *path, char **env)
 
 void	builtin_history(char **cmd, t_hist **hist, char **env)
 {
-	char	*home;
 	char	*path;
 
 	if (!hist)

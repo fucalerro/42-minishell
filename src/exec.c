@@ -234,7 +234,6 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 	else
 	{
 		stat(node->cmd[0], &path_stat);
-		// Check if it's a directory
 		if (access(node->cmd[0], F_OK))
 		{
 			perror(NULL);
@@ -297,12 +296,10 @@ int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	t_node	*node;
 	t_stack	*pid_stack;
 
-	struct rusage usage; // For resource usage info
+	struct rusage usage;
 	pid_stack = NULL;
 	node = list;
 	path = get_path(*env);
-	// while loop to exec
-	// check_pipe_status(node);
 	init_pipe(node);
 	flag_builtin_fork(node);
 	while (node)
@@ -316,10 +313,8 @@ int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 		node = node->next;
 	}
 	close_pipe(list);
-	// PL;
 	if (path)
 		free_string_array(path);
-	// while loop to waitpid
 	while (pid_stack)
 	{
 		wait4(pid_stack->value, status, 0, &usage);

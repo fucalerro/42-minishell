@@ -82,8 +82,7 @@ int	is_file_operator(char *token)
 
 int	is_unhandled_operator(char *tokens)
 {
-	int		i;
-	int		j;
+	unsigned long		j;
 	char *unhandled[] = { "(", ")", "&" };
 
 	j = 0;
