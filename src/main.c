@@ -94,7 +94,6 @@ void process_input_loop(char **line, char ***env_copy, t_hist **history, int *st
 				ft_write_history_file(prompt, *env_copy);
 			}
 			deal_with_multi_cmd(lst);
-			print_list(lst);
 			exe_prompt(lst, env_copy, history, status);
 // Restore original stdin
 if (dup2(original_stdin, STDIN_FILENO) == -1) {
