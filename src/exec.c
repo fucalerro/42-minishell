@@ -165,40 +165,46 @@ int run_builtin(t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 		return (1);
 }
 
-int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
-		char ***env)
+int check_executable(t_node *node)
 {
-	pid_t		pid;
 	struct stat	path_stat;
 
-	if (is_builtin(node->cmd))
-		return run_builtin(node, hist, pid_stack, env);
-	else if (cmd_do_not_include_path(node->cmd[0]))
-		node->cmd[0] = get_cmd_path(node->cmd[0], path);
-	else
-	{
-		stat(node->cmd[0], &path_stat);
-		if (access(node->cmd[0], F_OK))
-		{
-			perror(NULL);
-			return (ERR_CMD_NOT_FOUND);
-		}
-		if (S_ISDIR(path_stat.st_mode))
-		{
-			write_err(" is a directory\n");
-			return (ERR_CMD_CANT_EXE);
-		}
-		if (access(node->cmd[0], X_OK))
-		{
-			perror(NULL);
-			return (ERR_CMD_CANT_EXE);
-		}
-	}
 	if (!node->cmd[0])
 	{
 		write_err(" command not found\n");
 		return (ERR_CMD_NOT_FOUND);
 	}
+	stat(node->cmd[0], &path_stat);
+	if (access(node->cmd[0], F_OK))
+	{
+		perror(NULL);
+		return (ERR_CMD_NOT_FOUND);
+	}
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		write_err(" is a directory\n");
+		return (ERR_CMD_CANT_EXE);
+	}
+	if (access(node->cmd[0], X_OK))
+	{
+		perror(NULL);
+		return (ERR_CMD_CANT_EXE);
+	}
+	return (0);
+}
+int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
+		char ***env)
+{
+	pid_t		pid;
+	int 		executable_ok;
+
+	if (is_builtin(node->cmd))
+		return run_builtin(node, hist, pid_stack, env);
+	else if (cmd_do_not_include_path(node->cmd[0]))
+		node->cmd[0] = get_cmd_path(node->cmd[0], path);
+	executable_ok = check_executable(node);
+	if (executable_ok)
+		return (executable_ok);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -231,32 +237,10 @@ void	flag_builtin_fork(t_node *node)
 		tmp = tmp->next;
 	}
 }
-
-int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
+void wait_pid(t_stack *pid_stack, int *status)
 {
-	char	**path;
-	t_node	*node;
-	t_stack	*pid_stack;
-
 	struct rusage usage;
-	pid_stack = NULL;
-	node = list;
-	path = get_path(*env);
-	init_pipe(node);
-	flag_builtin_fork(node);
-	while (node)
-	{
-		if (!node)
-			break ;
-		if (node->type == T_CMD)
-		{
-			*status = run_cmd(path, node, hist, &pid_stack, env);
-		}
-		node = node->next;
-	}
-	close_pipe(list);
-	if (path)
-		free_string_array(path);
+
 	while (pid_stack)
 	{
 		wait4(pid_stack->value, status, 0, &usage);
@@ -264,5 +248,27 @@ int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 			*status = WEXITSTATUS(*status);
 		stack_drop(&pid_stack);
 	}
+}
+int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
+{
+	char	**path;
+	t_node	*node;
+	t_stack	*pid_stack;
+
+	pid_stack = NULL;
+	node = list;
+	path = get_path(*env);
+	init_pipe(node);
+	flag_builtin_fork(node);
+	while (node)
+	{
+		if (node->type == T_CMD)
+			*status = run_cmd(path, node, hist, &pid_stack, env);
+		node = node->next;
+	}
+	close_pipe(list);
+	if (path)
+		free_string_array(path);
+	wait_pid(pid_stack, status);
 	return (0);
 }
