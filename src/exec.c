@@ -1,4 +1,6 @@
+#include "history.h"
 #include "minishell.h"
+#include "stack.h"
 
 char	*get_cmd_path(char *raw, char **path)
 {
@@ -136,50 +138,50 @@ int	cmd_do_not_include_path(char *cmd)
 	return (1);
 }
 
+int run_builtin(t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
+{
+	pid_t		pid;
+	if (node->active == 2)
+	{
+		pid = fork();
+		if (pid)
+		{
+			stack_add(pid_stack, pid);
+			return (0);
+		}
+		else
+		{
+			set_pipe(node);
+			close_pipe(node);
+			if (!run_redirection_file(node))
+				exit(exe_builtin(node, hist, env));
+			else
+				exit(1);
+		}
+	}
+	if (!run_redirection_file(node))
+		return (exe_builtin(node, hist, env));
+	else
+		return (1);
+}
+
 int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 		char ***env)
 {
 	pid_t		pid;
-	char		**cmd;
 	struct stat	path_stat;
 
-	cmd = node->cmd;
-	if (is_builtin(cmd))
-	{
-		if (node->active == 2)
-		{
-			pid = fork();
-			if (pid)
-			{
-				stack_add(pid_stack, pid);
-				return (0);
-			}
-			else
-			{
-				set_pipe(node);
-				close_pipe(node);
-				if (!run_redirection_file(node))
-					exit(exe_builtin(node, hist, env));
-				else
-					exit(1);
-			}
-		}
-		if (!run_redirection_file(node))
-			return (exe_builtin(node, hist, env));
-		else
-			return (1);
-	}
+	if (is_builtin(node->cmd))
+		return run_builtin(node, hist, pid_stack, env);
 	else if (!path)
 	{
 		write_err("minishell: command not found: ");
-		write_err(cmd[0]);
+		write_err(node->cmd[0]);
 		write_err("\n");
 		return (ERR_CMD_NOT_FOUND);
 	}
 	else if (cmd_do_not_include_path(node->cmd[0]))
-	{
 		node->cmd[0] = get_cmd_path(node->cmd[0], path);
-	}
 	else
 	{
 		stat(node->cmd[0], &path_stat);
@@ -211,13 +213,11 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 		close_pipe(node);
 		if (run_redirection_file(node))
 			exit(EXIT_FAILURE);
-		execve(cmd[0], cmd, NULL);
+		execve(node->cmd[0], node->cmd, NULL);
 		exit(EXIT_FAILURE);
 	}
 	else
-	{
 		stack_add(pid_stack, pid);
-	}
 	return (0);
 }
 
