@@ -49,7 +49,7 @@ void	builtin_history(char **cmd, t_hist **hist, char **env)
 	}
 	else if (!ft_strcmp(cmd[1], "-c"))
 	{
-		path = get_history_path(env);
+		path = get_history_path();
 		unlink(path);
 		// free(path);
 		rl_clear_history();
