@@ -35,17 +35,13 @@ int	builtin_cd(const char *path, char **env)
 	return (0);
 }
 
-void	builtin_history(char **cmd, t_hist **hist, char **env)
+void	builtin_history(char **cmd)
 {
 	char	*path;
 
-	if (!hist)
-	{
-		return ;
-	}
 	if (!cmd[1])
 	{
-		print_hist(env);
+		print_hist();
 	}
 	else if (!ft_strcmp(cmd[1], "-c"))
 	{

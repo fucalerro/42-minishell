@@ -97,7 +97,7 @@ char	**get_path(char *env[])
 	return (tmps);
 }
 
-int	exe_builtin(t_node *node, t_hist **hist, char ***env)
+int	exe_builtin(t_node *node, char ***env)
 {
 	char	**cmd;
 
@@ -105,7 +105,7 @@ int	exe_builtin(t_node *node, t_hist **hist, char ***env)
 	if (!ft_strcmp(cmd[0], "cd"))
 		return (builtin_cd(cmd[1], *env));
 	else if (!ft_strcmp(cmd[0], "history"))
-		builtin_history(cmd, hist, *env);
+		builtin_history(cmd);
 	else if (!ft_strcmp(cmd[0], "exit"))
 		return (builtin_exit(node));
 	else if (!ft_strcmp(cmd[0], "env"))
@@ -132,7 +132,7 @@ int	cmd_do_not_include_path(char *cmd)
 	return (1);
 }
 
-int run_builtin(t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
+int run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 {
 	pid_t		pid;
 	if (node->active == 2)
@@ -148,13 +148,13 @@ int run_builtin(t_node *node, t_hist **hist, t_stack **pid_stack, char ***env)
 			set_pipe(node);
 			close_pipe(node);
 			if (!run_redirection_file(node))
-				exit(exe_builtin(node, hist, env));
+				exit(exe_builtin(node, env));
 			else
 				exit(1);
 		}
 	}
 	if (!run_redirection_file(node))
-		return (exe_builtin(node, hist, env));
+		return (exe_builtin(node, env));
 	else
 		return (1);
 }
@@ -186,14 +186,13 @@ int check_executable(t_node *node)
 	}
 	return (0);
 }
-int	run_cmd(t_node *node, t_hist **hist, t_stack **pid_stack,
-		char ***env)
+int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 {
 	pid_t		pid;
 	int 		executable_ok;
 
 	if (is_builtin(node->cmd))
-		return run_builtin(node, hist, pid_stack, env);
+		return run_builtin(node, pid_stack, env);
 	else if (cmd_do_not_include_path(node->cmd[0]))
 		node->cmd[0] = get_cmd_path(node->cmd[0], get_path(*env)); // free path
 	executable_ok = check_executable(node);
@@ -243,7 +242,7 @@ void wait_pid(t_stack *pid_stack, int *status)
 		stack_drop(&pid_stack);
 	}
 }
-int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
+int	exe_prompt(t_node *list, char ***env, int *status)
 {
 	t_node	*node;
 	t_stack	*pid_stack;
@@ -255,7 +254,7 @@ int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 	while (node)
 	{
 		if (node->type == T_CMD)
-			*status = run_cmd(node, hist, &pid_stack, env);
+			*status = run_cmd(node, &pid_stack, env);
 		node = node->next;
 	}
 	close_pipe(list);

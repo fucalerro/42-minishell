@@ -23,13 +23,14 @@ char	*get_history_path(void)
 	path = ft_strjoin(home, filename);
 	if (!home)
 	{
+		free(path);
 		write_err("HOME not set\n");
 		return (0);
 	}
 	return (path);
 }
 
-void	ft_read_history(t_hist **hist)
+void	ft_read_history(void)
 {
 	int		hist_fd;
 	char	*line;
@@ -42,13 +43,11 @@ void	ft_read_history(t_hist **hist)
 		hist_fd = open(path, O_CREAT, 0644);
 		if (hist_fd < 0)
 		{
-			// free(path);
+			free(path);
 			return ;
 		}
-		// free(path);
-		return ;
 	}
-	// free(path);
+	free(path);
 	line = "";
 	if (hist_fd >= 0)
 	{
@@ -58,12 +57,14 @@ void	ft_read_history(t_hist **hist)
 			if (line)
 			{
 				remove_end_newline(line);
-				add_to_history(hist, line);
+				add_to_history(line);
 				free(line);
 			}
 			line = get_next_line(hist_fd);
 		}
+		close(hist_fd);
 	}
+	free(line);
 }
 
 int	ft_write_history_file(char *line)
@@ -76,14 +77,12 @@ int	ft_write_history_file(char *line)
 	hist_fd = open(path, O_RDWR | O_APPEND | O_CREAT, 0644);
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
-	// free(path);
+	free(path);
 	return (0);
 }
 
-void	add_to_history(t_hist **hist, char *line)
+void	add_to_history(char *line)
 {
-
-	(void) hist; //remove it if not used
 	add_history(line);
 	remove_end_newline(line);
 }

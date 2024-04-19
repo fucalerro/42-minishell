@@ -174,6 +174,7 @@ t_tokens	**quotes_tokenizer(char **tokens)
 		res[i]->quoted = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
 		res[i]->token = ft_strdup(temp);
+		free(temp);
 		i++;
 	}
 	res[i] = 0;
@@ -192,7 +193,7 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	quotes_error_check(string);
 	normalized_input = input_normalizer(string);
 	sp_tokenized = sp_tokenizer(normalized_input, ' ');
-	// free(normalized_input);
+	free(normalized_input);
 	i = 0;
 	while (sp_tokenized[i])
 		i++;
@@ -202,12 +203,14 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	while (sp_tokenized[i])
 	{
 		op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
-		// free(sp_tokenized[i]);
+		free(sp_tokenized[i]);
 		i++;
 	}
-	// free(sp_tokenized);
+	free(sp_tokenized);
 	op_tokenized[i] = 0;
 	tokenized = flatten_3d_array(op_tokenized);
+
 	tokens = quotes_tokenizer(tokenized);
+	free_string_array(tokenized);
 	return (tokens);
 }

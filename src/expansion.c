@@ -91,10 +91,12 @@ char	*expand_token(char *token, int status, char **env)
 				if (!ft_strcmp(var_value, "$"))
 					i--;
 				res[j++] = ft_strdup(var_value);
+				free(var_value);
 			}
 			else
 				res[j++] = ft_strdup("");
 			i += ft_strlen(var_name) + 1;
+			free(var_name);
 		}
 		else
 		{
@@ -107,6 +109,12 @@ char	*expand_token(char *token, int status, char **env)
 	}
 	res[j] = 0;
 	new_token = flatten_2d_array(res);
+	while (res[j])
+	{
+		free(res[j]);
+		j++;
+	}
+	free(res);
 	return (new_token);
 }
 
@@ -121,7 +129,6 @@ void	expand_env_vars(char **tokens, int status, char **env)
 		if (ft_strchr(tokens[i], '$'))
 		{
 			tmp = expand_token(tokens[i], status, env);
-			// PL;
 			if (tmp)
 			{
 				tokens[i] = ft_strdup(tmp);

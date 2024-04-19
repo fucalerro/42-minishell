@@ -188,7 +188,7 @@ char	*around_quotes_remover(char *string)
 	return (res);
 }
 
-char	**consolidate_cmd(t_tokens **input, int i, int *arg_count)
+char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 {
 	char	**cmd;
 	int		j;
@@ -196,18 +196,19 @@ char	**consolidate_cmd(t_tokens **input, int i, int *arg_count)
 
 	j = i;
 	cmd_len = 0;
-	while (input[j] && (!is_metachar(input[j]->token[0])
-			|| (is_metachar(input[j]->token[0]) && input[j]->quoted)))
+	while (tokens[j] && (!is_metachar(tokens[j]->token[0])
+			|| (is_metachar(tokens[j]->token[0]) && tokens[j]->quoted)))
 	{
 		cmd_len++;
 		j++;
 	}
 	cmd = malloc(sizeof(char *) * (cmd_len + 1));
 	j = 0;
-	while (input[i] && (!is_metachar(input[i]->token[0])
-			|| (is_metachar(input[i]->token[0]) && input[i]->quoted)))
+	while (tokens[i] && (!is_metachar(tokens[i]->token[0])
+			|| (is_metachar(tokens[i]->token[0]) && tokens[i]->quoted)))
 	{
-		cmd[j] = ft_strdup(input[i]->token);
+		cmd[j] = ft_strdup(tokens[i]->token);
+		free(tokens[i]->token);
 		i++;
 		j++;
 	}
@@ -232,17 +233,21 @@ t_node	*parser(t_tokens **tokens)
 		if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->quoted == 0)
 		{
 			lst_append(&lst, T_PIPE, NULL, NULL, NULL);
+			free(tokens[i]->token);
+
 		}
 		else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->quoted == 0
 			&& i + 1 < token_count)
 		{
 			lst_append(&lst, T_OUTFILE, tokens[i + 1]->token, NULL, NULL);
+			free(tokens[i]->token);
 			i++;
 		}
 		else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count
 			&& tokens[i]->quoted == 0)
 		{
 			lst_append(&lst, T_INFILE, tokens[i + 1]->token, NULL, NULL);
+			free(tokens[i]->token);
 			i++;
 		}
 		else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count
@@ -250,19 +255,24 @@ t_node	*parser(t_tokens **tokens)
 		{
 			lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL,
 				NULL);
+			free(tokens[i]->token);
 			i++;
 		}
 		else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count
 			&& tokens[i]->quoted == 0)
 		{
-			around_quotes_remover(tokens[i + 1]->token);
-			lst_append(&lst, T_HEREDOC, NULL, NULL, tokens[i + 1]->token);
+			char *tmp = around_quotes_remover(tokens[i + 1]->token);
+			lst_append(&lst, T_HEREDOC, NULL, NULL, tmp);
+			free(tokens[i]->token);
+			free(tmp);
 			i++;
 		}
 		else
 		{
 			consolidated_cmd = consolidate_cmd(tokens, i, &arg_count);
 			lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
+
+			// free(tokens[i]->token);
 			i += arg_count;
 		}
 		i++;

@@ -56,8 +56,24 @@ void	deal_with_multi_cmd(t_node *node)
 		node = node->next;
 	}
 }
-void	process_input_loop(char **line, char ***env_copy, t_hist **history,
-		int *status)
+
+
+void 	free_tokens(t_tokens **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]->token);
+		// free(tokens[i]);
+		i++;
+	}
+	// free(tokens);
+}
+
+
+void	process_input_loop(char **line, char ***env_copy, int *status)
 {
 	char		*prompt;
 	char		*tmpline;
@@ -82,13 +98,27 @@ void	process_input_loop(char **line, char ***env_copy, t_hist **history,
 		if (!err_flag)
 		{
 			lst = parser(tokens);
+			
+
 			if (lst)
 			{
-				add_to_history(history, prompt);
+				add_to_history(prompt);
 				ft_write_history_file(prompt);
 			}
 			deal_with_multi_cmd(lst);
-			exe_prompt(lst, env_copy, history, status);
+			exe_prompt(lst, env_copy, status);
+			free_lst(lst);
+
+			int k = 0;
+			while (tokens[k])
+			{
+				// free(tokens[k]->token);
+				free(tokens[k]);
+				k++;
+			}
+
+			// free_tokens(tokens);
+			free(tokens);
 			// Restore original stdin
 			if (dup2(original_stdin, STDIN_FILENO) == -1)
 			{
@@ -117,7 +147,6 @@ int	main(int ac, char **av, char **env)
 	char	*tmpline;
 	char	*line;
 	int		status;
-	t_hist	*history;
 	char	**env_copy;
 
 	if (ac > 2)
@@ -127,12 +156,12 @@ int	main(int ac, char **av, char **env)
 	status = 0;
 	signal(SIGINT, sigint_handler);   // Ctrl-C
 	signal(SIGQUIT, sigquit_handler); // Ctrl-'\'
-	history = NULL;
 	line = ft_strjoin(tmpline, "🌻 ");
 	free(tmpline);
 	env_copy = copy_env(env, 0);
-	ft_read_history(&history);
-	process_input_loop(&line, &env_copy, &history, &status);
+	ft_read_history();
+	process_input_loop(&line, &env_copy, &status);
+	free(line);
 	printf("exit\n");
 	return (0);
 }
