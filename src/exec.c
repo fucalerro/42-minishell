@@ -173,13 +173,6 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 
 	if (is_builtin(node->cmd))
 		return run_builtin(node, hist, pid_stack, env);
-	else if (!path)
-	{
-		write_err("minishell: command not found: ");
-		write_err(node->cmd[0]);
-		write_err("\n");
-		return (ERR_CMD_NOT_FOUND);
-	}
 	else if (cmd_do_not_include_path(node->cmd[0]))
 		node->cmd[0] = get_cmd_path(node->cmd[0], path);
 	else
