@@ -78,18 +78,15 @@ char	**get_path(char *env[])
 {
 	char	**tmps;
 	char	*tmp;
+	char *path_env;
 	int		i;
 
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			break ;
-		i++;
-	}
-	if (!env[i])
-		return (NULL);
-	tmps = ft_split(&env[i][5], ':');
+	path_env = ft_getenv("PATH", env);
+	if(!path_env)
+		return NULL;
+	tmps = ft_split(path_env, ':');
+	if(!tmps)
+		return NULL;
 	i = 0;
 	while (tmps[i])
 	{
