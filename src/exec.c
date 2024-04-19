@@ -11,16 +11,13 @@ char	*get_cmd_path(char *raw, char **path)
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, cmd);
+		if(!tmp)
+			return (NULL);
 		if (!access(tmp, X_OK))
-		{
-			free(cmd);
-			cmd = tmp;
-			return (cmd);
-		}
+			return (tmp);
 		free(tmp);
 		path++;
 	}
-	// free_cmd(cmd);
 	return (NULL);
 }
 
