@@ -24,25 +24,6 @@ char	*get_cmd_path(char *raw, char **path)
 	return (NULL);
 }
 
-int	check_pipe(t_node *node)
-{
-	int		return_value;
-	t_node	*tmp;
-
-	tmp = node;
-	return_value = 0;
-	while (tmp && tmp->type != T_PIPE)
-		tmp = tmp->next;
-	if (tmp && tmp->type == T_PIPE && tmp->active)
-		return_value += 1;
-	tmp = node;
-	while (tmp && tmp->type != T_PIPE)
-		tmp = tmp->previous;
-	if (tmp && tmp->type == T_PIPE && tmp->active)
-		return_value += 2;
-	return (return_value);
-}
-
 int	is_builtin(char **cmd)
 {
 	if (!ft_strcmp(cmd[0], "cd"))
@@ -91,36 +72,6 @@ int	run_redirection_file(t_node *node)
 		node_tmp = node_tmp->next;
 	}
 	return (return_value);
-}
-
-int	set_pipe(t_node *node)
-{
-	int		check_value;
-	int		*pipe_fd;
-	t_node	*tmp;
-
-	tmp = node;
-	check_value = check_pipe(node);
-	if (check_value & PIPE_NEXT)
-	{
-		while (tmp->type != T_PIPE)
-			tmp = tmp->next;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-	}
-	tmp = node;
-	if (check_value & PIPE_PREVIOUS)
-	{
-		while (tmp->type != T_PIPE)
-			tmp = tmp->previous;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[1]);
-		dup2(pipe_fd[0], STDIN_FILENO);
-		close(pipe_fd[0]);
-	}
-	return (0);
 }
 
 char	**get_path(char *env[])
