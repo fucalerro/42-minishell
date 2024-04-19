@@ -90,6 +90,8 @@ char	**get_path(char *env[])
 		tmp = tmps[i];
 		tmps[i] = ft_strjoin(tmp, "/");
 		free(tmp);
+		if(!tmps[i])
+			return (NULL);
 		i++;
 	}
 	return (tmps);
