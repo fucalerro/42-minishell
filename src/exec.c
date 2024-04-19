@@ -190,7 +190,7 @@ int check_executable(t_node *node)
 	}
 	return (0);
 }
-int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
+int	run_cmd(t_node *node, t_hist **hist, t_stack **pid_stack,
 		char ***env)
 {
 	pid_t		pid;
@@ -199,7 +199,7 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 	if (is_builtin(node->cmd))
 		return run_builtin(node, hist, pid_stack, env);
 	else if (cmd_do_not_include_path(node->cmd[0]))
-		node->cmd[0] = get_cmd_path(node->cmd[0], path);
+		node->cmd[0] = get_cmd_path(node->cmd[0], get_path(*env)); // free path
 	executable_ok = check_executable(node);
 	if (executable_ok)
 		return (executable_ok);
@@ -210,7 +210,7 @@ int	run_cmd(char **path, t_node *node, t_hist **hist, t_stack **pid_stack,
 		close_pipe(node);
 		if (run_redirection_file(node))
 			exit(EXIT_FAILURE);
-		execve(node->cmd[0], node->cmd, NULL);
+		execve(node->cmd[0], node->cmd, *env);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -249,24 +249,20 @@ void wait_pid(t_stack *pid_stack, int *status)
 }
 int	exe_prompt(t_node *list, char ***env, t_hist **hist, int *status)
 {
-	char	**path;
 	t_node	*node;
 	t_stack	*pid_stack;
 
 	pid_stack = NULL;
 	node = list;
-	path = get_path(*env);
 	init_pipe(node);
 	flag_builtin_fork(node);
 	while (node)
 	{
 		if (node->type == T_CMD)
-			*status = run_cmd(path, node, hist, &pid_stack, env);
+			*status = run_cmd(node, hist, &pid_stack, env);
 		node = node->next;
 	}
 	close_pipe(list);
-	if (path)
-		free_string_array(path);
 	wait_pid(pid_stack, status);
 	return (0);
 }
