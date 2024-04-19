@@ -1,6 +1,4 @@
-#include "history.h"
 #include "minishell.h"
-#include "stack.h"
 
 char	*get_cmd_path(char *raw, char **path)
 {
