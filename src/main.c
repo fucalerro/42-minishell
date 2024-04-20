@@ -65,12 +65,13 @@ void 	free_tokens(t_tokens **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		free(tokens[i]->token);
-		// free(tokens[i]);
+		// free(tokens[i]->token);
+		free(tokens[i]);
 		i++;
 	}
-	// free(tokens);
+	free(tokens);
 }
+
 
 
 void	process_input_loop(char **line, char ***env_copy, int *status)
@@ -88,13 +89,21 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 	{
 		original_stdin = dup(STDIN_FILENO);
 		original_stdout = dup(STDOUT_FILENO);
-		// free(*line);
+
 		if (ft_strlen(prompt) == 0)
 			continue ;
 		err_flag = false;
-		tokens = tokenizer(prompt, *status, *env_copy);
-		if (parsing_error(tokens))
+
+		if (is_quotes_opened(prompt))
 			err_flag = true;
+
+		if (!err_flag)
+		{
+			tokens = tokenizer(prompt, *status, *env_copy);
+			if (parsing_error(tokens))
+				err_flag = true;
+		}
+			
 		if (!err_flag)
 		{
 			lst = parser(tokens);
@@ -109,16 +118,8 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			exe_prompt(lst, env_copy, status);
 			free_lst(lst);
 
-			int k = 0;
-			while (tokens[k])
-			{
-				// free(tokens[k]->token);
-				free(tokens[k]);
-				k++;
-			}
-
-			// free_tokens(tokens);
-			free(tokens);
+			free_tokens(tokens);
+		
 			// Restore original stdin
 			if (dup2(original_stdin, STDIN_FILENO) == -1)
 			{
@@ -135,10 +136,11 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			close(original_stdin);
 			close(original_stdout);
 		}
+
 		tmpline = builtin_pwd();
 		*line = ft_strjoin(tmpline, "🌻 ");
-		// free_string_array(tokens);
 		free(tmpline);
+
 	}
 }
 

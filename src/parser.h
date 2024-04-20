@@ -15,15 +15,20 @@
 #define S_QUOTES        'S'
 #define D_QUOTES        'D'
 
+#define CLOSED_QUOTES    0
+#define OPEN_QUOTES     1
+
 typedef struct s_tokens
 {
     char    *token;
     int     quoted;
     char    *is_in_quotes;
+    int     unclosed_quote;
 }           t_tokens;
 
 
 int is_in_quotes(char *input, int index);
 char    *all_quotes_remover(char *string);
+int	is_quotes_opened(char *string);
 
 #endif

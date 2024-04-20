@@ -24,6 +24,8 @@ char	**copy_env(char **env, int size)
 	while (env[env_size])
 		env_size++;
 	new_env = malloc((env_size + size + 1) * sizeof(char *));
+	if (!new_env)
+		return (0);
 	i = 0;
 	while (env[i])
 	{

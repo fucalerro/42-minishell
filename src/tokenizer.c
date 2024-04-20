@@ -60,6 +60,8 @@ char	**op_tokenizer(char *string)
 	i = 0;
 	j = 0;
 	res = malloc(sizeof(char *) * (count_op(string) + 1) * 2);
+	if (res == 0)
+		return (0);
 	while (string[i])
 	{
 		if (is_double_op(string, i) && !op_flag && !is_in_quotes(string, i))
@@ -127,17 +129,33 @@ char	**sp_tokenizer(char *string, char c)
 	return (res);
 }
 
-int	quotes_error_check(char *string)
+int count_quotes(char *string)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (string[i])
+	{
+		if (is_quote(string[i]))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	is_quotes_opened(char *string)
 {
 	int	len;
 
 	len = ft_strlen(string);
-	if (is_in_quotes(string, len - 1) == 1)
+	if (is_in_quotes(string, len - 1) || count_quotes(string) == 1)
 	{
-		printf("Quotes are not closed\n");
-		exit(1);
+		write_err("Quotes are not closed\n");
+		return (1);
 	}
-	return (0); // random value to silence the warning
+	return (0); 
 }
 
 char	*set_is_in_quotes(char *token)
@@ -146,6 +164,8 @@ char	*set_is_in_quotes(char *token)
 	int		i;
 
 	res = malloc(sizeof(char) * (ft_strlen(token) + 1));
+	if (!res)
+		return (0);
 	i = 0;
 	while (token[i])
 	{
@@ -167,10 +187,14 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	char		*temp;
 
 	res = malloc(sizeof(t_tokens *) * (get_elem_count_arr(tokens) + 1));
+	if (!res)
+		return (0);
 	i = 0;
 	while (tokens[i])
 	{
 		res[i] = malloc(sizeof(t_tokens));
+		if (!res[i])
+			return (0);
 		res[i]->quoted = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
 		res[i]->token = ft_strdup(temp);
@@ -190,7 +214,9 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	t_tokens	**tokens;
 	char		**tokenized;
 
-	quotes_error_check(string);
+	if (is_quotes_opened(string))
+		return (0);
+
 	normalized_input = input_normalizer(string);
 	sp_tokenized = sp_tokenizer(normalized_input, ' ');
 	free(normalized_input);
@@ -198,6 +224,8 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	while (sp_tokenized[i])
 		i++;
 	op_tokenized = malloc((i + 1) * sizeof(char **));
+	if (!op_tokenized)
+		return (0);
 	i = 0;
 	expand_env_vars(sp_tokenized, status, env);
 	while (sp_tokenized[i])

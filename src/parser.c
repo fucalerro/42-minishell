@@ -31,7 +31,7 @@ int	is_in_quotes(char *input, int index)
 		else if (input[i] == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
 		if (i == index)
-			break ;
+			break ;		
 	}
 	if (in_single_quote)
 		return (SINGLE_QUOTE);
@@ -56,6 +56,8 @@ char	*input_normalizer(char *input)
 	char	*output;
 
 	output = malloc(sizeof(char) * (ft_strlen(input) + 1));
+	if (!output)
+		return (0);
 	j = 0;
 	i = 0;
 	while (ft_isspace(input[i]) && input[i])
@@ -141,6 +143,8 @@ char	*all_quotes_remover(char *string)
 	int		is_in_quote;
 
 	token = malloc(sizeof(char) * (ft_strlen(string) + 1));
+	if (!token)
+		return (0);
 	i = 0;
 	j = 0;
 	is_in_quote = 0;
@@ -178,6 +182,8 @@ char	*around_quotes_remover(char *string)
 	if (!is_quote(string[0]))
 		return (ft_strdup(string));
 	res = malloc(sizeof(char) * (ft_strlen(string) + 1));
+	if (!res)
+		return (0);
 	i = 0;
 	while (string[i])
 	{
@@ -203,6 +209,8 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 		j++;
 	}
 	cmd = malloc(sizeof(char *) * (cmd_len + 1));
+	if (!cmd)
+		return (0);
 	j = 0;
 	while (tokens[i] && (!is_metachar(tokens[i]->token[0])
 			|| (is_metachar(tokens[i]->token[0]) && tokens[i]->quoted)))

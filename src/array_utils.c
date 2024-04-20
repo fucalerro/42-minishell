@@ -44,6 +44,8 @@ char	**flatten_3d_array(char ***array3d)
 	k = 0;
 	array3d_size = get_3darray_size(array3d);
 	arr_flatten = malloc((array3d_size + 1) * sizeof(char *));
+	if (!arr_flatten)
+		return (0);
 	while (array3d[i])
 	{
 		while (array3d[i][j])
@@ -146,6 +148,8 @@ char	*flatten_2d_array(char **array)
 		i++;
 	}
 	res = malloc(sizeof(char) * (k + 1));
+	if (!res)
+		return (0);
 	i = 0;
 	j = 0;
 	k = 0;
