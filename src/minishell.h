@@ -46,6 +46,7 @@ void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
 char *flatten_2d_array(char **array);
 // parser.c
+void *palloc(int size, int elem_size);
 size_t	wordcounter(char const *s, char c);
 t_node *parser(t_tokens **tokens);
 int is_quote(char c);
@@ -59,7 +60,7 @@ char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);
 //error_handling.c
 int    parsing_error(t_tokens **tokens);
-void    errror_msg(int type, int c);
+int    errror_msg(int type, int c);
 // exec.c
 int exe_prompt(t_node *node, char ***env, int *status);
 // builtin.c

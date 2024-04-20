@@ -41,6 +41,35 @@ int	is_in_quotes(char *input, int index)
 		return (0);
 }
 
+
+
+void normalize_loop(char *input, int i, char **output)
+{
+	int	j;
+	int	flag;
+
+	j = 0;
+	while (input[i])
+	{
+		while (is_in_quotes(input, i) > 0 && input[i])
+			(*output)[j++] = input[i++];
+		if (ft_isspace(input[i]) && ft_isspace(input[i]) != ' ')
+			(*output)[j++] = ' ';
+		else if (ft_isspace(input[i]))
+		{
+			if (flag && input[i + 1] != 0 && !ft_isspace(input[i + 1]))
+				(*output)[j++] = ' ';
+		}
+		else
+		{
+			(*output)[j++] = input[i];
+			flag = 1;
+		}
+		i++;
+	}
+	(*output)[j] = 0;
+}
+
 /**
  * @brief Removes extra spaces and replaces all sort of tabs for spaces.
  * Do not change the portion that are in single or double quotes.
@@ -51,14 +80,11 @@ int	is_in_quotes(char *input, int index)
 char	*input_normalizer(char *input)
 {
 	int		i;
-	int		j;
-	int		flag;
 	char	*output;
 
 	output = malloc(sizeof(char) * (ft_strlen(input) + 1));
 	if (!output)
 		return (0);
-	j = 0;
 	i = 0;
 	while (ft_isspace(input[i]) && input[i])
 	{
@@ -66,29 +92,7 @@ char	*input_normalizer(char *input)
 			output[i] = ' ';
 		i++;
 	}
-	while (input[i])
-	{
-		while (is_in_quotes(input, i) > 0 && input[i])
-		{
-			output[j++] = input[i++];
-		}
-		if (ft_isspace(input[i]) && ft_isspace(input[i]) != ' ')
-		{
-			output[j++] = ' ';
-		}
-		else if (ft_isspace(input[i]))
-		{
-			if (flag && input[i + 1] != 0 && !ft_isspace(input[i + 1]))
-				output[j++] = ' ';
-		}
-		else
-		{
-			output[j++] = input[i];
-			flag = 1;
-		}
-		i++;
-	}
-	output[j] = 0;
+	normalize_loop(input, i, &output);
 	return (output);
 }
 
@@ -135,31 +139,21 @@ int	is_quote(char c)
 		return (0);
 }
 
-char	*all_quotes_remover(char *string)
+void all_quotes_remover_loop(char *string, char **token, int is_in_quote)
 {
-	char	*token;
 	int		i;
 	int		j;
-	int		is_in_quote;
 
-	token = malloc(sizeof(char) * (ft_strlen(string) + 1));
-	if (!token)
-		return (0);
 	i = 0;
 	j = 0;
-	is_in_quote = 0;
 	while (string[i])
 	{
 		if (!is_in_quote && !is_quote(string[i]))
-		{
-			token[j++] = string[i++];
-		}
+			(*token)[j++] = string[i];
 		else if (is_in_quote)
 		{
 			if (string[i] != is_in_quote)
-				token[j++] = string[i++];
-			else
-				i++;
+				(*token)[j++] = string[i];
 		}
 		else if (is_quote(string[i]))
 		{
@@ -167,10 +161,22 @@ char	*all_quotes_remover(char *string)
 				is_in_quote = string[i];
 			else
 				is_in_quote = 0;
-			i++;
 		}
+		i++;
 	}
-	token[j] = 0;
+	(*token)[j] = 0;
+}
+
+char	*all_quotes_remover(char *string)
+{
+	char	*token;
+	int		is_in_quote;
+
+	is_in_quote = 0;
+	token = malloc(sizeof(char) * (ft_strlen(string) + 1));
+	if (!token)
+		return (0);
+	all_quotes_remover_loop(string, &token, is_in_quote);
 	return (token);
 }
 
@@ -194,6 +200,16 @@ char	*around_quotes_remover(char *string)
 	return (res);
 }
 
+void *palloc(int size, int elem_size)
+{
+	void	*res;
+
+	res = malloc(elem_size * (size + 1));
+	if (!res)
+		return (NULL);
+	return (res);
+}
+
 char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 {
 	char	**cmd;
@@ -202,88 +218,71 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 
 	j = i;
 	cmd_len = 0;
-	while (tokens[j] && (!is_metachar(tokens[j]->token[0])
-			|| (is_metachar(tokens[j]->token[0]) && tokens[j]->quoted)))
+	while (tokens[j] && (!is_metachar(tokens[j]->tok[0])
+			|| (is_metachar(tokens[j]->tok[0]) && tokens[j]->quote)))
 	{
 		cmd_len++;
 		j++;
 	}
-	cmd = malloc(sizeof(char *) * (cmd_len + 1));
-	if (!cmd)
-		return (0);
+	cmd = palloc(cmd_len, sizeof(char *));
 	j = 0;
-	while (tokens[i] && (!is_metachar(tokens[i]->token[0])
-			|| (is_metachar(tokens[i]->token[0]) && tokens[i]->quoted)))
+	while (tokens[i] && (!is_metachar(tokens[i]->tok[0])
+			|| (is_metachar(tokens[i]->tok[0]) && tokens[i]->quote)))
 	{
-		cmd[j] = ft_strdup(tokens[i]->token);
-		free(tokens[i]->token);
-		i++;
-		j++;
+		cmd[j++] = ft_strdup(tokens[i]->tok);
+		free(tokens[i++]->tok);
 	}
 	*arg_count = cmd_len - 1;
 	cmd[j] = 0;
 	return (cmd);
 }
 
-t_node	*parser(t_tokens **tokens)
+void	parse_heredoc(char *token, t_node **lst)
+{
+	char	*tmp;
+	
+	tmp = around_quotes_remover(token);
+	lst_append(lst, T_HEREDOC, NULL, NULL, tmp);
+	free(tmp);
+}
+
+void	parse_cmd(t_tokens **tokens, t_node **lst, int *i, int *arg_count)
+{
+	char **consolidated_cmd;
+	int	 index;
+
+	index = *i;
+
+	consolidated_cmd = consolidate_cmd(tokens, index, arg_count);
+	lst_append(lst, T_CMD, NULL, consolidated_cmd, NULL);
+	*i += *arg_count;
+	
+}
+
+t_node	*parser(t_tokens **tok)
 {
 	t_node	*lst;
 	int		i;
-	int		token_count;
-	char	**consolidated_cmd;
+	int		tc;
 	int		arg_count;
 
 	lst = NULL;
-	token_count = get_elem_count_tok(tokens);
-	i = 0;
-	while (tokens[i])
+	tc = get_elem_count_tok(tok);
+	i = -1;
+	while (tok[++i])
 	{
-		if (ft_strncmp(tokens[i]->token, "|", 1) == 0 && tokens[i]->quoted == 0)
-		{
+		if (!ft_strncmp(tok[i]->tok, "|", 1) && !tok[i]->quote)
 			lst_append(&lst, T_PIPE, NULL, NULL, NULL);
-			free(tokens[i]->token);
-
-		}
-		else if (ft_strcmp(tokens[i]->token, ">") == 0 && tokens[i]->quoted == 0
-			&& i + 1 < token_count)
-		{
-			lst_append(&lst, T_OUTFILE, tokens[i + 1]->token, NULL, NULL);
-			free(tokens[i]->token);
-			i++;
-		}
-		else if (ft_strcmp(tokens[i]->token, "<") == 0 && i + 1 < token_count
-			&& tokens[i]->quoted == 0)
-		{
-			lst_append(&lst, T_INFILE, tokens[i + 1]->token, NULL, NULL);
-			free(tokens[i]->token);
-			i++;
-		}
-		else if (ft_strcmp(tokens[i]->token, ">>") == 0 && i + 1 < token_count
-			&& tokens[i]->quoted == 0)
-		{
-			lst_append(&lst, T_OUTFILE_APPEND, tokens[i + 1]->token, NULL,
-				NULL);
-			free(tokens[i]->token);
-			i++;
-		}
-		else if (ft_strcmp(tokens[i]->token, "<<") == 0 && i + 1 < token_count
-			&& tokens[i]->quoted == 0)
-		{
-			char *tmp = around_quotes_remover(tokens[i + 1]->token);
-			lst_append(&lst, T_HEREDOC, NULL, NULL, tmp);
-			free(tokens[i]->token);
-			free(tmp);
-			i++;
-		}
+		else if (!ft_strcmp(tok[i]->tok, ">") && !tok[i]->quote && i + 1 < tc)
+			lst_append(&lst, T_OUTFILE, tok[i++ + 1]->tok, NULL, NULL);
+		else if (!ft_strcmp(tok[i]->tok, "<") && i + 1 < tc && !tok[i]->quote)
+			lst_append(&lst, T_INFILE, tok[i++ + 1]->tok, NULL, NULL);
+		else if (!ft_strcmp(tok[i]->tok, ">>") && i + 1 < tc && !tok[i]->quote)
+			lst_append(&lst, T_OUTFILE_APPEND, tok[i++ + 1]->tok, NULL, NULL);
+		else if (!ft_strcmp(tok[i]->tok, "<<") && i + 1 < tc && !tok[i]->quote)
+			parse_heredoc(tok[i++ + 1]->tok, &lst);
 		else
-		{
-			consolidated_cmd = consolidate_cmd(tokens, i, &arg_count);
-			lst_append(&lst, T_CMD, NULL, consolidated_cmd, NULL);
-
-			// free(tokens[i]->token);
-			i += arg_count;
-		}
-		i++;
+			parse_cmd(tok, &lst, &i, &arg_count);
 	}
 	return (lst);
 }

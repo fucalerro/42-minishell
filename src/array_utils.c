@@ -43,20 +43,16 @@ char	**flatten_3d_array(char ***array3d)
 	j = 0;
 	k = 0;
 	array3d_size = get_3darray_size(array3d);
-	arr_flatten = malloc((array3d_size + 1) * sizeof(char *));
-	if (!arr_flatten)
-		return (0);
+	arr_flatten = palloc(array3d_size, sizeof(char *));
 	while (array3d[i])
 	{
 		while (array3d[i][j])
 		{
 			arr_flatten[k++] = ft_strdup(array3d[i][j]);
-			free(array3d[i][j]);
-			j++;
+			free(array3d[i][j++]);
 		}
-		free(array3d[i]);
+		free(array3d[i++]);
 		j = 0;
-		i++;
 	}
 	arr_flatten[k] = 0;
 	free(array3d);
@@ -108,8 +104,8 @@ void	print_tokens(t_tokens **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		printf("token: %s\n", tokens[i]->token);
-		printf("type:  %d\n\n", tokens[i]->quoted);
+		printf("token: %s\n", tokens[i]->tok);
+		printf("type:  %d\n\n", tokens[i]->quote);
 		i++;
 	}
 }
@@ -134,34 +130,23 @@ char	*flatten_2d_array(char **array)
 	int		j;
 	int		k;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	k = 0;
-	while (array[i])
+	while (array[++i])
 	{
-		while (array[i][j])
-		{
+		while (array[i][j++])
 			k++;
-			j++;
-		}
 		j = 0;
-		i++;
 	}
-	res = malloc(sizeof(char) * (k + 1));
-	if (!res)
-		return (0);
-	i = 0;
-	j = 0;
+	res = palloc(k, sizeof(char));
+	i = -1;
 	k = 0;
-	while (array[i])
+	while (array[++i])
 	{
 		while (array[i][j])
-		{
-			res[k++] = array[i][j];
-			j++;
-		}
+			res[k++] = array[i][j++];
 		j = 0;
-		i++;
 	}
 	res[k] = 0;
 	return (res);

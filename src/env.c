@@ -137,8 +137,8 @@ void	print_env(char **tab)
 	int		j;
 	char	*value;
 
-	i = 0;
-	while (tab[i])
+	i = -1;
+	while (tab[++i])
 	{
 		j = 0;
 		printf("declare -x ");
@@ -152,10 +152,7 @@ void	print_env(char **tab)
 			printf("=\"%s\"\n", ++value);
 		}
 		else
-		{
 			printf("\n");
-		}
-		i++;
 	}
 }
 

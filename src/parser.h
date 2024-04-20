@@ -20,8 +20,8 @@
 
 typedef struct s_tokens
 {
-    char    *token;
-    int     quoted;
+    char    *tok;
+    int     quote;
     char    *is_in_quotes;
     int     unclosed_quote;
 }           t_tokens;

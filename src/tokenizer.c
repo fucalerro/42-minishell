@@ -195,9 +195,9 @@ t_tokens	**quotes_tokenizer(char **tokens)
 		res[i] = malloc(sizeof(t_tokens));
 		if (!res[i])
 			return (0);
-		res[i]->quoted = is_quote(tokens[i][0]);
+		res[i]->quote = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
-		res[i]->token = ft_strdup(temp);
+		res[i]->tok = ft_strdup(temp);
 		free(temp);
 		i++;
 	}
