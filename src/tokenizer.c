@@ -1,46 +1,32 @@
 #include "minishell.h"
 
-int	is_single_op(char *string, int i)
+char *op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 {
-	char	*single_op;
+	char *token;
 
-	single_op = "&|<>()";
-	if (string[i] && ft_strchr(single_op, string[i]))
-		return (true);
-	return (false);
-}
-
-int	is_double_op(char *string, int i)
-{
-	char	*double_op[] = {"<<", ">>"};
-	unsigned long		op_index;
-	if (string[i] == 0 || string[i + 1] == 0)
-		return (false);
-	op_index = 0;
-	while (op_index < sizeof(double_op) / sizeof(double_op[0]))
+	if (is_double_op(string, *i) && !*op_flag && !is_in_quotes(string, *i))
 	{
-		if (ft_strncmp(&string[i], double_op[op_index], 2) == 0)
-			return (true);
-		op_index++;
+		*op_flag = true;
+		token = ft_substr(string, *i, 2);
+		*i += 2;
 	}
-	return (false);
-}
-
-int	count_op(char *string)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (string[i])
+	else if (is_single_op(string, *i)
+		&& !*op_flag && !is_in_quotes(string, *i))
 	{
-		if ((is_single_op(string, i) || is_double_op(string, i))
-			&& !is_in_quotes(string, i))
-			count++;
-		i++;
+		*op_flag = true;
+		token = ft_substr(string, (*i)++, 1);
 	}
-	return (count);
+	else
+	{
+		*start = *i;
+		while (string[*i] && ((!is_double_op(string, *i)
+			&& !is_single_op(string, *i)) || is_in_quotes(string, *i)))
+			(*i)++;
+		if (*i > *start)
+			token = ft_substr(string, *start, *i - *start);
+		*op_flag = false;
+	}
+	return (token);
 }
 
 /**
@@ -56,40 +42,13 @@ char	**op_tokenizer(char *string)
 	int		j;
 	int		start;
 
-	op_flag = 0;
+	res = palloc((count_op(string) + 1) * 2, sizeof(char *));
+
 	i = 0;
 	j = 0;
-	res = malloc(sizeof(char *) * (count_op(string) + 1) * 2);
-	if (res == 0)
-		return (0);
+	op_flag = 0;
 	while (string[i])
-	{
-		if (is_double_op(string, i) && !op_flag && !is_in_quotes(string, i))
-		{
-			op_flag = true;
-			res[j++] = ft_substr(string, i, 2);
-			i += 2;
-		}
-		else if (is_single_op(string, i) && !op_flag && !is_in_quotes(string,
-				i))
-		{
-			op_flag = true;
-			res[j++] = ft_substr(string, i++, 1);
-		}
-		else
-		{
-			start = i;
-			while (string[i] && ((!is_double_op(string, i)
-						&& !is_single_op(string, i)) || is_in_quotes(string,
-						i)))
-				i++;
-			if (i > start)
-			{
-				res[j++] = ft_substr(string, start, i - start);
-			}
-			op_flag = false;
-		}
-	}
+		res[j++] = op_tokenzier_loop(string, &i, &op_flag, &start);
 	res[j] = 0;
 	return (res);
 }
@@ -129,35 +88,6 @@ char	**sp_tokenizer(char *string, char c)
 	return (res);
 }
 
-int count_quotes(char *string)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (string[i])
-	{
-		if (is_quote(string[i]))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-int	is_quotes_opened(char *string)
-{
-	int	len;
-
-	len = ft_strlen(string);
-	if (is_in_quotes(string, len - 1) || count_quotes(string) == 1)
-	{
-		write_err("Quotes are not closed\n");
-		return (1);
-	}
-	return (0); 
-}
-
 char	*set_is_in_quotes(char *token)
 {
 	char	*res;
@@ -186,7 +116,7 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	t_tokens	**res;
 	char		*temp;
 
-	res = malloc(sizeof(t_tokens *) * (get_elem_count_arr(tokens) + 1));
+	res = malloc(sizeof(t_tokens *) * (count_arr_elems(tokens) + 1));
 	if (!res)
 		return (0);
 	i = 0;
@@ -205,6 +135,8 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	return (res);
 }
 
+
+
 t_tokens	**tokenizer(char *string, int status, char **env)
 {
 	char		*normalized_input;
@@ -216,29 +148,73 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 
 	if (is_quotes_opened(string))
 		return (0);
-
 	normalized_input = input_normalizer(string);
 	sp_tokenized = sp_tokenizer(normalized_input, ' ');
-	free(normalized_input);
-	i = 0;
-	while (sp_tokenized[i])
-		i++;
-	op_tokenized = malloc((i + 1) * sizeof(char **));
-	if (!op_tokenized)
-		return (0);
-	i = 0;
 	expand_env_vars(sp_tokenized, status, env);
-	while (sp_tokenized[i])
-	{
+	op_tokenized = palloc(count_arr_elems(sp_tokenized), sizeof(char **));
+	i = -1;
+	while (sp_tokenized[++i])
 		op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
-		free(sp_tokenized[i]);
-		i++;
-	}
-	free(sp_tokenized);
 	op_tokenized[i] = 0;
 	tokenized = flatten_3d_array(op_tokenized);
-
 	tokens = quotes_tokenizer(tokenized);
+	free(normalized_input);
+	free_string_array(sp_tokenized);
 	free_string_array(tokenized);
 	return (tokens);
 }
+
+
+void normalize_loop(char *input, int i, char **output)
+{
+	int	j;
+	int	flag;
+
+	j = 0;
+	while (input[i])
+	{
+		while (is_in_quotes(input, i) > 0 && input[i])
+			(*output)[j++] = input[i++];
+		if (ft_isspace(input[i]) && ft_isspace(input[i]) != ' ')
+			(*output)[j++] = ' ';
+		else if (ft_isspace(input[i]))
+		{
+			if (flag && input[i + 1] != 0 && !ft_isspace(input[i + 1]))
+				(*output)[j++] = ' ';
+		}
+		else
+		{
+			(*output)[j++] = input[i];
+			flag = 1;
+		}
+		i++;
+	}
+	(*output)[j] = 0;
+}
+
+
+/**
+ * @brief Removes extra spaces and replaces all sort of tabs for spaces.
+ * Do not change the portion that are in single or double quotes.
+ *
+ * @param input
+ * @return char*
+ */
+char	*input_normalizer(char *input)
+{
+	int		i;
+	char	*output;
+
+	output = malloc(sizeof(char) * (ft_strlen(input) + 1));
+	if (!output)
+		return (0);
+	i = 0;
+	while (ft_isspace(input[i]) && input[i])
+	{
+		if (ft_isspace(input[i]) != 32)
+			output[i] = ' ';
+		i++;
+	}
+	normalize_loop(input, i, &output);
+	return (output);
+}	

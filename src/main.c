@@ -58,19 +58,7 @@ void	deal_with_multi_cmd(t_node *node)
 }
 
 
-void 	free_tokens(t_tokens **tokens)
-{
-	int	i;
 
-	i = 0;
-	while (tokens[i])
-	{
-		// free(tokens[i]->token);
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
 
 
 
