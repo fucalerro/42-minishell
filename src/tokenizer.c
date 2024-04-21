@@ -22,8 +22,8 @@ char *op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 		while (string[*i] && ((!is_double_op(string, *i)
 			&& !is_single_op(string, *i)) || is_in_quotes(string, *i)))
 			(*i)++;
-		if (*i > *start)
-			token = ft_substr(string, *start, *i - *start);
+		// if (*i > *start)
+		token = ft_substr(string, *start, *i - *start);
 		*op_flag = false;
 	}
 	return (token);
