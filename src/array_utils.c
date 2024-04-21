@@ -75,7 +75,7 @@ int	get_elem_count_tok(t_tokens **array)
 	return (i);
 }
 
-int	get_elem_count_arr(char **array)
+int	count_arr_elems(char **array)
 {
 	int	i;
 

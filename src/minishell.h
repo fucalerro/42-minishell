@@ -40,7 +40,7 @@ void    expand_env_vars(char **tokens, int status, char **env);
 // array_utils.c
 void    print_tokens(t_tokens **tokens);
 int get_elem_count_tok(t_tokens **array);
-int get_elem_count_arr(char **array);
+int count_arr_elems(char **array);
 char **flatten_3d_array(char ***array3d);
 void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
@@ -55,6 +55,12 @@ int word_counter_quotes(char *input);
 int is_in_quotes(char *input, int index);
 char **consolidate_cmd(t_tokens **input, int i, int *arg_count);
 // tokenizer.c
+int	is_single_op(char *string, int i);
+int	is_double_op(char *string, int i);
+int	count_op(char *string);
+void 	free_tokens(t_tokens **tokens);
+
+
 t_tokens **tokenizer(char *string, int status, char **env);
 char    **op_tokenizer(char *string);
 char    **sp_tokenizer(char *string, char c);
