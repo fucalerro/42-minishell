@@ -46,6 +46,7 @@ void    free_string_array(char **strings);
 void    print_string_tab(char **tab);
 char *flatten_2d_array(char **array);
 // parser.c
+int	is_metachar(char c);
 void *palloc(int size, int elem_size);
 size_t	wordcounter(char const *s, char c);
 t_node *parser(t_tokens **tokens);
