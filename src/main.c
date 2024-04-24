@@ -42,13 +42,14 @@ void	deal_with_multi_cmd(t_node *node)
 				tmp[ii++] = node->cmd[i++];
 			tmp[ii] = NULL;
 			free(prev_cmd->cmd);
-				// we need to free that here but lest do that antoher day
 			prev_cmd->cmd = tmp;
 			node->previous->next = node->next;
 			if (node->next)
 				node->next->previous = node->previous;
-			// node = node->previous;
-			// need to free dropped node here
+			prev_cmd = node->previous;
+			free(node->cmd);
+			free(node);
+			node = prev_cmd;
 			cmd_seen = 1;
 		}
 		if (node->type == T_PIPE)
@@ -93,7 +94,7 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 	int			original_stdout;
 
 	err_flag = false;
-	while ((prompt = readline(*line)))
+	while ((prompt = readline(*line))) //thiiiis is not legal
 	{
 		original_stdin = dup(STDIN_FILENO);
 		original_stdout = dup(STDOUT_FILENO);
