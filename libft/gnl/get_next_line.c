@@ -70,7 +70,7 @@ char	*get_residual(char *line)
 
 	var.i = 0;
 	var.j = 0;
-	if (!line)
+	if (!line || !ft_strlen(line))
 		return (ft_strdup(""));
 	var.residual = malloc(ft_strlen(line) * sizeof(char));
 	if (!var.residual)
