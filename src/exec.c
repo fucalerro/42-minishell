@@ -1,22 +1,33 @@
 #include "minishell.h"
 
-char	*get_cmd_path(char *raw, char **path)
+char	*get_cmd_path(char *raw, char **path) //need to free path
 {
 	char	*cmd;
 	char	*tmp;
+	int i;
 
+	i = -1;
 	cmd = raw;
-	if (!*path)
-		return (NULL);
-	while (*path)
+	if (!path || !*path)
 	{
-		tmp = ft_strjoin(*path, cmd);
+		free(raw);
+		return (NULL);
+	}
+	while (path[++i])
+	{
+		tmp = ft_strjoin(path[i], cmd);
 		if(!tmp)
+		{
+			free(raw);
 			return (NULL);
+		}
 		if (!access(tmp, X_OK))
+		{
+			free(raw);
+			free_2starchar(path);
 			return (tmp);
+		}
 		free(tmp);
-		path++;
 	}
 	return (NULL);
 }

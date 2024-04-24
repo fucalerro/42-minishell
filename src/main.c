@@ -61,7 +61,27 @@ void	deal_with_multi_cmd(t_node *node)
 
 
 
+void free_list(t_node *lst)
+{
+	t_node *next;
+	t_node *actual;
+	char *str;
 
+
+	while (lst)
+	{
+		next = actual->next;
+		if(actual->cmd)
+		{
+			str = actual->cmd[0];
+			while(str)
+				free(str++);
+			free(actual->cmd);
+		}
+		free(actual);
+		actual = next;
+	}
+}
 void	process_input_loop(char **line, char ***env_copy, int *status)
 {
 	char		*prompt;
@@ -126,6 +146,7 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 		}
 
 		tmpline = builtin_pwd();
+		free(*line);
 		*line = ft_strjoin(tmpline, "🌻 ");
 		free(tmpline);
 
@@ -151,7 +172,7 @@ int	main(int ac, char **av, char **env)
 	env_copy = copy_env(env, 0);
 	ft_read_history();
 	process_input_loop(&line, &env_copy, &status);
-	free(line);
+	free(line); //this is never reached
 	printf("exit\n");
 	return (0);
 }

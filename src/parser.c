@@ -47,7 +47,7 @@ char	*around_quotes_remover(char *string)
 	int		i;
 
 	if (!is_quote(string[0]))
-		return (ft_strdup(string));
+		return (ft_strdup(string)); //need protection !
 	res = malloc(sizeof(char) * (ft_strlen(string) + 1));
 	if (!res)
 		return (0);
@@ -83,6 +83,7 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 			|| (is_metachar(tokens[i]->tok[0]) && tokens[i]->quote)))
 	{
 		cmd[j++] = ft_strdup(tokens[i]->tok);
+		//need protection !
 		free(tokens[i++]->tok);
 	}
 	*arg_count = cmd_len - 1;

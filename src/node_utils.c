@@ -85,11 +85,7 @@ void	free_lst(t_node *lst)
 		tmp = lst;
 		lst = lst->next;
 		if (tmp->cmd)
-		{
-			for (int i = 0; tmp->cmd[i]; i++)
-				free(tmp->cmd[i]);
-			free(tmp->cmd);
-		}
+			free_2starchar(tmp->cmd);
 		free(tmp);
 	}
 }
