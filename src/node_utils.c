@@ -4,6 +4,30 @@
 // node_remove
 // node_insert
 
+
+char **ft_cmdsdup(char **cmds)
+{
+	int count;
+	char **tmp;
+
+	count = 0;
+	while(cmds && cmds[count])
+		count++;
+	tmp = malloc(sizeof(char *) * (count + 1));
+	if (!tmp)
+		return NULL;
+	count = 0;
+	while (cmds && cmds[count])
+	{
+		tmp[count] = cmds[count];
+		if(!tmp[count])
+			return NULL;
+		count ++;
+	}
+	tmp[count] = NULL;
+	return tmp;
+}
+
 t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 {
 	t_node	*node;
@@ -11,11 +35,11 @@ t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 	node = (t_node *)malloc(sizeof(struct s_node));
 	if (!node)
 		return ((t_node *)0);
-	node->delimiter = delimiter;
+	node->delimiter = ft_strdup(delimiter);
 	node->type = type;
 	node->active = 1;
-	node->file = file;
-	node->cmd = cmd;
+	node->file = ft_strdup(file);
+	node->cmd = ft_cmdsdup(cmd);
 	node->previous = (t_node *)0;
 	node->next = (t_node *)0;
 	return (node);
@@ -89,16 +113,3 @@ void	free_lst(t_node *lst)
 		free(tmp);
 	}
 }
-
-/*
-void	main(void)
-{
-	t_node	*lst;
-
-	lst = NULL;
-	lst_append(&lst, 0, NULL, NULL);
-	lst_append(&lst, 0, NULL, NULL);
-	lst_append(&lst, 0, NULL, NULL);
-	lst_append(&lst, 0, NULL, NULL);
-}
-*/
