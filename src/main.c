@@ -58,21 +58,39 @@ void	deal_with_multi_cmd(t_node *node)
 	}
 }
 
+void setback_fd(t_fd *fd)
+{
+	// Restore original stdin
+	if (dup2(fd->in, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	// Restore original stdout
+	if (dup2(fd->out, STDOUT_FILENO) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	// Close the saved descriptors no longer needed
+	close(fd->in);
+	close(fd->out);
+
+}
 void	process_input_loop(char **line, char ***env_copy, int *status)
 {
+	t_fd fd;
 	char		*prompt;
 	char		*tmpline;
 	t_tokens	**tokens;
 	t_node		*lst;
 	int			err_flag;
-	int			original_stdin;
-	int			original_stdout;
 
 	err_flag = false;
 	while ((prompt = readline(*line))) //thiiiis is not legal
 	{
-		original_stdin = dup(STDIN_FILENO);
-		original_stdout = dup(STDOUT_FILENO);
+		fd.in = dup(STDIN_FILENO);
+		fd.out = dup(STDOUT_FILENO);
 
 		if (ft_strlen(prompt) == 0)
 			continue ;
@@ -107,21 +125,7 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			free_lst(lst);
 
 		
-			// Restore original stdin
-			if (dup2(original_stdin, STDIN_FILENO) == -1)
-			{
-				perror("dup2");
-				exit(EXIT_FAILURE);
-			}
-			// Restore original stdout
-			if (dup2(original_stdout, STDOUT_FILENO) == -1)
-			{
-				perror("dup2");
-				exit(EXIT_FAILURE);
-			}
-			// Close the saved descriptors no longer needed
-			close(original_stdin);
-			close(original_stdout);
+			setback_fd(&fd);
 		}
 
 		tmpline = builtin_pwd();

@@ -24,12 +24,17 @@
 #include "colors.h"
 #include "error.h"
 #include <sys/stat.h>
+#include <errno.h>
 
 
 #define MINI_DEBUG_MSG 0
 
+typedef struct s_fd
+{
+	int				out;
+	int             in;
+} 					t_fd;
 
-#include <errno.h>
 extern int errno;
 
 /* FUNCTIONS */
