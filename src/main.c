@@ -84,35 +84,18 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 	char		*tmpline;
 	t_tokens	**tokens;
 	t_node		*lst;
-	int			err_flag;
 
-	err_flag = false;
-	while ((prompt = readline(*line))) //thiiiis is not legal
+	while ((prompt = readline(*line))) //thiiiis is not lega -- do we need to free prompt ?
 	{
 		fd.in = dup(STDIN_FILENO);
 		fd.out = dup(STDOUT_FILENO);
 
-		if (ft_strlen(prompt) == 0)
-			continue ;
-		err_flag = false;
-
-		if (is_quotes_opened(prompt))
-			err_flag = true;
-
-		if (!err_flag)
-		{
-			tokens = tokenizer(prompt, *status, *env_copy);
-			if (parsing_error(tokens))
-			{
-				free_tokens(tokens);
-				err_flag = true;
-			}
-		}
-			
-		if (!err_flag)
+		if (ft_strlen(prompt) == 0 || is_quotes_opened(prompt))
+			continue;
+		tokens = tokenizer(prompt, *status, *env_copy);
+		if (!parsing_error(tokens))	
 		{
 			lst = parser(tokens);
-			free_tokens(tokens);
 			
 
 			if (lst)
@@ -120,19 +103,16 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 				add_to_history(prompt);
 				ft_write_history_file(prompt);
 			}
-			deal_with_multi_cmd(lst);
+			deal_with_multi_cmd(lst); //push that in exe_prompt
 			exe_prompt(lst, env_copy, status);
 			free_lst(lst);
-
-		
 			setback_fd(&fd);
+			tmpline = builtin_pwd();
+			free(*line);
+			*line = ft_strjoin(tmpline, "🌻 ");
+			free(tmpline);
 		}
-
-		tmpline = builtin_pwd();
-		free(*line);
-		*line = ft_strjoin(tmpline, "🌻 ");
-		free(tmpline);
-
+		free_tokens(tokens);
 	}
 }
 
