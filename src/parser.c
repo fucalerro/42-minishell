@@ -77,15 +77,12 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 		cmd_len++;
 		j++;
 	}
-	cmd = palloc(cmd_len, sizeof(char *));
+	cmd = palloc(cmd_len, sizeof(char *)); //to protect
 	j = 0;
 	while (tokens[i] && (!is_metachar(tokens[i]->tok[0])
 			|| (is_metachar(tokens[i]->tok[0]) && tokens[i]->quote)))
 	{
-		cmd[j++] = ft_strdup(tokens[i]->tok);
-		//need protection !
-		free(tokens[i]->tok); // this seems not good to me
-		tokens[i++]->tok = NULL;
+		cmd[j++] = tokens[i++]->tok;
 	}
 	*arg_count = cmd_len - 1;
 	cmd[j] = 0;
@@ -110,6 +107,7 @@ void	parse_cmd(t_tokens **tokens, t_node **lst, int *i, int *arg_count)
 
 	consolidated_cmd = consolidate_cmd(tokens, index, arg_count);
 	lst_append(lst, T_CMD, NULL, consolidated_cmd, NULL);
+	free(consolidated_cmd);
 	*i += *arg_count;
 	
 }

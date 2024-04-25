@@ -91,6 +91,7 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 		if (!err_flag)
 		{
 			lst = parser(tokens);
+			free_tokens(tokens);
 			
 
 			if (lst)
@@ -101,7 +102,6 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			deal_with_multi_cmd(lst);
 			exe_prompt(lst, env_copy, status);
 			free_lst(lst);
-			free_tokens(tokens);
 
 		
 			// Restore original stdin
