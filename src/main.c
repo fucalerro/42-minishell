@@ -58,31 +58,6 @@ void	deal_with_multi_cmd(t_node *node)
 	}
 }
 
-
-
-
-
-void free_list(t_node *lst)
-{
-	t_node *next;
-	t_node *actual;
-	char *str;
-
-
-	while (lst)
-	{
-		next = actual->next;
-		if(actual->cmd)
-		{
-			str = actual->cmd[0];
-			while(str)
-				free(str++);
-			free(actual->cmd);
-		}
-		free(actual);
-		actual = next;
-	}
-}
 void	process_input_loop(char **line, char ***env_copy, int *status)
 {
 	char		*prompt;
