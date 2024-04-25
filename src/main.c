@@ -85,7 +85,10 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 		{
 			tokens = tokenizer(prompt, *status, *env_copy);
 			if (parsing_error(tokens))
+			{
+				free_tokens(tokens);
 				err_flag = true;
+			}
 		}
 			
 		if (!err_flag)
