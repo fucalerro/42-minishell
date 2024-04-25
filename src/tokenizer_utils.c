@@ -79,8 +79,8 @@ void 	free_tokens(t_tokens **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-//		if(tokens[i]->tok)
-//		 	free(tokens[i]->tok);
+		if(tokens[i]->tok)
+		 	free(tokens[i]->tok);
 
 		free(tokens[i]);
 		i++;

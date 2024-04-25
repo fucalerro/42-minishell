@@ -42,7 +42,7 @@ char	**op_tokenizer(char *string)
 	int		j;
 	int		start;
 
-	res = palloc((count_op(string) + 1) * 2, sizeof(char *));
+	res = palloc((count_op(string) + 1) * 2, sizeof(char *)); //protection
 
 	i = 0;
 	j = 0;

@@ -84,7 +84,8 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 	{
 		cmd[j++] = ft_strdup(tokens[i]->tok);
 		//need protection !
-		free(tokens[i++]->tok);
+		free(tokens[i]->tok); // this seems not good to me
+		tokens[i++]->tok = NULL;
 	}
 	*arg_count = cmd_len - 1;
 	cmd[j] = 0;
