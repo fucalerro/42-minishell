@@ -101,8 +101,8 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			deal_with_multi_cmd(lst);
 			exe_prompt(lst, env_copy, status);
 			free_lst(lst);
-
 			free_tokens(tokens);
+
 		
 			// Restore original stdin
 			if (dup2(original_stdin, STDIN_FILENO) == -1)

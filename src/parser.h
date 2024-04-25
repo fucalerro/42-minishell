@@ -23,7 +23,7 @@ typedef struct s_tokens
     char    *tok;
     int     quote;
     char    *is_in_quotes;
-    int     unclosed_quote;
+    int     unclosed_quote; // this is never used right ?
 }           t_tokens;
 
 

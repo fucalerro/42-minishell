@@ -19,7 +19,7 @@ char **ft_cmdsdup(char **cmds)
 	count = 0;
 	while (cmds && cmds[count])
 	{
-		tmp[count] = cmds[count];
+		tmp[count] = ft_strdup(cmds[count]);
 		if(!tmp[count])
 			return NULL;
 		count ++;

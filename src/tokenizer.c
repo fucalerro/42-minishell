@@ -128,6 +128,8 @@ t_tokens	**quotes_tokenizer(char **tokens)
 		res[i]->quote = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
 		res[i]->tok = ft_strdup(temp);
+		if (!res[i]->tok)
+			return (NULL);
 		free(temp);
 		i++;
 	}
