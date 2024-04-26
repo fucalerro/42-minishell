@@ -78,6 +78,16 @@ void setback_fd(t_fd *fd)
 	close(fd->out);
 
 }
+char *ft_readline(char *line, char **prompt)
+{
+
+	*prompt = readline(line);
+	if (!*prompt)
+	{
+		return (NULL);
+	}
+	return (*prompt);
+}
 void	process_input_loop(char **line, char ***env_copy, int *status)
 {
 	t_fd fd;
@@ -86,7 +96,8 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 	t_tokens	**tokens;
 	t_node		*lst;
 
-	while ((prompt = readline(*line))) //thiiiis is not lega -- do we need to free prompt ?
+	prompt = NULL;
+	while (ft_readline(*line, &prompt)) //thiiiis is not lega -- do we need to free prompt ?
 	{
 		fd.in = dup(STDIN_FILENO);
 		fd.out = dup(STDOUT_FILENO);
