@@ -1,3 +1,4 @@
+#include "history.h"
 #include "minishell.h"
 
 
@@ -99,10 +100,7 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 			
 
 			if (lst)
-			{
-				add_to_history(prompt);
-				ft_write_history_file(prompt);
-			}
+				ft_history(prompt);
 			deal_with_multi_cmd(lst); //push that in exe_prompt
 			exe_prompt(lst, env_copy, status);
 			free_lst(lst);

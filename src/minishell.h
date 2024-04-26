@@ -114,6 +114,8 @@ int	set_pipe(t_node *node);
 int	check_pipe(t_node *node);
 //free.c
 void free_2starchar(char **strstr);
+//history.c
+void ft_history(char *prompt);
 
 
 // print_line define for quick debug

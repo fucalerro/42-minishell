@@ -78,6 +78,7 @@ int	ft_write_history_file(char *line)
 	ft_putstr_fd(line, hist_fd);
 	ft_putstr_fd("\n", hist_fd);
 	free(path);
+	close(hist_fd);
 	return (0);
 }
 
@@ -102,4 +103,9 @@ void	print_hist(void)
 			printf("%s", line);
 		line = get_next_line(hist_fd);
 	}
+}
+void ft_history(char *prompt)
+{
+	add_to_history(prompt);
+	ft_write_history_file(prompt);
 }
