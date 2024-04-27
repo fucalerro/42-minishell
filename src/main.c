@@ -64,6 +64,7 @@ void	process_input_loop(char ***env_copy, int *status)
 			exe_prompt(lst, env_copy, status);
 			setback_fd(&fd);
 		}
+		free(prompt);
 		free_tokens(tokens);
 	}
 }
