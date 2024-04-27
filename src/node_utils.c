@@ -10,6 +10,8 @@ char **ft_cmdsdup(char **cmds)
 	int count;
 	char **tmp;
 
+	if(!cmds)
+		return NULL;
 	count = 0;
 	while(cmds && cmds[count])
 		count++;

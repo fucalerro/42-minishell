@@ -82,7 +82,6 @@ int	main(int ac, char **av, char **env)
 	env_copy = copy_env(env, 0);
 	ft_read_history();
 	process_input_loop(&env_copy, &status);
-	printf("exit\n");
 	return (0);
 }
 #endif
