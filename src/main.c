@@ -4,60 +4,6 @@
 
 #ifndef UNIT_TESTS
 
-void	deal_with_multi_cmd(t_node *node)
-{
-	int		cmd_seen;
-	t_node	*prev_cmd;
-	char	**tmp;
-	int		count;
-	int		i;
-	int		ii;
-
-	cmd_seen = 0;
-	prev_cmd = NULL;
-	while (node)
-	{
-		if (node->type == T_CMD)
-			cmd_seen++;
-		if (cmd_seen > 1)
-		{
-			prev_cmd = node->previous;
-			while (prev_cmd && prev_cmd->type != T_CMD)
-				prev_cmd = prev_cmd->previous;
-			count = 0;
-			i = 0;
-			while (node->cmd[i++])
-				count++;
-			i = 0;
-			while (prev_cmd->cmd[i++])
-				count++;
-			tmp = (char **)malloc(sizeof(char *) * (count + 1));
-			if (!tmp)
-				return ;
-			ii = 0;
-			i = 0;
-			while (prev_cmd->cmd[i])
-				tmp[ii++] = prev_cmd->cmd[i++];
-			i = 0;
-			while (node->cmd[i])
-				tmp[ii++] = node->cmd[i++];
-			tmp[ii] = NULL;
-			free(prev_cmd->cmd);
-			prev_cmd->cmd = tmp;
-			node->previous->next = node->next;
-			if (node->next)
-				node->next->previous = node->previous;
-			prev_cmd = node->previous;
-			free(node->cmd);
-			free(node);
-			node = prev_cmd;
-			cmd_seen = 1;
-		}
-		if (node->type == T_PIPE)
-			cmd_seen = 0;
-		node = node->next;
-	}
-}
 
 void setback_fd(t_fd *fd)
 {
@@ -78,26 +24,31 @@ void setback_fd(t_fd *fd)
 	close(fd->out);
 
 }
-char *ft_readline(char *line, char **prompt)
+char *ft_readline(char **prompt)
 {
+	char	*line;
+	char		*tmpline;
+	tmpline = builtin_pwd();
+	line = ft_strjoin(tmpline, "🌻 ");
+	free(tmpline);
 
 	*prompt = readline(line);
+	free(line);
 	if (!*prompt)
 	{
 		return (NULL);
 	}
 	return (*prompt);
 }
-void	process_input_loop(char **line, char ***env_copy, int *status)
+void	process_input_loop(char ***env_copy, int *status)
 {
 	t_fd fd;
 	char		*prompt;
-	char		*tmpline;
 	t_tokens	**tokens;
 	t_node		*lst;
 
 	prompt = NULL;
-	while (ft_readline(*line, &prompt)) //thiiiis is not lega -- do we need to free prompt ?
+	while (ft_readline(&prompt))
 	{
 		fd.in = dup(STDIN_FILENO);
 		fd.out = dup(STDOUT_FILENO);
@@ -108,18 +59,10 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 		if (!parsing_error(tokens))	
 		{
 			lst = parser(tokens);
-			
-
 			if (lst)
 				ft_history(prompt);
-			deal_with_multi_cmd(lst); //push that in exe_prompt
 			exe_prompt(lst, env_copy, status);
-			free_lst(lst);
 			setback_fd(&fd);
-			tmpline = builtin_pwd();
-			free(*line);
-			*line = ft_strjoin(tmpline, "🌻 ");
-			free(tmpline);
 		}
 		free_tokens(tokens);
 	}
@@ -127,24 +70,18 @@ void	process_input_loop(char **line, char ***env_copy, int *status)
 
 int	main(int ac, char **av, char **env)
 {
-	char	*tmpline;
-	char	*line;
 	int		status;
 	char	**env_copy;
 
 	if (ac > 2)
 		exit(1);
 	(void) av;
-	tmpline = builtin_pwd();
 	status = 0;
 	signal(SIGINT, sigint_handler);   // Ctrl-C
 	signal(SIGQUIT, sigquit_handler); // Ctrl-'\'
-	line = ft_strjoin(tmpline, "🌻 ");
-	free(tmpline);
 	env_copy = copy_env(env, 0);
 	ft_read_history();
-	process_input_loop(&line, &env_copy, &status);
-	free(line); //this is never reached
+	process_input_loop(&env_copy, &status);
 	printf("exit\n");
 	return (0);
 }
