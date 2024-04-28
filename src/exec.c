@@ -70,60 +70,6 @@ void wait_pid(t_stack *pid_stack, int *status)
 		stack_drop(&pid_stack);
 	}
 }
-void	deal_with_multi_cmd(t_node *node)
-{
-	int		cmd_seen;
-	t_node	*prev_cmd;
-	char	**tmp;
-	int		count;
-	int		i;
-	int		ii;
-
-	cmd_seen = 0;
-	prev_cmd = NULL;
-	while (node)
-	{
-		if (node->type == T_CMD)
-			cmd_seen++;
-		if (cmd_seen > 1)
-		{
-			prev_cmd = node->previous;
-			while (prev_cmd && prev_cmd->type != T_CMD)
-				prev_cmd = prev_cmd->previous;
-			count = 0;
-			i = 0;
-			while (node->cmd[i++])
-				count++;
-			i = 0;
-			while (prev_cmd->cmd[i++])
-				count++;
-			tmp = (char **)malloc(sizeof(char *) * (count + 1));
-			if (!tmp)
-				return ;
-			ii = 0;
-			i = 0;
-			while (prev_cmd->cmd[i])
-				tmp[ii++] = prev_cmd->cmd[i++];
-			i = 0;
-			while (node->cmd[i])
-				tmp[ii++] = node->cmd[i++];
-			tmp[ii] = NULL;
-			free(prev_cmd->cmd);
-			prev_cmd->cmd = tmp;
-			node->previous->next = node->next;
-			if (node->next)
-				node->next->previous = node->previous;
-			prev_cmd = node->previous;
-			free(node->cmd);
-			free(node);
-			node = prev_cmd;
-			cmd_seen = 1;
-		}
-		if (node->type == T_PIPE)
-			cmd_seen = 0;
-		node = node->next;
-	}
-}
 int	exe_prompt(t_node *list, char ***env, int *status)
 {
 	t_node	*node;

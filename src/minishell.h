@@ -121,6 +121,7 @@ void ft_history(char *prompt);
 char	*get_cmd_path(t_node *node, char **path);
 char	**get_path(char *env[]);
 int	cmd_do_not_include_path(char *cmd);
+void	deal_with_multi_cmd(t_node *node);
 //builtin_utils.c
 void	flag_builtin_fork(t_node *node);
 int run_builtin(t_node *node, t_stack **pid_stack, char ***env);

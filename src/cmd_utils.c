@@ -64,3 +64,60 @@ int	cmd_do_not_include_path(char *cmd)
 	}
 	return (1);
 }
+
+void deal_cout(t_node *node, t_node *prev_cmd, int i, int ii)
+{
+	char **tmp;
+
+	while (prev_cmd && prev_cmd->type != T_CMD)
+		prev_cmd = prev_cmd->previous;
+	while((node->cmd[i])|| prev_cmd->cmd[ii])
+	{
+		if (node->cmd[i])
+			i++;
+		if (prev_cmd->cmd[ii])
+			ii++;
+	}
+	tmp = (char **)malloc(sizeof(char *) * (i + ii + 1));
+	if (!tmp)
+		return ;
+	ii = 0;
+	i = 0;
+	while (prev_cmd->cmd[i])
+		tmp[ii++] = prev_cmd->cmd[i++];
+	i = 0;
+	while (node->cmd[i])
+		tmp[ii++] = node->cmd[i++];
+	tmp[ii] = NULL;
+	free(prev_cmd->cmd);
+	prev_cmd->cmd = tmp;
+}
+void	deal_with_multi_cmd(t_node *node)
+{
+	int		cmd_seen;
+	t_node	*prev_cmd;
+
+	cmd_seen = 0;
+	prev_cmd = NULL;
+	while (node)
+	{
+		if (node->type == T_CMD)
+			cmd_seen++;
+		if (cmd_seen > 1)
+		{
+			prev_cmd = node->previous;
+			deal_cout(node,prev_cmd,0,0);
+			node->previous->next = node->next;
+			if (node->next)
+				node->next->previous = node->previous;
+			prev_cmd = node->previous;
+			free(node->cmd);
+			free(node);
+			node = prev_cmd;
+			cmd_seen = 1;
+		}
+		if (node->type == T_PIPE)
+			cmd_seen = 0;
+		node = node->next;
+	}
+}
