@@ -56,74 +56,45 @@ int	access_outfile(const char *filename)
 	return (0);
 }
 
-int	is_operator(char *token)
+int	token_error(t_tokens *token, int *op_flag, int *f_op_flag)
 {
-	if (ft_strcmp(token, "|") == 0)
-		return (1);
-	return (0);
-}
-
-int	is_file_operator(char *token)
-{
-	if (ft_strcmp(token, "<") == 0)
-		return (1);
-	if (ft_strcmp(token, ">") == 0)
-		return (1);
-	if (ft_strcmp(token, ">>") == 0)
-		return (1);
-	if (ft_strcmp(token, "<<") == 0)
-		return (1);
-	return (0);
-}
-
-int	is_unhandled_operator(char *tokens)
-{
-	if (tokens[0] == '(' || tokens[0] == ')' || tokens[0] == '&')
-		return (1);
-	return (0);
-}
-
-
-
-int token_error(t_tokens *token, int *op_flag, int *f_op_flag)
-{
-    if (is_unhandled_operator(token->tok) && token->quote == UNQUOTED)
-        return errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]);
-    else if (*f_op_flag && token->quote == UNQUOTED
+	if (is_unhandled_operator(token->tok) && token->quote == UNQUOTED)
+		return (errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]));
+	else if (*f_op_flag && token->quote == UNQUOTED
 		&& (is_file_operator(token->tok) || is_operator(token->tok)))
-        return errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]);
-    else if (is_file_operator(token->tok))
-        *f_op_flag = true;
-    else
-        *f_op_flag = false;
-    if (*op_flag && is_operator(token->tok) && token->quote == UNQUOTED)
-        return errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]);
-    else if (!is_operator(token->tok))
-        *op_flag = false;
-    else
-        *op_flag = true;
-    return (0);
+		return (errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]));
+	else if (is_file_operator(token->tok))
+		*f_op_flag = true;
+	else
+		*f_op_flag = false;
+	if (*op_flag && is_operator(token->tok) && token->quote == UNQUOTED)
+		return (errror_msg(ERR_UNEXPECTED_TOKEN, token->tok[0]));
+	else if (!is_operator(token->tok))
+		*op_flag = false;
+	else
+		*op_flag = true;
+	return (0);
 }
 
-int parsing_error(t_tokens **tokens) {
-    int i;
-    int op_flag;
-    int f_op_flag;
-    int result;
+int	parsing_error(t_tokens **tokens)
+{
+	int	i;
+	int	op_flag;
+	int	f_op_flag;
+	int	result;
 
-    i = -1;
-    op_flag = true;
-    f_op_flag = false;
-    while (tokens[++i]) {
-        result = token_error(tokens[i], &op_flag, &f_op_flag);
-        if (result != 0) 
-            return result;
-    }
-
-    if (tokens[i] && (is_operator(tokens[i - 1]->tok) 
-		|| is_file_operator(tokens[i - 1]->tok))
-		&& tokens[i - 1]->quote == UNQUOTED)
-        return errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->tok[0]);
-
-    return (0); 
+	i = -1;
+	op_flag = true;
+	f_op_flag = false;
+	while (tokens[++i])
+	{
+		result = token_error(tokens[i], &op_flag, &f_op_flag);
+		if (result != 0)
+			return (result);
+	}
+	if (tokens[i] && (is_operator(tokens[i - 1]->tok)
+			|| is_file_operator(tokens[i - 1]->tok)) && tokens[i
+			- 1]->quote == UNQUOTED)
+		return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->tok[0]));
+	return (0);
 }
