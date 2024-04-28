@@ -6,12 +6,12 @@
 /*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/28 22:20:09 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_CODES_H
-# define COLOR_CODES_H
+#ifndef COLORS_H
+# define COLORS_H
 
 # define COLOR_RED "\033[0;31m"     // ANSI Red
 # define COLOR_GREEN "\033[0;32m"   // ANSI Green

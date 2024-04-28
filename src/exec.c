@@ -64,8 +64,8 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 	}
 	else
 		stack_add(pid_stack, pid);
-		if (node->active)
-			return(node->active);
+	if (node->active)
+		return (node->active);
 	return (0);
 }
 

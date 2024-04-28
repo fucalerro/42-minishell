@@ -6,7 +6,7 @@
 /*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/28 22:17:31 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 		while (string[*i] && ((!is_double_op(string, *i)
 					&& !is_single_op(string, *i)) || is_in_quotes(string, *i)))
 			(*i)++;
-		// if (*i > *start)
 		token = ft_substr(string, *start, *i - *start);
 		*op_flag = false;
 	}
@@ -53,7 +52,7 @@ char	**op_tokenizer(char *string)
 	int		j;
 	int		start;
 
-	res = palloc((count_op(string) + 1) * 2, sizeof(char *)); // protection
+	res = palloc((count_op(string) + 1) * 2, sizeof(char *));
 	i = 0;
 	j = 0;
 	op_flag = 0;

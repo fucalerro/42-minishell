@@ -6,7 +6,7 @@
 /*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/28 22:16:00 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	print_hist(void)
 		line = get_next_line(hist_fd);
 	}
 }
+
 void	ft_history(char *prompt)
 {
 	add_to_history(prompt);

@@ -6,7 +6,7 @@
 /*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/28 22:16:33 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	close_pipe(t_node *node)
 	}
 	return (0);
 }
+
 int	stdin_occupied(t_node *node)
 {
 	while (node && node->previous && node->previous->type != T_PIPE)
@@ -79,6 +80,7 @@ int	stdin_occupied(t_node *node)
 	}
 	return (0);
 }
+
 int	set_pipe(t_node *node)
 {
 	int		check_value;
@@ -109,6 +111,7 @@ int	set_pipe(t_node *node)
 	}
 	return (0);
 }
+
 int	check_pipe(t_node *node)
 {
 	int		return_value;

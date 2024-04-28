@@ -6,7 +6,7 @@
 /*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/28 22:18:00 by bob              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*around_quotes_remover(char *string)
 	int		i;
 
 	if (!is_quote(string[0]))
-		return (ft_strdup(string)); // need protection !
+		return (ft_strdup(string));
 	res = malloc(sizeof(char) * (ft_strlen(string) + 1));
 	if (!res)
 		return (0);
@@ -87,7 +87,7 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 		cmd_len++;
 		j++;
 	}
-	cmd = palloc(cmd_len, sizeof(char *)); // to protect
+	cmd = palloc(cmd_len, sizeof(char *));
 	j = 0;
 	while (tokens[i] && (!is_metachar(tokens[i]->tok[0])
 			|| (is_metachar(tokens[i]->tok[0]) && tokens[i]->quote)))

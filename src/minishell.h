@@ -81,10 +81,10 @@ char		**sp_tokenizer(char *string, char c);
 // error_handling.c
 int			parsing_error(t_tokens **tokens);
 int			errror_msg(int type, int c);
-//error_handling_utils.c
-int	is_operator(char *token);
-int	is_file_operator(char *token);
-int	is_unhandled_operator(char *tokens);
+// error_handling_utils.c
+int			is_operator(char *token);
+int			is_file_operator(char *token);
+int			is_unhandled_operator(char *tokens);
 // exec.c
 int			exe_prompt(t_node *node, char ***env, int *status);
 // builtin.c
@@ -99,7 +99,6 @@ int			builtin_export(char ***env, char **var);
 char		**copy_env(char **env, int size);
 void		builtin_unset(char ***env, char **var);
 int			builtin_echo(t_node *node);
-
 
 // stack.c
 void		stack_add(t_stack **lst, int value);
