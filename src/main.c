@@ -1,29 +1,17 @@
 #include "history.h"
 #include "minishell.h"
 
-
-#ifndef UNIT_TESTS
-
-
 void setback_fd(t_fd *fd)
 {
-	// Restore original stdin
 	if (dup2(fd->in, STDIN_FILENO) == -1)
-	{
-		perror("dup2");
 		exit(EXIT_FAILURE);
-	}
-	// Restore original stdout
 	if (dup2(fd->out, STDOUT_FILENO) == -1)
-	{
-		perror("dup2");
 		exit(EXIT_FAILURE);
-	}
-	// Close the saved descriptors no longer needed
 	close(fd->in);
 	close(fd->out);
 
 }
+
 char *ft_readline(char **prompt)
 {
 	char	*line;
@@ -40,6 +28,7 @@ char *ft_readline(char **prompt)
 	}
 	return (*prompt);
 }
+
 void	process_input_loop(char ***env_copy, int *status)
 {
 	t_fd fd;
@@ -48,7 +37,6 @@ void	process_input_loop(char ***env_copy, int *status)
 	t_node		*lst;
 
 	prompt = NULL;
-	signal(SIGINT, sigint_handler);   // Ctrl-C
 	while (ft_readline(&prompt))
 	{
 		fd.in = dup(STDIN_FILENO);
@@ -80,10 +68,10 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	(void) av;
 	status = 0;
+	signal(SIGINT, sigint_handler);   // Ctrl-C
 	signal(SIGQUIT, sigquit_handler); // Ctrl-'\'
 	env_copy = copy_env(env, 0);
 	ft_read_history();
 	process_input_loop(&env_copy, &status);
 	return (0);
 }
-#endif
