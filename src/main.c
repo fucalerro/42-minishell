@@ -64,7 +64,7 @@ int	main(int ac, char **av, char **env)
 	int		status;
 	char	**env_copy;
 
-	if (ac > 2)
+	if (ac > 1)
 		exit(1);
 	(void) av;
 	status = 0;
