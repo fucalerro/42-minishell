@@ -48,6 +48,7 @@ void	process_input_loop(char ***env_copy, int *status)
 	t_node		*lst;
 
 	prompt = NULL;
+	signal(SIGINT, sigint_handler);   // Ctrl-C
 	while (ft_readline(&prompt))
 	{
 		fd.in = dup(STDIN_FILENO);
@@ -66,6 +67,7 @@ void	process_input_loop(char ***env_copy, int *status)
 		}
 		free(prompt);
 		free_tokens(tokens);
+		signal(SIGINT, sigint_handler);   // Ctrl-C
 	}
 }
 
@@ -78,7 +80,6 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	(void) av;
 	status = 0;
-	signal(SIGINT, sigint_handler);   // Ctrl-C
 	signal(SIGQUIT, sigquit_handler); // Ctrl-'\'
 	env_copy = copy_env(env, 0);
 	ft_read_history();

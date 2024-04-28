@@ -156,6 +156,7 @@ int run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 	if (node->active == 2)
 	{
 		pid = fork();
+		signal(SIGINT, sigint_handler_process);   // Ctrl-C
 		if (pid)
 		{
 			stack_add(pid_stack, pid);
@@ -217,6 +218,7 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 	if (executable_ok)
 		return (executable_ok);
 	pid = fork();
+	signal(SIGINT, sigint_handler_process);   // Ctrl-C
 	if (pid == 0)
 	{
 		set_pipe(node);

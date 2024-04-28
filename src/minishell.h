@@ -106,6 +106,7 @@ int exe_heredoc(t_node *node);
 //signal.c
 void sigint_handler(int sig);
 void sigquit_handler(int sig);
+void	sigint_handler_process(int sig);
 //pipe.c
 void check_pipe_status(t_node *node);
 int init_pipe(t_node *node);
