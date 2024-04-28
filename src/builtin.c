@@ -4,7 +4,7 @@ char	*builtin_pwd(void)
 {
 	char	*cwd;
 
-	cwd = getcwd(NULL, 0); // its a malloc, wee need to free that at some point
+	cwd = getcwd(NULL, 0);
 	if (cwd != NULL)
 	{
 		return (cwd);

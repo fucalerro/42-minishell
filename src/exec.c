@@ -1,17 +1,17 @@
 #include "minishell.h"
 #include "node.h"
 
-char	*get_cmd_path(char *raw, char **path) //need to free path
+char	*get_cmd_path(t_node *node, char **path)
 {
 	char	*cmd;
 	char	*tmp;
 	int i;
 
 	i = -1;
-	cmd = raw;
+	cmd = node->cmd[0];
 	if (!path || !*path)
 	{
-		free(raw);
+		free_2starchar(node->cmd);
 		return (NULL);
 	}
 	while (path[++i])
@@ -19,17 +19,23 @@ char	*get_cmd_path(char *raw, char **path) //need to free path
 		tmp = ft_strjoin(path[i], cmd);
 		if(!tmp)
 		{
-			free(raw);
+			free_2starchar(node->cmd);
+			node->cmd = NULL;
+			free_2starchar(path);
 			return (NULL);
 		}
 		if (!access(tmp, X_OK))
 		{
-			free(raw);
+			free(cmd);
 			free_2starchar(path);
+			node->cmd[0] = tmp;
 			return (tmp);
 		}
 		free(tmp);
 	}
+	free_2starchar(node->cmd);
+	node->cmd = NULL;
+	free_2starchar(path);
 	return (NULL);
 }
 
@@ -175,7 +181,7 @@ int check_executable(t_node *node)
 {
 	struct stat	path_stat;
 
-	if (!node->cmd[0])
+	if (!node->cmd || !node->cmd[0])
 	{
 		write_err(" command not found\n");
 		return (ERR_CMD_NOT_FOUND);
@@ -206,7 +212,7 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 	if (is_builtin(node->cmd))
 		return run_builtin(node, pid_stack, env);
 	else if (cmd_do_not_include_path(node->cmd[0]))
-		node->cmd[0] = get_cmd_path(node->cmd[0], get_path(*env)); // free path
+		get_cmd_path(node, get_path(*env));
 	executable_ok = check_executable(node);
 	if (executable_ok)
 		return (executable_ok);

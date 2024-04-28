@@ -8,4 +8,5 @@ void free_2starchar(char **strstr)
 	while(strstr[i])
 		free(strstr[i++]);
 	free(strstr);
+	strstr = NULL;
 }
