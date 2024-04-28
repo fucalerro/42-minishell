@@ -59,49 +59,54 @@ int	exe_outfile_append(t_node *node)
 	close(fd);
 	return (0);
 }
-int exe_heredoc(t_node *node)
-{
-    pid_t pid;
-	char *buff_str;
-	int		fd[2];
-	int status;
 
-	if (pipe(fd) == -1)
-		exit(EXIT_FAILURE);
-    pid = fork();
-    if (pid == -1)
+void	heredoc_child(t_node *node)
+{
+	char	*buff_str;
+
+	signal(SIGINT, sigint_handler_heredoc);
+	close(node->pipe[0]);
+	while (1)
 	{
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
+		buff_str = readline("> ");
+		if (!buff_str || !ft_strcmp(buff_str, node->delimiter))
+		{
+			free(buff_str);
+			break ;
+		}
+		write(node->pipe[1], buff_str, ft_strlen(buff_str));
+		write(node->pipe[1], "\n", 1);
+		free(buff_str);
+	}
+	close(node->pipe[1]);
+	exit(EXIT_SUCCESS);
+}
+
+int	exe_heredoc(t_node *node)
+{
+	pid_t	pid;
+	int		status;
+
+	if (pipe(node->pipe) == -1)
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
 	else if (pid == 0)
 	{
-		signal(SIGINT, sigint_handler_heredoc);
-		close(fd[0]);
-		while (1)
-		{
-			buff_str = readline("> ");
-			if (!buff_str || !ft_strcmp(buff_str, node->delimiter))
-			{
-				free(buff_str);
-				break;
-			}
-			write(fd[1], buff_str, ft_strlen(buff_str));
-			write(fd[1], "\n", 1);
-			free(buff_str);
-		}
-
-		close(fd[1]);
-        exit(EXIT_SUCCESS);
-    }
+		heredoc_child(node);
+	}
 	else
 	{
-        waitpid(pid, &status, 0);
-		close(fd[1]);
+		waitpid(pid, &status, 0);
+		close(node->pipe[1]);
 		if (WIFEXITED(status) && WEXITSTATUS(status))
-			return (close(fd[0]) || 1);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
+			return (close(node->pipe[0]) || 1);
+		dup2(node->pipe[0], STDIN_FILENO);
+		close(node->pipe[0]);
 	}
-    return 0;
+	return (0);
 }
