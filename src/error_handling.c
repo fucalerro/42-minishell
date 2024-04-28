@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// prints error message
 int	errror_msg(int type, int c)
 {
 	printf("minishell: ");
@@ -19,7 +18,6 @@ int	errror_msg(int type, int c)
 	return (1);
 }
 
-// check if file exists and if it is readable.
 int	access_infile(char *filepath)
 {
 	if (access(filepath, F_OK) == -1)
@@ -35,8 +33,6 @@ int	access_infile(char *filepath)
 	return (0);
 }
 
-// check if file is a directory, if it exists and if it is writable.
-// if file doesnt exist, check if current directory is writable.
 int	access_outfile(const char *filename)
 {
 	if (open(filename, O_DIRECTORY) >= 0)
@@ -60,7 +56,6 @@ int	access_outfile(const char *filename)
 	return (0);
 }
 
-// check if token is an operator
 int	is_operator(char *token)
 {
 	if (ft_strcmp(token, "|") == 0)
@@ -83,16 +78,8 @@ int	is_file_operator(char *token)
 
 int	is_unhandled_operator(char *tokens)
 {
-	unsigned long		j;
-	char *unhandled[] = { "(", ")", "&" };
-
-	j = 0;
-	while (j < sizeof(unhandled) / sizeof(unhandled[0]))
-	{
-		if (ft_strcmp(tokens, unhandled[j]) == 0)
-			return (1);
-		j++;
-	}
+	if (tokens[0] == '(' || tokens[0] == ')' || tokens[0] == '&')
+		return (1);
 	return (0);
 }
 
@@ -119,11 +106,14 @@ int token_error(t_tokens *token, int *op_flag, int *f_op_flag)
 }
 
 int parsing_error(t_tokens **tokens) {
-    int i = -1;
-    int op_flag = true;
-    int f_op_flag = false;
+    int i;
+    int op_flag;
+    int f_op_flag;
     int result;
 
+    i = -1;
+    op_flag = true;
+    f_op_flag = false;
     while (tokens[++i]) {
         result = token_error(tokens[i], &op_flag, &f_op_flag);
         if (result != 0) 
@@ -137,45 +127,3 @@ int parsing_error(t_tokens **tokens) {
 
     return (0); 
 }
-
-
-
-
-/**
- * @brief return 1 in case of error. if starting or ending with
- * operator, return error.
- * If 2 or more operators are next to each other, return error.
- *
- * @param tokens
- * @return int
- */
-// int	parsing_error(t_tokens **tokens)
-// {
-// 	int	i;
-// 	int	op_flag;
-// 	int	f_op_flag;
-
-// 	op_flag = true;
-// 	f_op_flag = false;
-// 	i = -1;
-// 	while (tokens[++i])
-// 	{
-// 		if (is_unhandled_operator(tokens[i]->tok) && tokens[i]->quote == UNQUOTED)
-// 			return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->tok[0]));
-// 		else if (f_op_flag && tokens[i]->quote == UNQUOTED && (is_file_operator(tokens[i]->tok) || is_operator(tokens[i]->tok)))
-// 			return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->tok[0]));
-// 		else if (is_file_operator(tokens[i]->tok))
-// 			f_op_flag = true;
-// 		else
-// 			f_op_flag = false;
-// 		if (op_flag && is_operator(tokens[i]->tok) && tokens[i]->quote == UNQUOTED)
-// 			return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i]->tok[0]));
-// 		else if (!is_operator(tokens[i]->tok))
-// 			op_flag = false;
-// 		else
-// 			op_flag = true;
-// 	}
-// 	if (tokens[i] && (is_operator(tokens[i - 1]->tok) || is_file_operator(tokens[i - 1]->tok)) && tokens[i - 1]->quote == UNQUOTED)
-// 		return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->tok[0]));	
-// 	return (0);
-// }
