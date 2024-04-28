@@ -8,21 +8,11 @@ char	*get_cmd_path(t_node *node, char **path)
 
 	i = -1;
 	cmd = node->cmd[0];
-	if (!path || !*path)
-	{
-		free_2starchar(node->cmd);
-		return (NULL);
-	}
-	while (path[++i])
+	while (path && path[++i])
 	{
 		tmp = ft_strjoin(path[i], cmd);
 		if(!tmp)
-		{
-			free_2starchar(node->cmd);
-			node->cmd = NULL;
-			free_2starchar(path);
-			return (NULL);
-		}
+			break;
 		if (!access(tmp, X_OK))
 		{
 			free(cmd);
@@ -32,9 +22,9 @@ char	*get_cmd_path(t_node *node, char **path)
 		}
 		free(tmp);
 	}
-	free_2starchar(node->cmd);
-	node->cmd = NULL;
-	free_2starchar(path);
+	node->cmd = free_2starchar(node->cmd);
+	if(path)
+		free_2starchar(path);
 	return (NULL);
 }
 
