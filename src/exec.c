@@ -36,6 +36,7 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 		return (run_builtin(node, pid_stack, env));
 	else if (cmd_do_not_include_path(node->cmd[0]))
 		get_cmd_path(node, get_path(*env));
+	node->active = check_executable(node);
 	pid = fork();
 	signal(SIGINT, sigint_handler_process);
 	if (pid == 0)
@@ -44,15 +45,15 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 		close_pipe(node);
 		if (run_redirection_file(node))
 			exit(EXIT_FAILURE);
-		if (check_executable(node))
-			exit(check_executable(node));
+		if (node->active)
+			exit(node->active);
 		execve(node->cmd[0], node->cmd, *env);
 		exit(EXIT_FAILURE);
 	}
 	else
 		stack_add(pid_stack, pid);
-	if (check_executable(node))
-		exit(check_executable(node));
+		if (node->active)
+			return(node->active);
 	return (0);
 }
 
