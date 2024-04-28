@@ -47,9 +47,7 @@ void	builtin_history(char **cmd)
 	{
 		path = get_history_path();
 		unlink(path);
-		// free(path);
 		rl_clear_history();
-		// clear_hist(hist);
 	}
 }
 
@@ -77,11 +75,10 @@ int	builtin_exit(t_node *node)
 		cmd++;
 	}
 	if (node->cmd[1])
-	{
 		exit(atoi(node->cmd[1]));
-	}
 	return (0);
 }
+
 int	builtin_echo(t_node *node)
 {
 	char	**cmd;

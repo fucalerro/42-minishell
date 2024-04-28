@@ -97,7 +97,6 @@ void	stack_drop(t_stack **lst);
 void debug_print(char * msg);
 void write_err(char *str);
 //list_utils.c
-int sort_infile(t_node **lst);
 //infile.c
 int exe_infile(t_node *node);
 int exe_outfile_append(t_node *node);
@@ -115,11 +114,20 @@ int close_pipe(t_node *node);
 int	set_pipe(t_node *node);
 int	check_pipe(t_node *node);
 //free.c
-void free_2starchar(char **strstr);
+char **free_2starchar(char **strstr);
 //history.c
 void ft_history(char *prompt);
-
-
+//cmd_utils.c
+char	*get_cmd_path(t_node *node, char **path);
+char	**get_path(char *env[]);
+int	cmd_do_not_include_path(char *cmd);
+//builtin_utils.c
+void	flag_builtin_fork(t_node *node);
+int run_builtin(t_node *node, t_stack **pid_stack, char ***env);
+int	exe_builtin(t_node *node, char ***env);
+int	is_builtin(char **cmd);
+//redirection_file_utils.c
+int	run_redirection_file(t_node *node);
 // print_line define for quick debug
 #define PL printf("line: %d file: %s\n", __LINE__,  __FILE__);
 
