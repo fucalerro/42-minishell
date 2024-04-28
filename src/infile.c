@@ -59,8 +59,53 @@ int	exe_outfile_append(t_node *node)
 	close(fd);
 	return (0);
 }
+int exe_heredoc(t_node *node) {
+/////////////////////////////CECHK
+    pid_t pid;
+    int fd;  // File descriptor for the output file
+    char *filename = ft_strdup("heredoc_output.txt");  // Specify your file name here
 
-int	exe_heredoc(t_node *node)
+    pid = fork(); // Fork a new process
+
+    if (pid == -1) {
+        // Fork failed
+        perror("fork");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        char *buff_str;
+
+        // Open the file for writing, create if not exists, truncate to zero length
+        fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd == -1) {
+            perror("Failed to open file");
+            exit(EXIT_FAILURE);
+        }
+
+        while (1) {
+            buff_str = readline("> ");
+            if (!buff_str || !ft_strcmp(buff_str, node->delimiter)) {
+                free(buff_str);
+                break;
+            }
+            write(fd, buff_str, strlen(buff_str));
+            write(fd, "\n", 1);  // Write newline character
+            free(buff_str);
+        }
+
+        close(fd);  // Close the file descriptor
+        exit(EXIT_SUCCESS);  // Ensure the child exits after doing its work
+    } else {
+        // Parent process
+        waitpid(pid, NULL, 0);  // Wait for the child process to finish
+		node->file = filename;
+		exe_infile(node);
+		
+    }
+
+    return 0;
+}
+int	exe_heredor(t_node *node)
 {
 	int		fd[2];
 	char	*buff_str;
@@ -73,6 +118,7 @@ int	exe_heredoc(t_node *node)
 	while (1)
 	{
 		buff_str = readline("> ");
+		printf("buff_str: ..%s..\n", buff_str);
 		if (!buff_str || !ft_strcmp(buff_str, node->delimiter))
 		{
 			free(buff_str);
