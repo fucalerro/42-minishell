@@ -3,15 +3,15 @@
 
 typedef struct s_hist
 {
-    char            *line;
-    struct s_hist   *previous;
-    struct s_hist   *next;
-}                   t_hist;
+	char			*line;
+	struct s_hist	*previous;
+	struct s_hist	*next;
+}					t_hist;
 
-void    add_to_history(char *line);
-void    print_hist(void);
-int     ft_write_history_file(char *line);
-char	*get_history_path(void);
-void	ft_read_history(void);
+void				add_to_history(char *line);
+void				print_hist(void);
+int					ft_write_history_file(char *line);
+char				*get_history_path(void);
+void				ft_read_history(void);
 
 #endif

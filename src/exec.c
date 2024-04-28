@@ -1,8 +1,6 @@
 #include "minishell.h"
-#include "node.h"
 
-
-int check_executable(t_node *node)
+int	check_executable(t_node *node)
 {
 	struct stat	path_stat;
 
@@ -29,38 +27,38 @@ int check_executable(t_node *node)
 	}
 	return (0);
 }
+
 int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 {
-	pid_t		pid;
-	int 		executable_ok;
+	pid_t	pid;
 
 	if (is_builtin(node->cmd))
-		return run_builtin(node, pid_stack, env);
+		return (run_builtin(node, pid_stack, env));
 	else if (cmd_do_not_include_path(node->cmd[0]))
 		get_cmd_path(node, get_path(*env));
-	executable_ok = check_executable(node);
 	pid = fork();
-	signal(SIGINT, sigint_handler_process);   // Ctrl-C
+	signal(SIGINT, sigint_handler_process);
 	if (pid == 0)
 	{
 		set_pipe(node);
 		close_pipe(node);
 		if (run_redirection_file(node))
 			exit(EXIT_FAILURE);
-		if (executable_ok)
-			exit(executable_ok);
+		if (check_executable(node))
+			exit(check_executable(node));
 		execve(node->cmd[0], node->cmd, *env);
 		exit(EXIT_FAILURE);
 	}
 	else
 		stack_add(pid_stack, pid);
-		if (executable_ok)
-			return (executable_ok);
+	if (check_executable(node))
+		exit(check_executable(node));
 	return (0);
 }
-void wait_pid(t_stack *pid_stack, int *status)
+
+void	wait_pid(t_stack *pid_stack, int *status)
 {
-	struct rusage usage;
+	struct rusage	usage;
 
 	while (pid_stack)
 	{
@@ -70,6 +68,7 @@ void wait_pid(t_stack *pid_stack, int *status)
 		stack_drop(&pid_stack);
 	}
 }
+
 int	exe_prompt(t_node *list, char ***env, int *status)
 {
 	t_node	*node;

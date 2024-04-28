@@ -44,13 +44,14 @@ int	exe_builtin(t_node *node, char ***env)
 		builtin_echo(node);
 	return (0);
 }
-int run_builtin(t_node *node, t_stack **pid_stack, char ***env)
+int	run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 {
-	pid_t		pid;
+	pid_t	pid;
+
 	if (node->active == 2)
 	{
 		pid = fork();
-		signal(SIGINT, sigint_handler_process);   // Ctrl-C
+		signal(SIGINT, sigint_handler_process); // Ctrl-C
 		if (pid)
 		{
 			stack_add(pid_stack, pid);

@@ -1,28 +1,28 @@
 #include "minishell.h"
 
-static char **ft_cmdsdup(char **cmds)
+static char	**ft_cmdsdup(char **cmds)
 {
-	int count;
-	char **tmp;
+	int		count;
+	char	**tmp;
 
-	if(!cmds)
-		return NULL;
+	if (!cmds)
+		return (NULL);
 	count = 0;
-	while(cmds && cmds[count])
+	while (cmds && cmds[count])
 		count++;
 	tmp = malloc(sizeof(char *) * (count + 1));
 	if (!tmp)
-		return NULL;
+		return (NULL);
 	count = 0;
 	while (cmds && cmds[count])
 	{
 		tmp[count] = ft_strdup(cmds[count]);
-		if(!tmp[count])
-			return NULL;
-		count ++;
+		if (!tmp[count])
+			return (NULL);
+		count++;
 	}
 	tmp[count] = NULL;
-	return tmp;
+	return (tmp);
 }
 
 static t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
@@ -67,4 +67,3 @@ void	lst_append(t_node **lst, int type, char *file, char **cmd,
 	else
 		*lst = new;
 }
-

@@ -55,17 +55,17 @@ int	close_pipe(t_node *node)
 	}
 	return (0);
 }
-int stdin_occupied(t_node *node)
+int	stdin_occupied(t_node *node)
 {
 	while (node && node->previous && node->previous->type != T_PIPE)
 		node = node->previous;
 	while (node && node->type != T_PIPE)
 	{
-		if(node->type == T_INFILE || node->type == T_HEREDOC)
-			return(1);
+		if (node->type == T_INFILE || node->type == T_HEREDOC)
+			return (1);
 		node = node->next;
-	} 
-	return(0);
+	}
+	return (0);
 }
 int	set_pipe(t_node *node)
 {
@@ -91,7 +91,7 @@ int	set_pipe(t_node *node)
 			tmp = tmp->previous;
 		pipe_fd = tmp->pipe;
 		close(pipe_fd[1]);
-		if(!stdin_occupied(node))
+		if (!stdin_occupied(node))
 			dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
 	}

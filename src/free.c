@@ -1,13 +1,15 @@
 #include "minishell.h"
-char  **free_2starchar(char **strstr)
+
+char	**free_2starchar(char **strstr)
 {
-	int i;
+	int	i;
+
 	i = 0;
-	if(!strstr || !*strstr)
+	if (!strstr || !*strstr)
 		return (NULL);
-	while(strstr[i])
+	while (strstr[i])
 		free(strstr[i++]);
 	free(strstr);
 	strstr = NULL;
-	return(NULL);
+	return (NULL);
 }

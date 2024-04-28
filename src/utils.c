@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void *palloc(int size, int elem_size)
+void	*palloc(int size, int elem_size)
 {
 	void	*res;
 

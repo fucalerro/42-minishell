@@ -33,7 +33,7 @@ void	stack_add(t_stack **lst, int value)
 
 void	stack_drop(t_stack **lst)
 {
-		t_stack *next;
+	t_stack	*next;
 
 	if (lst && *lst)
 	{

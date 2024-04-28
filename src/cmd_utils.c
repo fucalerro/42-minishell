@@ -4,15 +4,15 @@ char	*get_cmd_path(t_node *node, char **path)
 {
 	char	*cmd;
 	char	*tmp;
-	int i;
+	int		i;
 
 	i = -1;
 	cmd = node->cmd[0];
 	while (path && path[++i])
 	{
 		tmp = ft_strjoin(path[i], cmd);
-		if(!tmp)
-			break;
+		if (!tmp)
+			break ;
 		if (!access(tmp, X_OK))
 		{
 			free(cmd);
@@ -23,7 +23,7 @@ char	*get_cmd_path(t_node *node, char **path)
 		free(tmp);
 	}
 	node->cmd = free_2starchar(node->cmd);
-	if(path)
+	if (path)
 		free_2starchar(path);
 	return (NULL);
 }
@@ -32,22 +32,22 @@ char	**get_path(char *env[])
 {
 	char	**tmps;
 	char	*tmp;
-	char *path_env;
+	char	*path_env;
 	int		i;
 
 	path_env = ft_getenv("PATH", env);
-	if(!path_env)
-		return NULL;
+	if (!path_env)
+		return (NULL);
 	tmps = ft_split(path_env, ':');
-	if(!tmps)
-		return NULL;
+	if (!tmps)
+		return (NULL);
 	i = 0;
 	while (tmps[i])
 	{
 		tmp = tmps[i];
 		tmps[i] = ft_strjoin(tmp, "/");
 		free(tmp);
-		if(!tmps[i])
+		if (!tmps[i])
 			return (NULL);
 		i++;
 	}
@@ -65,13 +65,13 @@ int	cmd_do_not_include_path(char *cmd)
 	return (1);
 }
 
-void deal_cout(t_node *node, t_node *prev_cmd, int i, int ii)
+void	deal_cout(t_node *node, t_node *prev_cmd, int i, int ii)
 {
-	char **tmp;
+	char	**tmp;
 
 	while (prev_cmd && prev_cmd->type != T_CMD)
 		prev_cmd = prev_cmd->previous;
-	while((node->cmd[i])|| prev_cmd->cmd[ii])
+	while ((node->cmd[i]) || prev_cmd->cmd[ii])
 	{
 		if (node->cmd[i])
 			i++;
@@ -92,13 +92,13 @@ void deal_cout(t_node *node, t_node *prev_cmd, int i, int ii)
 	free(prev_cmd->cmd);
 	prev_cmd->cmd = tmp;
 }
+
 void	deal_with_multi_cmd(t_node *node)
 {
 	int		cmd_seen;
 	t_node	*prev_cmd;
 
 	cmd_seen = 0;
-	prev_cmd = NULL;
 	while (node)
 	{
 		if (node->type == T_CMD)
@@ -106,7 +106,7 @@ void	deal_with_multi_cmd(t_node *node)
 		if (cmd_seen > 1)
 		{
 			prev_cmd = node->previous;
-			deal_cout(node,prev_cmd,0,0);
+			deal_cout(node, prev_cmd, 0, 0);
 			node->previous->next = node->next;
 			if (node->next)
 				node->next->previous = node->previous;

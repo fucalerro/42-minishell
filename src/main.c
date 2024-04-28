@@ -1,7 +1,6 @@
-#include "history.h"
 #include "minishell.h"
 
-void setback_fd(t_fd *fd)
+void	setback_fd(t_fd *fd)
 {
 	if (dup2(fd->in, STDIN_FILENO) == -1)
 		exit(EXIT_FAILURE);
@@ -9,17 +8,16 @@ void setback_fd(t_fd *fd)
 		exit(EXIT_FAILURE);
 	close(fd->in);
 	close(fd->out);
-
 }
 
-char *ft_readline(char **prompt)
+char	*ft_readline(char **prompt)
 {
 	char	*line;
-	char		*tmpline;
+	char	*tmpline;
+
 	tmpline = builtin_pwd();
 	line = ft_strjoin(tmpline, "🌻 ");
 	free(tmpline);
-
 	*prompt = readline(line);
 	free(line);
 	if (!*prompt)
@@ -31,7 +29,7 @@ char *ft_readline(char **prompt)
 
 void	process_input_loop(char ***env_copy, int *status)
 {
-	t_fd fd;
+	t_fd		fd;
 	char		*prompt;
 	t_tokens	**tokens;
 	t_node		*lst;
@@ -41,11 +39,10 @@ void	process_input_loop(char ***env_copy, int *status)
 	{
 		fd.in = dup(STDIN_FILENO);
 		fd.out = dup(STDOUT_FILENO);
-
 		if (ft_strlen(prompt) == 0 || is_quotes_opened(prompt))
-			continue;
+			continue ;
 		tokens = tokenizer(prompt, *status, *env_copy);
-		if (!parsing_error(tokens))	
+		if (!parsing_error(tokens))
 		{
 			lst = parser(tokens);
 			if (lst)
@@ -55,7 +52,7 @@ void	process_input_loop(char ***env_copy, int *status)
 		}
 		free(prompt);
 		free_tokens(tokens);
-		signal(SIGINT, sigint_handler);   // Ctrl-C
+		signal(SIGINT, sigint_handler);
 	}
 }
 
@@ -66,10 +63,10 @@ int	main(int ac, char **av, char **env)
 
 	if (ac > 1)
 		exit(1);
-	(void) av;
+	(void)av;
 	status = 0;
-	signal(SIGINT, sigint_handler);   // Ctrl-C
-	signal(SIGQUIT, sigquit_handler); // Ctrl-'\'
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	env_copy = copy_env(env, 0);
 	ft_read_history();
 	process_input_loop(&env_copy, &status);

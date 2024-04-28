@@ -1,15 +1,15 @@
 #ifndef NODE_H
-#define NODE_H
+# define NODE_H
 
-#define T_PIPE 1
-#define T_INFILE 2
-#define T_HEREDOC 3
-#define T_CMD 4
-#define T_OUTFILE 5
-#define T_OUTFILE_APPEND 6
+# define T_PIPE 1
+# define T_INFILE 2
+# define T_HEREDOC 3
+# define T_CMD 4
+# define T_OUTFILE 5
+# define T_OUTFILE_APPEND 6
 
-#define PIPE_NEXT 1
-#define PIPE_PREVIOUS 2
+# define PIPE_NEXT 1
+# define PIPE_PREVIOUS 2
 
 typedef struct s_node
 {
@@ -20,14 +20,11 @@ typedef struct s_node
 	struct s_node	*next;
 	struct s_node	*previous;
 	char			*delimiter;
-	int 			pipe[2];
-} 					t_node;
+	int				pipe[2];
+}					t_node;
 
-void	lst_append(t_node **lst, int type, char *file, char **cmd, char *delimiter);
-void	free_lst(t_node *lst);
+void				lst_append(t_node **lst, int type, char *file, char **cmd,
+						char *delimiter);
+void				free_lst(t_node *lst);
 
 #endif
-
-
-
-

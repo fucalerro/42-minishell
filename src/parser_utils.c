@@ -31,7 +31,7 @@ int	is_in_quotes(char *input, int index)
 		else if (input[i] == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
 		if (i == index)
-			break ;		
+			break ;
 	}
 	if (in_single_quote)
 		return (SINGLE_QUOTE);

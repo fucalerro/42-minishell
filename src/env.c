@@ -2,8 +2,8 @@
 
 char	*ft_getenv(char *varname, char **env)
 {
-	int		i;
-	int		varname_len;
+	int	i;
+	int	varname_len;
 
 	i = -1;
 	varname_len = ft_strlen(varname);

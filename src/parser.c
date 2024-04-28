@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void all_quotes_remover_loop(char *string, char **token, int is_in_quote)
+void	all_quotes_remover_loop(char *string, char **token, int is_in_quote)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -47,7 +47,7 @@ char	*around_quotes_remover(char *string)
 	int		i;
 
 	if (!is_quote(string[0]))
-		return (ft_strdup(string)); //need protection !
+		return (ft_strdup(string)); // need protection !
 	res = malloc(sizeof(char) * (ft_strlen(string) + 1));
 	if (!res)
 		return (0);
@@ -60,8 +60,6 @@ char	*around_quotes_remover(char *string)
 	res[i - 2] = 0;
 	return (res);
 }
-
-
 
 char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 {
@@ -77,7 +75,7 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 		cmd_len++;
 		j++;
 	}
-	cmd = palloc(cmd_len, sizeof(char *)); //to protect
+	cmd = palloc(cmd_len, sizeof(char *)); // to protect
 	j = 0;
 	while (tokens[i] && (!is_metachar(tokens[i]->tok[0])
 			|| (is_metachar(tokens[i]->tok[0]) && tokens[i]->quote)))
@@ -92,7 +90,7 @@ char	**consolidate_cmd(t_tokens **tokens, int i, int *arg_count)
 void	parse_heredoc(char *token, t_node **lst)
 {
 	char	*tmp;
-	
+
 	tmp = around_quotes_remover(token);
 	lst_append(lst, T_HEREDOC, NULL, NULL, tmp);
 	free(tmp);
@@ -100,16 +98,14 @@ void	parse_heredoc(char *token, t_node **lst)
 
 void	parse_cmd(t_tokens **tokens, t_node **lst, int *i, int *arg_count)
 {
-	char **consolidated_cmd;
-	int	 index;
+	char	**consolidated_cmd;
+	int		index;
 
 	index = *i;
-
 	consolidated_cmd = consolidate_cmd(tokens, index, arg_count);
 	lst_append(lst, T_CMD, NULL, consolidated_cmd, NULL);
 	free(consolidated_cmd);
 	*i += *arg_count;
-	
 }
 
 t_node	*parser(t_tokens **tok)

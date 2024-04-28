@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-char *op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
+char	*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 {
-	char *token;
+	char	*token;
 
 	if (is_double_op(string, *i) && !*op_flag && !is_in_quotes(string, *i))
 	{
@@ -10,8 +10,7 @@ char *op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 		token = ft_substr(string, *i, 2);
 		*i += 2;
 	}
-	else if (is_single_op(string, *i)
-		&& !*op_flag && !is_in_quotes(string, *i))
+	else if (is_single_op(string, *i) && !*op_flag && !is_in_quotes(string, *i))
 	{
 		*op_flag = true;
 		token = ft_substr(string, (*i)++, 1);
@@ -20,7 +19,7 @@ char *op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 	{
 		*start = *i;
 		while (string[*i] && ((!is_double_op(string, *i)
-			&& !is_single_op(string, *i)) || is_in_quotes(string, *i)))
+					&& !is_single_op(string, *i)) || is_in_quotes(string, *i)))
 			(*i)++;
 		// if (*i > *start)
 		token = ft_substr(string, *start, *i - *start);
@@ -42,8 +41,7 @@ char	**op_tokenizer(char *string)
 	int		j;
 	int		start;
 
-	res = palloc((count_op(string) + 1) * 2, sizeof(char *)); //protection
-
+	res = palloc((count_op(string) + 1) * 2, sizeof(char *)); // protection
 	i = 0;
 	j = 0;
 	op_flag = 0;
@@ -137,8 +135,6 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	return (res);
 }
 
-
-
 t_tokens	**tokenizer(char *string, int status, char **env)
 {
 	char		*normalized_input;
@@ -166,8 +162,7 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	return (tokens);
 }
 
-
-void normalize_loop(char *input, int i, char **output)
+void	normalize_loop(char *input, int i, char **output)
 {
 	int	j;
 	int	flag;
@@ -194,7 +189,6 @@ void normalize_loop(char *input, int i, char **output)
 	(*output)[j] = 0;
 }
 
-
 /**
  * @brief Removes extra spaces and replaces all sort of tabs for spaces.
  * Do not change the portion that are in single or double quotes.
@@ -219,4 +213,4 @@ char	*input_normalizer(char *input)
 	}
 	normalize_loop(input, i, &output);
 	return (output);
-}	
+}

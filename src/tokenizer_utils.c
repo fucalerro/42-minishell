@@ -12,8 +12,9 @@ int	is_single_op(char *string, int i)
 
 int	is_double_op(char *string, int i)
 {
-	char	*double_op[] = {"<<", ">>"};
-	unsigned long		op_index;
+	char			*double_op[] = {"<<", ">>"};
+	unsigned long	op_index;
+
 	if (string[i] == 0 || string[i + 1] == 0)
 		return (false);
 	op_index = 0;
@@ -43,7 +44,7 @@ int	count_op(char *string)
 	return (count);
 }
 
-int count_quotes(char *string)
+int	count_quotes(char *string)
 {
 	int	i;
 	int	count;
@@ -69,19 +70,18 @@ int	is_quotes_opened(char *string)
 		write_err("Quotes are not closed\n");
 		return (1);
 	}
-	return (0); 
+	return (0);
 }
 
-void 	free_tokens(t_tokens **tokens)
+void	free_tokens(t_tokens **tokens)
 {
 	int	i;
 
 	i = 0;
 	while (tokens[i])
 	{
-		if(tokens[i]->tok)
-		 	free(tokens[i]->tok);
-
+		if (tokens[i]->tok)
+			free(tokens[i]->tok);
 		free(tokens[i]);
 		i++;
 	}

@@ -104,7 +104,7 @@ void	print_hist(void)
 		line = get_next_line(hist_fd);
 	}
 }
-void ft_history(char *prompt)
+void	ft_history(char *prompt)
 {
 	add_to_history(prompt);
 	ft_write_history_file(prompt);
