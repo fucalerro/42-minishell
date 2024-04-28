@@ -1,5 +1,27 @@
 #include "minishell.h"
 
+char	**copy_env(char **env, int size)
+{
+	int		env_size;
+	int		i;
+	char	**new_env;
+
+	env_size = 0;
+	while (env[env_size])
+		env_size++;
+	new_env = malloc((env_size + size + 1) * sizeof(char *));
+	if (!new_env)
+		return (0);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new_env[i] = 0;
+	return (new_env);
+}
+
 void	setback_fd(t_fd *fd)
 {
 	if (dup2(fd->in, STDIN_FILENO) == -1)
