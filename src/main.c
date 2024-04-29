@@ -31,6 +31,20 @@ char	**copy_env(char **env, int size)
 		i++;
 	}
 	new_env[i] = 0;
+
+	int shlvl;
+	char **shlvlstring;
+	shlvlstring = palloc(3, sizeof(char *));
+	shlvl = ft_atoi(ft_getenv("SHLVL", new_env)) + 1;
+	shlvlstring[0] = ft_strdup("");
+	char *new_shlvl = ft_itoa(shlvl);
+	shlvlstring[1] = ft_strjoin("SHLVL=", new_shlvl);
+	shlvlstring[2] = NULL;
+	builtin_export(&new_env, shlvlstring);
+
+	free(new_shlvl);
+	free_2starchar(shlvlstring);
+
 	return (new_env);
 }
 

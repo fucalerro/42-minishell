@@ -16,7 +16,7 @@
 void	print_env(char **tab)
 {
 	int		i;
-	int		j;
+		int		j;
 	char	*value;
 
 	i = -1;
