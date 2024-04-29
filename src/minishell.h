@@ -96,7 +96,7 @@ int			exe_prompt(t_node *node, char ***env, int *status);
 char		*builtin_pwd(void);
 int			builtin_cd(const char *path, char **env);
 int			builtin_exit(t_node *node);
-void		builtin_history(char **cmd);
+void		builtin_history(char **cmd, char **env);
 // env.c
 char		*ft_getenv(char *varname, char **env);
 void		builtin_env(char **env);
@@ -131,7 +131,7 @@ int			check_pipe(t_node *node);
 // free.c
 char		**free_2starchar(char **strstr);
 // history.c
-void		ft_history(char *prompt);
+void	ft_history(char *prompt, char **env);
 // cmd_utils.c
 char		*get_cmd_path(t_node *node, char **path);
 char		**get_path(char *env[]);
