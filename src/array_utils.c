@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:42 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:42 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/29 14:34:45 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,44 +95,6 @@ int	count_arr_elems(char **array)
 	while (array[i])
 		i++;
 	return (i);
-}
-
-void	print_string_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("%s\n", tab[i]);
-		i++;
-	}
-}
-
-void	print_tokens(t_tokens **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		printf("token: %s\n", tokens[i]->tok);
-		printf("type:  %d\n\n", tokens[i]->quote);
-		i++;
-	}
-}
-
-void	free_string_array(char **strings)
-{
-	int	i;
-
-	i = 0;
-	while (strings[i])
-	{
-		free(strings[i]);
-		i++;
-	}
-	free(strings);
 }
 
 char	*flatten_2d_array(char **array)

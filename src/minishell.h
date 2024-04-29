@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/29 14:52:57 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,9 @@ void		print_list(t_node *lst);
 char		*var_expander(char *string);
 void		expand_env_vars(char **tokens, int status, char **env);
 // array_utils.c
-void		print_tokens(t_tokens **tokens);
 int			get_elem_count_tok(t_tokens **array);
 int			count_arr_elems(char **array);
 char		**flatten_3d_array(char ***array3d);
-void		free_string_array(char **strings);
-void		print_string_tab(char **tab);
 char		*flatten_2d_array(char **array);
 // parser.c
 int			is_metachar(char c);
@@ -78,13 +75,13 @@ void		free_tokens(t_tokens **tokens);
 t_tokens	**tokenizer(char *string, int status, char **env);
 char		**op_tokenizer(char *string);
 char		**sp_tokenizer(char *string, char c);
-int	is_single_op(char *string, int i);
-int	is_double_op(char *string, int i);
-int	count_op(char *string);
-int	count_quotes(char *string);
-int	is_quotes_opened(char *string);
-char	*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start);
-char	*set_is_in_quotes(char *token);
+int			is_single_op(char *string, int i);
+int			is_double_op(char *string, int i);
+int			count_op(char *string);
+int			count_quotes(char *string);
+int			is_quotes_opened(char *string);
+char		*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start);
+char		*set_is_in_quotes(char *token);
 t_tokens	**quotes_tokenizer(char **tokens);
 // error_handling.c
 int			parsing_error(t_tokens **tokens);
@@ -148,6 +145,7 @@ int			is_builtin(char **cmd);
 // redirection_file_utils.c
 int			run_redirection_file(t_node *node);
 // print_line define for quick debug
+char **merge_str(char *file, char *del);
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/29 14:59:34 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,23 @@ static t_node	*lst_last(t_node *lst)
 	return (lst);
 }
 
-void	lst_append(t_node **lst, int type, char *file, char **cmd,
-		char *delimiter)
+char **merge_str(char *file, char *del)
+{
+	char **merge;
+	merge = malloc(sizeof(char *) * 2);
+	if (!merge)
+		return NULL;
+	merge[0] = file;
+	merge[1] = del;
+	return (merge);
+}
+
+void	lst_append(t_node **lst, int type, char **cmd, char *arg[2])
 {
 	t_node	*list;
 	t_node	*new;
 
-	new = lst_new(type, file, cmd, delimiter);
+	new = lst_new(type, arg[0], cmd, arg[1]);
 	if (*lst)
 	{
 		list = lst_last(*lst);
@@ -78,4 +88,5 @@ void	lst_append(t_node **lst, int type, char *file, char **cmd,
 	}
 	else
 		*lst = new;
+	free(arg);
 }

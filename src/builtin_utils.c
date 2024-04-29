@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:42 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:42 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/29 14:35:56 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	is_builtin(char **cmd)
 	else
 		return (0);
 }
+
 int	exe_builtin(t_node *node, char ***env)
 {
 	char	**cmd;
@@ -56,6 +57,7 @@ int	exe_builtin(t_node *node, char ***env)
 		builtin_echo(node);
 	return (0);
 }
+
 int	run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 {
 	pid_t	pid;
@@ -63,7 +65,7 @@ int	run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 	if (node->active == 2)
 	{
 		pid = fork();
-		signal(SIGINT, sigint_handler_process); // Ctrl-C
+		signal(SIGINT, sigint_handler_process);
 		if (pid)
 		{
 			stack_add(pid_stack, pid);
@@ -84,6 +86,7 @@ int	run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 	else
 		return (1);
 }
+
 void	flag_builtin_fork(t_node *node)
 {
 	t_node	*tmp;

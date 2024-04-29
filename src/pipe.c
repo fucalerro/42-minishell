@@ -13,34 +13,6 @@
 #include "minishell.h"
 #include "node.h"
 
-void	check_pipe_status(t_node *node)
-{
-	t_node	*tmp;
-
-	tmp = node;
-	while (node)
-	{
-		if (node->type == T_PIPE)
-		{
-			tmp = node->next;
-			while (tmp && node->active && tmp->type != T_PIPE)
-			{
-				if (tmp->type == T_INFILE || tmp->type == T_HEREDOC)
-					node->active = 0;
-				tmp = tmp->next;
-			}
-			tmp = node->previous;
-			while (tmp && node->active && tmp->type != T_PIPE)
-			{
-				if (tmp->type == T_OUTFILE || tmp->type == T_OUTFILE_APPEND)
-					node->active = 0;
-				tmp = tmp->previous;
-			}
-		}
-		node = node->next;
-	}
-}
-
 int	init_pipe(t_node *node)
 {
 	while (node)
@@ -84,7 +56,6 @@ int	stdin_occupied(t_node *node)
 int	set_pipe(t_node *node)
 {
 	int		check_value;
-	int		*pipe_fd;
 	t_node	*tmp;
 
 	tmp = node;
@@ -93,21 +64,19 @@ int	set_pipe(t_node *node)
 	{
 		while (tmp->type != T_PIPE)
 			tmp = tmp->next;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
+		close(tmp->pipe[0]);
+		dup2(tmp->pipe[1], STDOUT_FILENO);
+		close(tmp->pipe[1]);
 	}
 	tmp = node;
 	if (check_value & PIPE_PREVIOUS)
 	{
 		while (tmp->type != T_PIPE)
 			tmp = tmp->previous;
-		pipe_fd = tmp->pipe;
-		close(pipe_fd[1]);
+		close(tmp->pipe[1]);
 		if (!stdin_occupied(node))
-			dup2(pipe_fd[0], STDIN_FILENO);
-		close(pipe_fd[0]);
+			dup2(tmp->pipe[0], STDIN_FILENO);
+		close(tmp->pipe[0]);
 	}
 	return (0);
 }

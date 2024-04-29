@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/29 14:35:11 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ t_tokens	**tokenizer(char *string, int status, char **env)
 	tokenized = flatten_3d_array(op_tokenized);
 	tokens = quotes_tokenizer(tokenized);
 	free(normalized_input);
-	free_string_array(sp_tokenized);
-	free_string_array(tokenized);
+	free_2starchar(sp_tokenized);
+	free_2starchar(tokenized);
 	return (tokens);
 }
 
