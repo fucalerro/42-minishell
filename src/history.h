@@ -21,9 +21,9 @@ typedef struct s_hist
 }					t_hist;
 
 void				add_to_history(char *line);
-void				print_hist(void);
-int					ft_write_history_file(char *line);
-char				*get_history_path(void);
-void				ft_read_history(void);
+void				print_hist(char **env);
+int					ft_write_history_file(char *line, char **env);
+char				*get_history_path(char **env);
+void				ft_read_history(char **env);
 
 #endif

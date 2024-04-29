@@ -19,13 +19,13 @@ char	**copy_env(char **env, int size)
 	char	**new_env;
 
 	env_size = 0;
-	while (env[env_size])
+	while (env && env[env_size])
 		env_size++;
 	new_env = palloc(env_size + size + 1, sizeof(char *));
 	if (!new_env)
 		return (0);
 	i = 0;
-	while (env[i])
+	while (env && env[i])
 	{
 		new_env[i] = ft_strdup(env[i]);
 		i++;
@@ -80,7 +80,7 @@ void	process_input_loop(char ***env_copy, int *status)
 		{
 			lst = parser(tokens);
 			if (lst)
-				ft_history(prompt);
+				ft_history(prompt, *env_copy);
 			exe_prompt(lst, env_copy, status);
 			setback_fd(&fd);
 		}
@@ -102,7 +102,7 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	env_copy = copy_env(env, 0);
-	ft_read_history();
+	ft_read_history(env_copy);
 	process_input_loop(&env_copy, &status);
 	return (0);
 }
