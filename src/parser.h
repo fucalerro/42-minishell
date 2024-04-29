@@ -38,6 +38,15 @@ typedef struct s_tokens
 	int		unclosed_quote; // this is never used right ?
 }			t_tokens;
 
+typedef struct s_tokenzied
+{
+	char	*normalized;
+	char	**space_tok;
+	char	***op_tok;
+	char 	**tok;
+}			t_tokenized;
+
+
 int			is_in_quotes(char *input, int index);
 char		*all_quotes_remover(char *string);
 int			is_quotes_opened(char *string);

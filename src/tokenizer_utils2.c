@@ -14,28 +14,25 @@
 
 t_tokens	**tokenizer(char *string, int status, char **env)
 {
-	char		*normalized_input;
-	char		**sp_tokenized;
-	char		***op_tokenized;
-	int			i;
+	t_tokenized tok;
 	t_tokens	**tokens;
-	char		**tokenized;
+	int			i;
 
 	if (is_quotes_opened(string))
 		return (0);
-	normalized_input = input_normalizer(string);
-	sp_tokenized = sp_tokenizer(normalized_input, ' ');
-	expand_env_vars(sp_tokenized, status, env);
-	op_tokenized = palloc(count_arr_elems(sp_tokenized), sizeof(char **));
+	tok.normalized = input_normalizer(string);
+	tok.space_tok = sp_tokenizer(tok.normalized, ' ');
+	expand_env_vars(tok.space_tok, status, env);
+	tok.op_tok = palloc(count_arr_elems(tok.space_tok), sizeof(char **));
 	i = -1;
-	while (sp_tokenized[++i])
-		op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
-	op_tokenized[i] = 0;
-	tokenized = flatten_3d_array(op_tokenized);
-	tokens = quotes_tokenizer(tokenized);
-	free(normalized_input);
-	free_2starchar(sp_tokenized);
-	free_2starchar(tokenized);
+	while (tok.space_tok[++i])
+		tok.op_tok[i] = op_tokenizer(tok.space_tok[i]);
+	tok.op_tok[i] = 0;
+	tok.tok = flatten_3d_array(tok.op_tok);
+	tokens = quotes_tokenizer(tok.tok);
+	free(tok.normalized);
+	free_2starchar(tok.space_tok);
+	free_2starchar(tok.tok);
 	return (tokens);
 }
 
