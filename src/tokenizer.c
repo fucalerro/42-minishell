@@ -114,14 +114,10 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	char		*temp;
 
 	res = palloc(count_arr_elems(tokens) + 1, sizeof(t_tokens *));
-	if (!res)
-		return (0);
 	i = 0;
 	while (tokens[i])
 	{
 		res[i] = palloc(1, sizeof(t_tokens));
-		if (!res[i])
-			return (0);
 		res[i]->quote = is_quote(tokens[i][0]);
 		temp = all_quotes_remover(tokens[i]);
 		res[i]->tok = ft_strdup(temp);

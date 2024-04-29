@@ -109,9 +109,9 @@ char	*expand_token(char *token, int status, char **env)
 				res[j++] = ft_strdup(var_value);
 				free(var_value);
 			}
-			else
-				res[j++] = ft_strdup("");
 			i += ft_strlen(var_name) + 1;
+			if (token[i] == '\'' && is_in_quotes(token, i) != DOUBLE_QUOTE)
+				i++;
 			free(var_name);
 		}
 		else

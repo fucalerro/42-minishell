@@ -3,38 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 14:58:56 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 00:04:52 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	all_quotes_remover_loop(char *string, char **token, int is_in_quote)
+void	all_quotes_remover_loop(char *string, char **token)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	int		is_in_quote;
+	char	prev_quote;
 
 	i = 0;
 	j = 0;
+	is_in_quote = false;
+	prev_quote = 0;
 	while (string[i])
 	{
-		if (!is_in_quote && !is_quote(string[i]))
-			(*token)[j++] = string[i];
-		else if (is_in_quote)
-		{
-			if (string[i] != is_in_quote)
-				(*token)[j++] = string[i];
-		}
-		else if (is_quote(string[i]))
+		if (is_quote(string[i]))
 		{
 			if (!is_in_quote)
-				is_in_quote = string[i];
-			else
-				is_in_quote = 0;
+			{
+				prev_quote = string[i];
+				is_in_quote = true;
+			}
+			else if (prev_quote != string[i])
+				(*token)[j++] = string[i];
+			else if (prev_quote == string[i])
+				is_in_quote = false;
 		}
+		else
+			(*token)[j++] = string[i];
 		i++;
 	}
 	(*token)[j] = 0;
@@ -43,13 +47,16 @@ void	all_quotes_remover_loop(char *string, char **token, int is_in_quote)
 char	*all_quotes_remover(char *string)
 {
 	char	*token;
-	int		is_in_quote;
+	// int		is_in_quote;
 
-	is_in_quote = 0;
+	// is_in_quote = 0;
 	token = palloc(ft_strlen(string) + 1, sizeof(char));
 	if (!token)
 		return (0);
-	all_quotes_remover_loop(string, &token, is_in_quote);
+
+	// printf("string: %s\n", string);
+
+	all_quotes_remover_loop(string, &token);
 	return (token);
 }
 

@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 14:35:11 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:11:18 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void print_str_array(char **array)
+{
+	int i;
+
+	i = 0;
+	while (array[i])
+	{
+		printf("%d: %s\n", i, array[i]);
+		i++;
+	}
+
+}
+
+void 	print_tokens(t_tokens **tokens)
+{
+	int i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		printf("tok: %s\n", tokens[i]->tok);
+		printf("qut: %d\n", tokens[i]->quote);
+		i++;
+	}
+}
 
 t_tokens	**tokenizer(char *string, int status, char **env)
 {
