@@ -18,6 +18,6 @@ void	*palloc(int size, int elem_size)
 
 	res = malloc(elem_size * (size + 1));
 	if (!res)
-		return (NULL);
+		exit(1);
 	return (res);
 }

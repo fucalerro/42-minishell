@@ -16,7 +16,7 @@ t_stack	*stack_new(int content)
 {
 	t_stack	*new;
 
-	new = (t_stack *)malloc(sizeof(t_stack));
+	new = (t_stack *)palloc(1, sizeof(t_stack));
 	if (new == NULL)
 		return (NULL);
 	new->value = content;

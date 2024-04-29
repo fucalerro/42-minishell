@@ -68,7 +68,7 @@ char	*input_normalizer(char *input)
 	int		i;
 	char	*output;
 
-	output = malloc(sizeof(char) * (ft_strlen(input) + 1));
+	output = palloc(ft_strlen(input) + 1, sizeof(char));
 	if (!output)
 		return (0);
 	i = 0;

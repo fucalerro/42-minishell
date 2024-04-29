@@ -67,7 +67,7 @@ char	**sp_tokenizer(char *string, char c)
 	i = -1;
 	j = 0;
 	index = -1;
-	res = malloc((wordcounter(string, c) + 1) * sizeof(char *));
+	res = palloc(wordcounter(string, c) + 1, sizeof(char *));
 	if (res == 0)
 		return (0);
 	while (++i <= ft_strlen(string))
@@ -90,7 +90,7 @@ char	*set_is_in_quotes(char *token)
 	char	*res;
 	int		i;
 
-	res = malloc(sizeof(char) * (ft_strlen(token) + 1));
+	res = palloc(ft_strlen(token) + 1, sizeof(char));
 	if (!res)
 		return (0);
 	i = 0;
@@ -113,13 +113,13 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	t_tokens	**res;
 	char		*temp;
 
-	res = malloc(sizeof(t_tokens *) * (count_arr_elems(tokens) + 1));
+	res = palloc(count_arr_elems(tokens) + 1, sizeof(t_tokens *));
 	if (!res)
 		return (0);
 	i = 0;
 	while (tokens[i])
 	{
-		res[i] = malloc(sizeof(t_tokens));
+		res[i] = palloc(1, sizeof(t_tokens));
 		if (!res[i])
 			return (0);
 		res[i]->quote = is_quote(tokens[i][0]);

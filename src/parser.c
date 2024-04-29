@@ -46,7 +46,7 @@ char	*all_quotes_remover(char *string)
 	int		is_in_quote;
 
 	is_in_quote = 0;
-	token = malloc(sizeof(char) * (ft_strlen(string) + 1));
+	token = palloc(ft_strlen(string) + 1, sizeof(char));
 	if (!token)
 		return (0);
 	all_quotes_remover_loop(string, &token, is_in_quote);
@@ -60,7 +60,7 @@ char	*around_quotes_remover(char *string)
 
 	if (!is_quote(string[0]))
 		return (ft_strdup(string));
-	res = malloc(sizeof(char) * (ft_strlen(string) + 1));
+	res = palloc(ft_strlen(string) + 1, sizeof(char));
 	if (!res)
 		return (0);
 	i = 0;

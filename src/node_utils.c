@@ -22,7 +22,7 @@ static char	**ft_cmdsdup(char **cmds)
 	count = 0;
 	while (cmds && cmds[count])
 		count++;
-	tmp = malloc(sizeof(char *) * (count + 1));
+	tmp = palloc(count + 1, sizeof(char *));
 	if (!tmp)
 		return (NULL);
 	count = 0;
@@ -41,7 +41,7 @@ static t_node	*lst_new(int type, char *file, char **cmd, char *delimiter)
 {
 	t_node	*node;
 
-	node = (t_node *)malloc(sizeof(struct s_node));
+	node = (t_node *)palloc(1, sizeof(struct s_node));
 	if (!node)
 		return ((t_node *)0);
 	node->delimiter = ft_strdup(delimiter);
@@ -66,7 +66,7 @@ static t_node	*lst_last(t_node *lst)
 char **merge_str(char *file, char *del)
 {
 	char **merge;
-	merge = malloc(sizeof(char *) * 2);
+	merge = palloc(2, sizeof(char *));
 	if (!merge)
 		return NULL;
 	merge[0] = file;
