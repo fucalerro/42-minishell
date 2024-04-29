@@ -36,7 +36,7 @@ static char	*max_int_or_zero_mngmt(int n)
 
 	if (n == 0)
 	{
-		str = malloc(sizeof(char) * 2);
+		str = palloc(2, sizeof(char));
 		if (str == 0)
 			return (0);
 		str[0] = '0';
@@ -51,7 +51,7 @@ static char	*mallocator(int count)
 {
 	char	*anbr;
 
-	anbr = malloc(sizeof(char) * count);
+	anbr = palloc(count, sizeof(char));
 	if (anbr == 0)
 		return (0);
 	return (anbr);

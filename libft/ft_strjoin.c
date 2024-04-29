@@ -29,7 +29,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	i = 0;
 	j = 0;
 	totlen = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc(sizeof(char) * (totlen + 1));
+	res = palloc(totlen + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (s1[i])
@@ -67,7 +67,7 @@ char	*ft_strjoin_safe(const char *s1, const char *s2)
 	else if (!s2)
 		return (ft_strdup(s1));
 	totlen = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc(sizeof(char) * (totlen + 1));
+	res = palloc(totlen + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (s1[++i])
