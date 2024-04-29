@@ -100,7 +100,7 @@ void	process_input_loop(char ***env_copy, int *status)
 		}
 		free(prompt);
 		free_tokens(tokens);
-		signal(SIGINT, sigint_handler);
+		set_signal(0);
 	}
 }
 
@@ -108,13 +108,11 @@ int	main(int ac, char **av, char **env)
 {
 	int		status;
 	char	**env_copy;
-
 	if (ac > 1)
 		exit(1);
 	(void)av;
 	status = 0;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
+	set_signal(0);
 	env_copy = copy_env(env, 0);
 	ft_read_history(env_copy);
 	process_input_loop(&env_copy, &status);

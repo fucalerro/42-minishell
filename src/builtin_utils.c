@@ -65,7 +65,7 @@ int	run_builtin(t_node *node, t_stack **pid_stack, char ***env)
 	if (node->active == 2)
 	{
 		pid = fork();
-		signal(SIGINT, sigint_handler_process);
+		set_signal(1);
 		if (pid)
 		{
 			stack_add(pid_stack, pid);

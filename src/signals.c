@@ -21,7 +21,7 @@ void	sigint_handler(int sig)
 	rl_redisplay();
 }
 
-void	sigint_handler_process(int sig)
+void	sigint_handler_p(int sig)
 {
 	(void)sig;
 	printf("\n");
@@ -36,7 +36,17 @@ void	sigint_handler_heredoc(int sig)
 	exit(1);
 }
 
-void	sigquit_handler(int sig)
+void sigquit_handler(int signo)
 {
-	printf("Quit: %i\n", sig);
+	(void) signo;
+    rl_on_new_line();      // Move to a new line
+//    rl_replace_line("", 0);  // Clear the current line
+    rl_redisplay();        // Redisplay the line
+}
+
+void sigquit_handler_p(int signo)
+{
+	printf("Quit: %i\n", signo);
+    rl_on_new_line();      // Move to a new line
+//    rl_replace_line("", 0);  // Clear the current line
 }

@@ -50,7 +50,7 @@ int	run_cmd(t_node *node, t_stack **pid_stack, char ***env)
 		get_cmd_path(node, get_path(*env));
 	node->active = check_executable(node);
 	pid = fork();
-	signal(SIGINT, sigint_handler_process);
+	set_signal(1);
 	if (pid == 0)
 	{
 		set_pipe(node);

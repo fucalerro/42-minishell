@@ -119,8 +119,9 @@ int			exe_outfile(t_node *node);
 int			exe_heredoc(t_node *node);
 // signal.c
 void		sigint_handler(int sig);
+void		sigint_handler_p(int sig);
 void		sigquit_handler(int sig);
-void		sigint_handler_process(int sig);
+void		sigquit_handler_p(int sig);
 void		sigint_handler_heredoc(int sig);
 // pipe.c
 void		check_pipe_status(t_node *node);
@@ -146,6 +147,7 @@ int			is_builtin(char **cmd);
 int			run_redirection_file(t_node *node);
 // print_line define for quick debug
 char **merge_str(char *file, char *del);
+void set_signal(int primary);
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif
