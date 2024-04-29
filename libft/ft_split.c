@@ -41,7 +41,7 @@ char	*wordmaker(char const *s, int start, int end)
 	size_t	i;
 
 	i = 0;
-	word = malloc((end - start + 1) * sizeof(char));
+	word = palloc(end - start + 1, sizeof(char));
 	if (word == 0)
 		return (0);
 	while (start < end)
@@ -60,7 +60,7 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	j = 0;
 	index = -1;
-	res = malloc((wordcounter(s, c) + 1) * sizeof(char *));
+	res = palloc(wordcounter(s, c) + 1, sizeof(char *));
 	if (res == 0)
 		return (0);
 	while (i <= ft_strlen(s))

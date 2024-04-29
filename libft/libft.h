@@ -21,6 +21,7 @@
 # include "printf/ft_printf.h"
 # include "gnl/get_next_line.h"
 
+void	*palloc(int size, int elem_size);
 char	*wordmaker(char const *s, int start, int end);
 size_t	wordcounter(char const *s, char c);
 char	*ft_strjoin_safe(const char *s1, const char *s2);

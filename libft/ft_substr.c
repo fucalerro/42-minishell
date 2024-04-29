@@ -34,7 +34,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > ft_strlen(s))
 		len = ft_strlen(s) - start;
-	res = malloc(sizeof(char) * (len + 1));
+	res = palloc(len + 1, sizeof(char));
 	if (res == 0)
 		return (0);
 	while (i < start && *s)

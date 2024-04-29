@@ -6,11 +6,21 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:40:19 by lferro            #+#    #+#             */
-/*   Updated: 2023/10/17 13:44:12 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/29 19:28:58 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+void	*palloc(int size, int elem_size)
+{
+	void	*res;
+
+	res = malloc(elem_size * (size));
+	if (!res)
+		exit(1);
+	return (res);
+}
 
 void	*ft_calloc(size_t nelem, size_t elsize)
 {

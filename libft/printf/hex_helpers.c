@@ -50,7 +50,7 @@ char	*dectohex_str(unsigned int decnbr)
 	index = 0;
 	if (decnbr == 0 || (unsigned int)decnbr == (unsigned int)-2147483648)
 		return (max_or_zero(decnbr));
-	nbrstr = (char *)malloc((get_hexnbr_len(decnbr) + 1) * sizeof(char));
+	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 1, sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)
@@ -78,7 +78,7 @@ char	*dectohex_sptr(t_ull decnbr)
 	index = 0;
 	if (decnbr == 0)
 		return (ft_strdup("0x0"));
-	nbrstr = (char *)malloc((get_hexnbr_len(decnbr) + 3) * sizeof(char));
+	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 3, sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)
@@ -107,7 +107,7 @@ char	*dectohex_scap(unsigned int decnbr)
 	index = 0;
 	if (decnbr == 0 || (unsigned int)decnbr == (unsigned int)-2147483648)
 		return (max_or_zero(decnbr));
-	nbrstr = (char *)malloc((get_hexnbr_len(decnbr) + 1) * sizeof(char));
+	nbrstr = (char *)palloc(get_hexnbr_len(decnbr) + 1, sizeof(char));
 	if (nbrstr == 0)
 		return (0);
 	while (decnbr > 0)

@@ -28,7 +28,7 @@ char	*get_var_name(char *token)
 	{
 		return (ft_strdup("$"));
 	}
-	var_name = malloc(sizeof(char) * ft_strlen(token) + 1);
+	var_name = palloc(ft_strlen(token) + 1, sizeof(char));
 	if (!var_name)
 		return (0);
 	while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
@@ -83,7 +83,7 @@ char	*expand_token(char *token, int status, char **env)
 	char	*new_token;
 
 	nbr_of_vars = get_nbr_of_vars(token);
-	res = malloc(sizeof(char *) * (nbr_of_vars * 3 + 1));
+	res = palloc((nbr_of_vars * 3 + 1), sizeof(char *));
 	if (!res)
 		return (0);
 	j = 0;

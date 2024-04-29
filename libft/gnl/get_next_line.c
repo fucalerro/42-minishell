@@ -49,7 +49,7 @@ char	*sub_line(char *line)
 	int		i;
 
 	i = 0;
-	newline = malloc(sizeof(char) * (ft_strlen(line) + 1));
+	newline = palloc(ft_strlen(line) + 1, sizeof(char));
 	while (line[i] && line[i] != '\n')
 	{
 		newline[i] = line[i];
@@ -72,7 +72,7 @@ char	*get_residual(char *line)
 	var.j = 0;
 	if (!line || !ft_strlen(line))
 		return (ft_strdup(""));
-	var.residual = malloc(ft_strlen(line) * sizeof(char));
+	var.residual = palloc(ft_strlen(line), sizeof(char));
 	if (!var.residual)
 		return (NULL);
 	while (line[var.i] && line[var.i] != '\n')
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
 		return (freeyator(&stash));
-	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buf = palloc(BUFFER_SIZE + 1,  sizeof(char));
 	if (!buf)
 		return (NULL);
 	line = line_read(fd, buf, stash);

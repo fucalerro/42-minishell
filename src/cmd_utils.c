@@ -90,7 +90,7 @@ void	deal_cout(t_node *node, t_node *prev_cmd, int i, int ii)
 		if (prev_cmd->cmd[ii])
 			ii++;
 	}
-	tmp = (char **)malloc(sizeof(char *) * (i + ii + 1));
+	tmp = (char **)palloc(i + ii + 1, sizeof(char *));
 	if (!tmp)
 		return ;
 	ii = 0;
