@@ -24,18 +24,10 @@ int	is_single_op(char *string, int i)
 
 int	is_double_op(char *string, int i)
 {
-	char			*double_op[] = {"<<", ">>"};
-	unsigned long	op_index;
-
 	if (string[i] == 0 || string[i + 1] == 0)
 		return (false);
-	op_index = 0;
-	while (op_index < sizeof(double_op) / sizeof(double_op[0]))
-	{
-		if (ft_strncmp(&string[i], double_op[op_index], 2) == 0)
-			return (true);
-		op_index++;
-	}
+	if (!ft_strncmp(&string[i], "<<", 2) || !ft_strncmp(&string[i], ">>", 2))
+		return (true);
 	return (false);
 }
 
@@ -83,19 +75,4 @@ int	is_quotes_opened(char *string)
 		return (1);
 	}
 	return (0);
-}
-
-void	free_tokens(t_tokens **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		if (tokens[i]->tok)
-			free(tokens[i]->tok);
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
 }

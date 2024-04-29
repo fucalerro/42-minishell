@@ -25,3 +25,18 @@ char	**free_2starchar(char **strstr)
 	strstr = NULL;
 	return (NULL);
 }
+
+void	free_tokens(t_tokens **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->tok)
+			free(tokens[i]->tok);
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}

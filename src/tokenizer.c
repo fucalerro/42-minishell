@@ -39,11 +39,6 @@ char	*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start)
 	return (token);
 }
 
-/**
- * @brief convert a string into a table of Operator and Word tokens
- * @param string input string
- * @return char** table of tokens
- */
 char	**op_tokenizer(char *string)
 {
 	char	**res;
@@ -62,13 +57,6 @@ char	**op_tokenizer(char *string)
 	return (res);
 }
 
-/**
- * @brief convert a string into a table of tokens based on Space delimiter
- *
- * @param string
- * @param c
- * @return char**
- */
 char	**sp_tokenizer(char *string, char c)
 {
 	size_t	i;
@@ -144,84 +132,4 @@ t_tokens	**quotes_tokenizer(char **tokens)
 	}
 	res[i] = 0;
 	return (res);
-}
-
-t_tokens	**tokenizer(char *string, int status, char **env)
-{
-	char		*normalized_input;
-	char		**sp_tokenized;
-	char		***op_tokenized;
-	int			i;
-	t_tokens	**tokens;
-	char		**tokenized;
-
-	if (is_quotes_opened(string))
-		return (0);
-	normalized_input = input_normalizer(string);
-	sp_tokenized = sp_tokenizer(normalized_input, ' ');
-	expand_env_vars(sp_tokenized, status, env);
-	op_tokenized = palloc(count_arr_elems(sp_tokenized), sizeof(char **));
-	i = -1;
-	while (sp_tokenized[++i])
-		op_tokenized[i] = op_tokenizer(sp_tokenized[i]);
-	op_tokenized[i] = 0;
-	tokenized = flatten_3d_array(op_tokenized);
-	tokens = quotes_tokenizer(tokenized);
-	free(normalized_input);
-	free_string_array(sp_tokenized);
-	free_string_array(tokenized);
-	return (tokens);
-}
-
-void	normalize_loop(char *input, int i, char **output)
-{
-	int	j;
-	int	flag;
-
-	j = 0;
-	while (input[i])
-	{
-		while (is_in_quotes(input, i) > 0 && input[i])
-			(*output)[j++] = input[i++];
-		if (ft_isspace(input[i]) && ft_isspace(input[i]) != ' ')
-			(*output)[j++] = ' ';
-		else if (ft_isspace(input[i]))
-		{
-			if (flag && input[i + 1] != 0 && !ft_isspace(input[i + 1]))
-				(*output)[j++] = ' ';
-		}
-		else
-		{
-			(*output)[j++] = input[i];
-			flag = 1;
-		}
-		i++;
-	}
-	(*output)[j] = 0;
-}
-
-/**
- * @brief Removes extra spaces and replaces all sort of tabs for spaces.
- * Do not change the portion that are in single or double quotes.
- *
- * @param input
- * @return char*
- */
-char	*input_normalizer(char *input)
-{
-	int		i;
-	char	*output;
-
-	output = malloc(sizeof(char) * (ft_strlen(input) + 1));
-	if (!output)
-		return (0);
-	i = 0;
-	while (ft_isspace(input[i]) && input[i])
-	{
-		if (ft_isspace(input[i]) != 32)
-			output[i] = ' ';
-		i++;
-	}
-	normalize_loop(input, i, &output);
-	return (output);
 }

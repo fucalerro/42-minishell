@@ -78,6 +78,14 @@ void		free_tokens(t_tokens **tokens);
 t_tokens	**tokenizer(char *string, int status, char **env);
 char		**op_tokenizer(char *string);
 char		**sp_tokenizer(char *string, char c);
+int	is_single_op(char *string, int i);
+int	is_double_op(char *string, int i);
+int	count_op(char *string);
+int	count_quotes(char *string);
+int	is_quotes_opened(char *string);
+char	*op_tokenzier_loop(char *string, int *i, int *op_flag, int *start);
+char	*set_is_in_quotes(char *token);
+t_tokens	**quotes_tokenizer(char **tokens);
 // error_handling.c
 int			parsing_error(t_tokens **tokens);
 int			errror_msg(int type, int c);
