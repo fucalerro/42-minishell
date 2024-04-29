@@ -104,7 +104,7 @@ int	parsing_error(t_tokens **tokens)
 		if (result != 0)
 			return (result);
 	}
-if ((is_operator(tokens[i - 1]->tok) || is_file_operator(tokens[i - 1]->tok)) && tokens[i - 1]->quote == UNQUOTED)
+if (i>0 &&( (is_operator(tokens[i - 1]->tok) || is_file_operator(tokens[i - 1]->tok)) && tokens[i - 1]->quote == UNQUOTED))
 		return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->tok[0]));
 	return (0);
 }
