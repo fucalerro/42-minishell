@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/30 01:53:13 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char **get_new_shlvl(char **env)
+{
+	int shlvl;
+	char *shlvl_str;
+	char *new_shlvl_string;
+	char **new_shlvl;
+
+	new_shlvl = palloc(3, sizeof(char *));
+	new_shlvl[0] = ft_strdup("export");
+	shlvl_str = ft_getenv("SHLVL", env);
+	if (!shlvl_str)
+		new_shlvl[1] = ft_strdup("SHLVL=1");
+	else
+	{
+		shlvl = ft_atoi(shlvl_str);
+		new_shlvl_string = ft_itoa(shlvl + 1);
+		new_shlvl[1] = ft_strjoin("SHLVL=", new_shlvl_string);
+		free(new_shlvl_string);
+	}
+	new_shlvl[2] = NULL;
+	return (new_shlvl);
+}
 
 char	**copy_env(char **env, int size)
 {
@@ -31,20 +54,6 @@ char	**copy_env(char **env, int size)
 		i++;
 	}
 	new_env[i] = 0;
-
-	int shlvl;
-	char **shlvlstring;
-	shlvlstring = palloc(3, sizeof(char *));
-	shlvl = ft_atoi(ft_getenv("SHLVL", new_env)) + 1;
-	shlvlstring[0] = ft_strdup("");
-	char *new_shlvl = ft_itoa(shlvl);
-	shlvlstring[1] = ft_strjoin("SHLVL=", new_shlvl);
-	shlvlstring[2] = NULL;
-	builtin_export(&new_env, shlvlstring);
-
-	free(new_shlvl);
-	free_2starchar(shlvlstring);
-
 	return (new_env);
 }
 
@@ -108,12 +117,19 @@ int	main(int ac, char **av, char **env)
 {
 	int		status;
 	char	**env_copy;
+	char	**new_shlvl;
+
 	if (ac > 1)
 		exit(1);
 	(void)av;
 	status = 0;
 	set_signal(0);
 	env_copy = copy_env(env, 0);
+
+	new_shlvl = get_new_shlvl(env_copy);
+	builtin_export(&env_copy, new_shlvl);
+	free_2starchar(new_shlvl);
+
 	ft_read_history(env_copy);
 	process_input_loop(&env_copy, &status);
 	return (0);
