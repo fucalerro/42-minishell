@@ -20,7 +20,7 @@ void	remove_end_newline(char *line)
 	i = 0;
 	while (line[i])
 		i++;
-	if (line[i - 1] == '\n')
+	if (i > 0 && line[i - 1] == '\n')
 		line[i - 1] = 0;
 }
 
