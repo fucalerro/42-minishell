@@ -38,6 +38,20 @@ char	*get_history_path(char **env)
 	return (path);
 }
 
+void	ft_read_history_loop(char **line, int hist_fd)
+{
+	while (*line)
+	{
+		if (*line)
+		{
+			remove_end_newline(*line);
+			add_to_history(*line);
+			free(*line);
+		}
+		*line = get_next_line(hist_fd);
+	}
+}
+
 void	ft_read_history(char **env)
 {
 	int		hist_fd;
@@ -61,15 +75,7 @@ void	ft_read_history(char **env)
 	{
 		line = get_next_line(hist_fd);
 		while (line)
-		{
-			if (line)
-			{
-				remove_end_newline(line);
-				add_to_history(line);
-				free(line);
-			}
-			line = get_next_line(hist_fd);
-		}
+			ft_read_history_loop(&line, hist_fd);
 		close(hist_fd);
 	}
 	free(line);
@@ -89,10 +95,3 @@ int	ft_write_history_file(char *line, char **env)
 	close(hist_fd);
 	return (0);
 }
-
-void	add_to_history(char *line)
-{
-	add_history(line);
-	remove_end_newline(line);
-}
-

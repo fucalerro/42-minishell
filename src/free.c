@@ -19,7 +19,6 @@ char	**free_2starchar(char **strstr)
 	i = 0;
 	if (!strstr || !*strstr)
 		return (NULL);
-
 	while (strstr[i])
 		free(strstr[i++]);
 	free(strstr);

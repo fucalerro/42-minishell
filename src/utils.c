@@ -35,3 +35,36 @@ void	set_signal(int primary)
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
+
+char	*all_quotes_remover(char *string)
+{
+	char	*token;
+	char	prev_quote;
+
+	prev_quote = 0;
+	token = palloc(ft_strlen(string) + 1, sizeof(char));
+	if (!token)
+		return (0);
+	all_quotes_remover_loop(string, &token, prev_quote);
+	return (token);
+}
+
+char	*around_quotes_remover(char *string)
+{
+	char	*res;
+	int		i;
+
+	if (!is_quote(string[0]))
+		return (ft_strdup(string));
+	res = palloc(ft_strlen(string) + 1, sizeof(char));
+	if (!res)
+		return (0);
+	i = 0;
+	while (string[i])
+	{
+		res[i] = string[i + 1];
+		i++;
+	}
+	res[i - 2] = 0;
+	return (res);
+}

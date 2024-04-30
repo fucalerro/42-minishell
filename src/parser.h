@@ -49,5 +49,8 @@ typedef struct s_tokenzied
 int			is_in_quotes(char *input, int index);
 char		*all_quotes_remover(char *string);
 int			is_quotes_opened(char *string);
+char		*around_quotes_remover(char *string);
+void		all_quotes_remover_loop(char *string, char **token,
+				char prev_quote);
 
 #endif
