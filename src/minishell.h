@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 12:31:48 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:43:03 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,6 @@ int			run_redirection_file(t_node *node);
 // print_line define for quick debug
 char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
-# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+//# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif
