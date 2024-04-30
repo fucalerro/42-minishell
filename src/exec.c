@@ -93,7 +93,7 @@ int max_pipe(t_node *node)
 		node = node->next;
 	}
 
-	if (pipe_number > (OPEN_MAX / 5))
+	if (pipe_number > (100))
 	{
 		write_err("too much pipe\n");
 		return (1);
