@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include "colors.h"
+# include "expansion.h"
 # include "error.h"
 # include "history.h"
 # include "node.h"
@@ -49,6 +50,12 @@ void		print_list(t_node *lst);
 // var_expansion.c
 char		*var_expander(char *string);
 void		expand_env_vars(char **tokens, int status, char **env);
+void	expand_env_vars(char **tokens, int status, char **env);
+char	*get_var_name(char *token);
+char	*get_var_value(char *var_name, int status, char **env);
+int	get_nbr_of_vars(char *token);
+char	*expand_token(char *token, int status, char **env);
+
 // array_utils.c
 int			get_elem_count_tok(t_tokens **array);
 int			count_arr_elems(char **array);
