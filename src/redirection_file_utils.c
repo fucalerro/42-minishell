@@ -12,14 +12,15 @@
 
 #include "minishell.h"
 
-int run_outfile(t_node *node_tmp, t_node *node)
+int	run_outfile(t_node *node_tmp, t_node *node)
 {
-	int		return_value;
+	int	return_value;
+
 	return_value = 0;
 	while (node_tmp && node_tmp->type != T_PIPE)
 	{
 		if (node_tmp->type == T_CMD && node_tmp != node)
-			break;
+			break ;
 		else if (node_tmp->type == T_OUTFILE)
 			return_value = exe_outfile(node_tmp);
 		else if (node_tmp->type == T_OUTFILE_APPEND)
@@ -35,7 +36,7 @@ int	run_redirection_file(t_node *node)
 {
 	t_node	*node_tmp;
 	int		return_value;
-	t_node  *node_save;
+	t_node	*node_save;
 
 	node_tmp = node;
 	return_value = 0;

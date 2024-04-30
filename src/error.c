@@ -20,19 +20,19 @@ void	write_err(char *str)
 	write(2, str, size);
 }
 
-int    check_error(t_node *lst)
+int	check_error(t_node *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(lst)
+	while (lst)
 	{
 		if (lst->type == T_HEREDOC)
 			i++;
-		if (i>1)
+		if (i > 1)
 		{
 			write_err("too much heredoc\n");
-			return 1;
+			return (1);
 		}
 		lst = lst->next;
 	}

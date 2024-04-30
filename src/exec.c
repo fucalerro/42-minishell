@@ -81,18 +81,17 @@ void	wait_pid(t_stack *pid_stack, int *status)
 		stack_drop(&pid_stack);
 	}
 }
-int max_pipe(t_node *node)
+int	max_pipe(t_node *node)
 {
-	int pipe_number;
+	int	pipe_number;
 
 	pipe_number = 0;
-	while(node)
+	while (node)
 	{
 		if (node->type == T_PIPE)
 			pipe_number++;
 		node = node->next;
 	}
-
 	if (pipe_number > (100))
 	{
 		write_err("too much pipe\n");
@@ -111,7 +110,7 @@ int	exe_prompt(t_node *list, char ***env, int *status)
 	if (max_pipe(list))
 	{
 		free_lst(node);
-		return 1;
+		return (1);
 	}
 	init_pipe(node);
 	flag_builtin_fork(node);

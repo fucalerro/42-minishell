@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 20:15:18 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 20:46:37 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "../libft/libft.h"
 # include "colors.h"
-# include "expansion.h"
 # include "error.h"
+# include "expansion.h"
 # include "history.h"
 # include "node.h"
 # include "parser.h"
@@ -24,6 +24,7 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -36,7 +37,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <limits.h>
 
 # define MINI_DEBUG_MSG 0
 
@@ -51,11 +51,11 @@ void		print_list(t_node *lst);
 // var_expansion.c
 char		*var_expander(char *string);
 void		expand_env_vars(char **tokens, int status, char **env);
-void	expand_env_vars(char **tokens, int status, char **env);
-char	*get_var_name(char *token);
-char	*get_var_value(char *var_name, int status, char **env);
-int	get_nbr_of_vars(char *token);
-char	*expand_token(char *token, int status, char **env);
+void		expand_env_vars(char **tokens, int status, char **env);
+char		*get_var_name(char *token);
+char		*get_var_value(char *var_name, int status, char **env);
+int			get_nbr_of_vars(char *token);
+char		*expand_token(char *token, int status, char **env);
 
 // array_utils.c
 int			get_elem_count_tok(t_tokens **array);
@@ -156,6 +156,7 @@ char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
 int check_error(t_node *lst);
 void ft_dup2(int fd1, int fd2);
+int			check_error(t_node *lst);
 //# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
