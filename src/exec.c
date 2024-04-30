@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 20:50:41 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 20:52:19 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	wait_pid(t_stack *pid_stack, int *status)
 		stack_drop(&pid_stack);
 	}
 }
-int	max_pipe(t_node *node)
 
 int	max_pipe(t_node *node)
 {
