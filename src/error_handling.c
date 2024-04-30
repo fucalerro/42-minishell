@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 12:32:32 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 20:51:50 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	parsing_error(t_tokens **tokens)
 			return (result);
 	}
 	if (i > 0 && ((is_operator(tokens[i - 1]->tok) || is_file_operator(tokens[i
-					- 1]->tok)) && tokens[i - 1]->quote == UNQUOTED))
+						- 1]->tok)) && tokens[i - 1]->quote == UNQUOTED))
 		return (errror_msg(ERR_UNEXPECTED_TOKEN, tokens[i - 1]->tok[0]));
 	return (0);
 }
