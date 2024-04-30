@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 20:46:56 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 21:24:22 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	exe_infile(t_node *node)
 	}
 	else
 	{
-		dup2(fd, STDIN_FILENO);
+		ft_dup2(fd, STDIN_FILENO);
 	}
 	close(fd);
 	return (0);
@@ -49,7 +49,7 @@ int	exe_outfile(t_node *node)
 		}
 	}
 	fd = open(node->file, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
-	dup2(fd, STDOUT_FILENO);
+	ft_dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }
@@ -67,7 +67,7 @@ int	exe_outfile_append(t_node *node)
 		}
 	}
 	fd = open(node->file, O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
-	dup2(fd, STDOUT_FILENO);
+	ft_dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }
@@ -117,7 +117,7 @@ int	exe_heredoc(t_node *node)
 		close(node->pipe[1]);
 		if (WIFEXITED(status) && WEXITSTATUS(status))
 			return (close(node->pipe[0]) || 1);
-		dup2(node->pipe[0], STDIN_FILENO);
+		ft_dup2(node->pipe[0], STDIN_FILENO);
 		close(node->pipe[0]);
 	}
 	return (0);
