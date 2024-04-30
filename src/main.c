@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 20:53:42 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 21:21:49 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,15 @@ char	**get_new_shlvl(char **env)
 	new_shlvl[2] = NULL;
 	return (new_shlvl);
 }
-
+void	setback_fd(t_fd *fd)
+{
+	if (dup2(fd->in, STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	if (dup2(fd->out, STDOUT_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(fd->in);
+	close(fd->out);
+}
 char	**copy_env(char **env, int size)
 {
 	int		env_size;
@@ -96,6 +104,7 @@ void	process_input_loop(char ***env_copy, int *status)
 			if (!check_error(lst))
 				exe_prompt(lst, env_copy, status);
 		}
+		setback_fd(&fd);
 		free(prompt);
 		free_tokens(tokens);
 		set_signal(0);
