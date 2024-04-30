@@ -162,6 +162,7 @@ char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
 int			check_error(t_node *lst);
 void		ft_dup2(int fd1, int fd2);
+char		**get_new_shlvl(char **env);
 //# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 // # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
