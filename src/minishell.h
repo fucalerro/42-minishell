@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 15:45:19 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 20:15:18 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
 int check_error(t_node *lst);
 //# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
+# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif

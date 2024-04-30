@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/30 16:31:20 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	**free_2starchar(char **strstr)
 	i = 0;
 	if (!strstr || !*strstr)
 		return (NULL);
+
 	while (strstr[i])
 		free(strstr[i++]);
 	free(strstr);

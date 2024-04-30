@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/30 20:42:33 by lferro            #+#    #+#             */
+/*   Updated: 2024/04/30 20:42:33 by lferro           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 void	expand_env_vars(char **tokens, int status, char **env)
 {
@@ -21,7 +32,6 @@ void	expand_env_vars(char **tokens, int status, char **env)
 		i++;
 	}
 }
-
 
 char	*get_var_name(char *token)
 {
@@ -47,9 +57,6 @@ char	*get_var_name(char *token)
 		var_name[j++] = token[i++];
 	}
 	var_name[j] = 0;
-
-	// printf("get var name: %s\n", var_name);
-
 	return (var_name);
 }
 
@@ -59,7 +66,6 @@ char	*get_var_value(char *var_name, int status, char **env)
 
 	if (!var_name)
 		return (0);
-
 	if (!ft_strcmp(var_name, "$"))
 	{
 		return (ft_strdup("$"));
@@ -81,7 +87,6 @@ int	get_nbr_of_vars(char *token)
 	nbr_of_vars = 0;
 	while (token[i])
 	{
-		// if (token[i] == '$' && is_in_quotes(token, i) != SINGLE_QUOTE)
 		if (token[i] == '$')
 			nbr_of_vars++;
 		i++;
