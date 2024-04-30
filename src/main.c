@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 01:53:13 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:31:13 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **get_new_shlvl(char **env)
+char	**get_new_shlvl(char **env)
 {
-	int shlvl;
-	char *shlvl_str;
-	char *new_shlvl_string;
-	char **new_shlvl;
+	int		shlvl;
+	char	*shlvl_str;
+	char	*new_shlvl_string;
+	char	**new_shlvl;
 
 	new_shlvl = palloc(3, sizeof(char *));
 	new_shlvl[0] = ft_strdup("export");
@@ -125,11 +125,9 @@ int	main(int ac, char **av, char **env)
 	status = 0;
 	set_signal(0);
 	env_copy = copy_env(env, 0);
-
 	new_shlvl = get_new_shlvl(env_copy);
 	builtin_export(&env_copy, new_shlvl);
 	free_2starchar(new_shlvl);
-
 	ft_read_history(env_copy);
 	process_input_loop(&env_copy, &status);
 	return (0);

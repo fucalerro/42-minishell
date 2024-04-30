@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 23:11:18 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:30:18 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_str_array(char **array)
+void	print_str_array(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])
@@ -22,12 +22,11 @@ void print_str_array(char **array)
 		printf("%d: %s\n", i, array[i]);
 		i++;
 	}
-
 }
 
-void 	print_tokens(t_tokens **tokens)
+void	print_tokens(t_tokens **tokens)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tokens[i])
@@ -40,7 +39,7 @@ void 	print_tokens(t_tokens **tokens)
 
 t_tokens	**tokenizer(char *string, int status, char **env)
 {
-	t_tokenized tok;
+	t_tokenized	tok;
 	t_tokens	**tokens;
 	int			i;
 
@@ -94,7 +93,6 @@ char	*input_normalizer(char *input)
 	int		i;
 	char	*output;
 
-	// output = palloc(ft_strlen(input) + 1, sizeof(char));
 	output = palloc(ft_strlen(input) + 1, sizeof(char));
 	if (!output)
 		return (0);

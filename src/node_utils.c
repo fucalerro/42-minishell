@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 14:59:34 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:33:21 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ static t_node	*lst_last(t_node *lst)
 	return (lst);
 }
 
-char **merge_str(char *file, char *del)
+char	**merge_str(char *file, char *del)
 {
-	char **merge;
+	char	**merge;
+
 	merge = palloc(2, sizeof(char *));
 	if (!merge)
-		return NULL;
+		return (NULL);
 	merge[0] = file;
 	merge[1] = del;
 	return (merge);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 00:04:52 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:30:58 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,10 @@ void	all_quotes_remover_loop(char *string, char **token)
 char	*all_quotes_remover(char *string)
 {
 	char	*token;
-	// int		is_in_quote;
 
-	// is_in_quote = 0;
 	token = palloc(ft_strlen(string) + 1, sizeof(char));
 	if (!token)
 		return (0);
-
-	// printf("string: %s\n", string);
-
 	all_quotes_remover_loop(string, &token);
 	return (token);
 }
@@ -122,7 +117,7 @@ void	parse_cmd(t_tokens **tokens, t_node **lst, int *i, int *arg_count)
 
 	index = *i;
 	consolidated_cmd = consolidate_cmd(tokens, index, arg_count);
-	lst_append(lst, T_CMD, consolidated_cmd,  merge_str(NULL, NULL));
+	lst_append(lst, T_CMD, consolidated_cmd, merge_str(NULL, NULL));
 	free(consolidated_cmd);
 	*i += *arg_count;
 }
@@ -142,11 +137,14 @@ t_node	*parser(t_tokens **tok)
 		if (!ft_strncmp(tok[i]->tok, "|", 1) && !tok[i]->quote)
 			lst_append(&lst, T_PIPE, NULL, merge_str(NULL, NULL));
 		else if (!ft_strcmp(tok[i]->tok, ">") && !tok[i]->quote && i + 1 < tc)
-			lst_append(&lst, T_OUTFILE, NULL,merge_str(tok[i++ + 1]->tok, NULL));
+			lst_append(&lst, T_OUTFILE, NULL, merge_str(tok[i++ + 1]->tok,
+					NULL));
 		else if (!ft_strcmp(tok[i]->tok, "<") && i + 1 < tc && !tok[i]->quote)
-			lst_append(&lst, T_INFILE, NULL,merge_str(tok[i++ + 1]->tok, NULL));
+			lst_append(&lst, T_INFILE, NULL, merge_str(tok[i++ + 1]->tok,
+					NULL));
 		else if (!ft_strcmp(tok[i]->tok, ">>") && i + 1 < tc && !tok[i]->quote)
-			lst_append(&lst, T_OUTFILE_APPEND, NULL,merge_str(tok[i++ + 1]->tok, NULL));
+			lst_append(&lst, T_OUTFILE_APPEND, NULL, merge_str(tok[i++
+					+ 1]->tok, NULL));
 		else if (!ft_strcmp(tok[i]->tok, "<<") && i + 1 < tc && !tok[i]->quote)
 			parse_heredoc(tok[i++ + 1]->tok, &lst);
 		else

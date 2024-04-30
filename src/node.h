@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 14:52:55 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:33:05 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # define T_CMD 4
 # define T_OUTFILE 5
 # define T_OUTFILE_APPEND 6
-
 # define PIPE_NEXT 1
 # define PIPE_PREVIOUS 2
 
@@ -35,7 +34,8 @@ typedef struct s_node
 	int				pipe[2];
 }					t_node;
 
-void	lst_append(t_node **lst, int type, char **cmd, char *arg[2]);
+void				lst_append(t_node **lst, int type, char **cmd,
+						char *arg[2]);
 void				free_lst(t_node *lst);
 
 #endif

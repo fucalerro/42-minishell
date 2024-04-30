@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/30 12:31:35 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_tokens
 	char	*tok;
 	int		quote;
 	char	*is_in_quotes;
-	int		unclosed_quote; // this is never used right ?
+	int		unclosed_quote;
 }			t_tokens;
 
 typedef struct s_tokenzied
@@ -43,9 +43,8 @@ typedef struct s_tokenzied
 	char	*normalized;
 	char	**space_tok;
 	char	***op_tok;
-	char 	**tok;
+	char	**tok;
 }			t_tokenized;
-
 
 int			is_in_quotes(char *input, int index);
 char		*all_quotes_remover(char *string);

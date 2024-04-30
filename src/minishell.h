@@ -6,7 +6,7 @@
 /*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/29 14:52:57 by lnicolli         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:31:48 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int			check_pipe(t_node *node);
 // free.c
 char		**free_2starchar(char **strstr);
 // history.c
-void	ft_history(char *prompt, char **env);
+void		ft_history(char *prompt, char **env);
 // cmd_utils.c
 char		*get_cmd_path(t_node *node, char **path);
 char		**get_path(char *env[]);
@@ -146,8 +146,8 @@ int			is_builtin(char **cmd);
 // redirection_file_utils.c
 int			run_redirection_file(t_node *node);
 // print_line define for quick debug
-char **merge_str(char *file, char *del);
-void set_signal(int primary);
+char		**merge_str(char *file, char *del);
+void		set_signal(int primary);
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif

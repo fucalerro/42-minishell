@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/30 12:32:10 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "env.h"
+#include "minishell.h"
 
 void	print_env(char **tab)
 {
 	int		i;
-		int		j;
+	int		j;
 	char	*value;
 
 	i = -1;
