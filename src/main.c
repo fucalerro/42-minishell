@@ -104,7 +104,8 @@ void	process_input_loop(char ***env_copy, int *status)
 			lst = parser(tokens);
 			if (lst)
 				ft_history(prompt, *env_copy);
-			exe_prompt(lst, env_copy, status);
+			if (!check_error(lst))
+				exe_prompt(lst, env_copy, status);
 			setback_fd(&fd);
 		}
 		free(prompt);

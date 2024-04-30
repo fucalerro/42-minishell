@@ -154,6 +154,7 @@ int			run_redirection_file(t_node *node);
 // print_line define for quick debug
 char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
+int check_error(t_node *lst);
 //# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
 #endif
