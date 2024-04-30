@@ -44,8 +44,6 @@ typedef struct s_fd
 	int		in;
 }			t_fd;
 
-extern int	errno;
-
 /* FUNCTIONS */
 void		print_list(t_node *lst);
 // var_expansion.c
