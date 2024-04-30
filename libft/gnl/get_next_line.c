@@ -6,7 +6,7 @@
 /*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 10:12:41 by lferro            #+#    #+#             */
-/*   Updated: 2024/01/15 14:54:04 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 20:48:50 by lferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
 		return (freeyator(&stash));
-	buf = palloc(BUFFER_SIZE + 1,  sizeof(char));
+	buf = palloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buf)
 		return (NULL);
 	line = line_read(fd, buf, stash);
