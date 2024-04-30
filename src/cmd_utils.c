@@ -20,7 +20,7 @@ char	*get_cmd_path(t_node *node, char **path)
 
 	i = -1;
 	cmd = node->cmd[0];
-	while (path && path[++i])
+	while (cmd && cmd[0] && path && path[++i])
 	{
 		tmp = ft_strjoin(path[i], cmd);
 		if (!tmp)
