@@ -38,3 +38,9 @@ int    check_error(t_node *lst)
 	}
 	return (0);
 }
+
+void ft_dup2(int fd1, int fd2)
+{
+	if(dup2(fd1, fd2) < 0)
+		exit(EXIT_FAILURE);
+}

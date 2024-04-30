@@ -65,7 +65,7 @@ int	set_pipe(t_node *node)
 		while (tmp->type != T_PIPE)
 			tmp = tmp->next;
 		close(tmp->pipe[0]);
-		dup2(tmp->pipe[1], STDOUT_FILENO);
+		ft_dup2(tmp->pipe[1], STDOUT_FILENO);
 		close(tmp->pipe[1]);
 	}
 	tmp = node;
@@ -75,7 +75,7 @@ int	set_pipe(t_node *node)
 			tmp = tmp->previous;
 		close(tmp->pipe[1]);
 		if (!stdin_occupied(node))
-			dup2(tmp->pipe[0], STDIN_FILENO);
+			ft_dup2(tmp->pipe[0], STDIN_FILENO);
 		close(tmp->pipe[0]);
 	}
 	return (0);
