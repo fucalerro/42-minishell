@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Lu-ni <lucas.nicollier@gmail.com>          +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/28 22:12:43 by Lu-ni            ###   ########.fr       */
+/*   Updated: 2024/04/30 20:50:41 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	wait_pid(t_stack *pid_stack, int *status)
 	}
 }
 int	max_pipe(t_node *node)
+
+int	max_pipe(t_node *node)
 {
 	int	pipe_number;
 
@@ -99,6 +101,7 @@ int	max_pipe(t_node *node)
 	}
 	return (0);
 }
+
 int	exe_prompt(t_node *list, char ***env, int *status)
 {
 	t_node	*node;

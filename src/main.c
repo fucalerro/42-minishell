@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 15:46:46 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 20:51:13 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,6 @@ char	**copy_env(char **env, int size)
 	return (new_env);
 }
 
-void	setback_fd(t_fd *fd)
-{
-	if (dup2(fd->in, STDIN_FILENO) == -1)
-		exit(EXIT_FAILURE);
-	if (dup2(fd->out, STDOUT_FILENO) == -1)
-		exit(EXIT_FAILURE);
-	close(fd->in);
-	close(fd->out);
-}
-
 char	*ft_readline(char **prompt)
 {
 	char	*line;
@@ -91,7 +81,6 @@ void	process_input_loop(char ***env_copy, int *status)
 	t_tokens	**tokens;
 	t_node		*lst;
 
-	prompt = NULL;
 	while (ft_readline(&prompt))
 	{
 		fd.in = dup(STDIN_FILENO);
@@ -106,7 +95,6 @@ void	process_input_loop(char ***env_copy, int *status)
 				ft_history(prompt, *env_copy);
 			if (!check_error(lst))
 				exe_prompt(lst, env_copy, status);
-			setback_fd(&fd);
 		}
 		free(prompt);
 		free_tokens(tokens);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lferro <lferro@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: lnicolli <lnicolli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 22:12:43 by Lu-ni             #+#    #+#             */
-/*   Updated: 2024/04/30 20:46:37 by lferro           ###   ########.fr       */
+/*   Updated: 2024/04/30 20:51:27 by lnicolli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,12 @@ int			check_pipe(t_node *node);
 char		**free_2starchar(char **strstr);
 // history.c
 void		ft_history(char *prompt, char **env);
+void	remove_end_newline(char *line);
+char	*get_history_path(char **env);
+void	ft_read_history(char **env);
+int	ft_write_history_file(char *line, char **env);
+void	add_to_history(char *line);
+void	print_hist(char **env);
 // cmd_utils.c
 char		*get_cmd_path(t_node *node, char **path);
 char		**get_path(char *env[]);
@@ -154,9 +160,8 @@ int			run_redirection_file(t_node *node);
 // print_line define for quick debug
 char		**merge_str(char *file, char *del);
 void		set_signal(int primary);
-int check_error(t_node *lst);
-void ft_dup2(int fd1, int fd2);
 int			check_error(t_node *lst);
+void		ft_dup2(int fd1, int fd2);
 //# define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 # define PL printf("line: %d file: %s\n", __LINE__, __FILE__);
 
