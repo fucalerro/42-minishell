@@ -45,29 +45,6 @@ int	access_infile(char *filepath)
 	return (0);
 }
 
-int	access_outfile(const char *filename)
-{
-	if (open(filename, O_DIRECTORY) >= 0)
-	{
-		printf("minishell: %s: Is a directory\n", filename);
-		return (1);
-	}
-	if (access(filename, F_OK) == -1)
-	{
-		if (access(".", W_OK) == -1)
-		{
-			printf("minishell: %s: Permission denied\n", filename);
-			return (1);
-		}
-	}
-	else if (access(filename, W_OK) == -1)
-	{
-		printf("minishell: %s: Permission denied\n", filename);
-		return (1);
-	}
-	return (0);
-}
-
 int	token_error(t_tokens *token, int *op_flag, int *f_op_flag)
 {
 	if (is_unhandled_operator(token->tok) && token->quote == UNQUOTED)

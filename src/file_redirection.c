@@ -25,12 +25,11 @@ int	exe_infile(t_node *node)
 	if (fd < 0)
 	{
 		perror(strerror(errno));
-		close(fd);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		dup2(fd, STDIN_FILENO);
+		ft_dup2(fd, STDIN_FILENO);
 	}
 	close(fd);
 	return (0);
@@ -49,7 +48,12 @@ int	exe_outfile(t_node *node)
 		}
 	}
 	fd = open(node->file, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
-	dup2(fd, STDOUT_FILENO);
+	if (fd < 0)
+	{
+		perror(strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+	ft_dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }
@@ -67,7 +71,12 @@ int	exe_outfile_append(t_node *node)
 		}
 	}
 	fd = open(node->file, O_CREAT | O_WRONLY | O_APPEND, S_IRUSR | S_IWUSR);
-	dup2(fd, STDOUT_FILENO);
+	if (fd < 0)
+	{
+		perror(strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+	ft_dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }
@@ -117,7 +126,7 @@ int	exe_heredoc(t_node *node)
 		close(node->pipe[1]);
 		if (WIFEXITED(status) && WEXITSTATUS(status))
 			return (close(node->pipe[0]) || 1);
-		dup2(node->pipe[0], STDIN_FILENO);
+		ft_dup2(node->pipe[0], STDIN_FILENO);
 		close(node->pipe[0]);
 	}
 	return (0);
